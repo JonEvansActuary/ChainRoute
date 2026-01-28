@@ -63,6 +63,7 @@ temp/
 *.pem
 *.key
 secrets/
+keys/
 
 # Testing & coverage
 coverage/
