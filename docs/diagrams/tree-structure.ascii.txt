@@ -1,0 +1,38 @@
+ChainRoute Protocol — Chain / Tree Structure
+=============================================
+All nodes embed the genesis hash. Polygon = ordering & delegation; Arweave = storage.
+
+    ┌─────────────────────────────────────┐
+    │   Genesis Polygon Tx (Root)          │
+    │   data: 0..0 | 0..0 | 0..0 | delegate│
+    │   → tx hash = genesis hash            │
+    └─────────────────┬───────────────────┘
+                      │
+        ┌─────────────┼─────────────┐
+        │             │             │
+        ▼             ▼             ▼
+   ┌─────────┐  ┌─────────┐  ┌─────────┐
+   │ Event 1  │  │ Event 2  │  │ Event N  │  ... (forward via delegates)
+   │ Polygon  │  │ Polygon  │  │ Polygon  │
+   │ Tx       │  │ Tx       │  │ Tx       │
+   └────┬─────┘  └────┬─────┘  └────┬─────┘
+        │             │             │
+        │ prev=0       │ prev=tx1    │ prev=tx(N-1)
+        │             │             │
+        ▼             ▼             ▼
+   ┌─────────┐  ┌─────────┐  ┌─────────┐
+   │ Arweave │  │ Arweave │  │ Arweave │
+   │ Main    │  │ Main    │  │ Main    │
+   │ Blob    │  │ Blob    │  │ Blob    │
+   │ (JSON)  │  │ (JSON)  │  │ (JSON)  │
+   └────┬─────┘  └────┬─────┘  └────┬─────┘
+        │             │             │
+        │ supports[]  │ supports[]  │ supports[]
+        ▼             ▼             ▼
+   ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
+   │Support│Support│Support│Support│  (images, PDFs, etc.)
+   │ File 1│ │ File 2│ │ File 1│ │ File 2│
+   └─────┘ └─────┘ └─────┘ └─────┘
+
+Backward traversal: follow "previous Polygon hash" in each tx.
+Forward: scan next delegate's txs filtered by genesis hash.

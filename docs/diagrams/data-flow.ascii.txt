@@ -1,0 +1,60 @@
+ChainRoute Protocol — Data Flow
+==============================
+
+  POSTING AN EVENT (current delegate)
+  ------------------------------------
+
+     ┌──────────────┐
+     │ Supporting   │
+     │ files        │  (images, PDFs, etc.; embed genesis hash)
+     └──────┬───────┘
+            │ 1. Upload to Arweave
+            ▼
+     ┌──────────────┐     support IDs
+     │ Arweave      │ ──────────────────┐
+     │ (support tx) │                   │
+     └──────────────┘                   │
+                                        │ 2. Build main JSON blob
+     ┌──────────────┐                   │    (genesis, eventType, timestamp,
+     │ Main JSON    │ ◄─────────────────┘    summary, supports[])
+     │ blob         │
+     └──────┬───────┘
+            │ 3. Upload to Arweave
+            ▼
+     ┌──────────────┐     Arweave tx ID
+     │ Arweave      │ ──────────────────┐
+     │ (main blob)  │                   │
+     └──────────────┘                   │ 4. Build 127-byte payload:
+                                        │    genesisHash | prevHash | arweaveId (43 bytes) | delegate
+                                        ▼
+     ┌──────────────┐
+     │ Polygon tx   │  5. Sign (current delegate), broadcast
+     │ (data only)  │
+     └──────────────┘
+
+
+  VERIFICATION
+  ------------
+
+     Any Polygon tx or Arweave file
+                │
+                ▼
+     ┌──────────────────┐
+     │ Extract genesis   │
+     │ hash              │
+     └────────┬─────────┘
+              │
+              ▼
+     ┌──────────────────┐     ┌──────────────────┐
+     │ Query Polygon    │     │ Fetch Arweave     │
+     │ (by delegate,    │     │ blob by ID from  │
+     │  filter genesis) │     │ Polygon tx       │
+     └────────┬─────────┘     └────────┬─────────┘
+              │                        │
+              ▼                        ▼
+     ┌──────────────────┐     ┌──────────────────┐
+     │ Traverse chain:   │     │ Validate genesis │
+     │ backward = prev   │     │ match; fetch     │
+     │ hash; forward =  │     │ supports         │
+     │ next delegate txs │     │                  │
+     └──────────────────┘     └──────────────────┘

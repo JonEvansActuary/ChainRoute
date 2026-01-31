@@ -1,0 +1,18 @@
+{
+  "name": "chainroute-docs-code",
+  "description": "ChainRoute example scripts: build payload, validate blob, post supports/blob to Arweave, post Polygon anchor, full event flow",
+  "private": true,
+  "scripts": {
+    "post-support": "node post-support-to-arweave.js",
+    "post-blob": "node post-provenance-blob-to-arweave.js",
+    "post-anchor": "node post-polygon-anchor.js",
+    "post-event": "node post-event.js"
+  },
+  "dependencies": {
+    "arweave": "^1.15.0",
+    "ethers": "^6.13.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

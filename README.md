@@ -12,7 +12,7 @@ ChainRoute addresses the need for tamper-proof provenance in a simple, cost-effe
 
 - **Single Genesis Root**: Every transaction and file embeds the same Polygon genesis hash for grouping and orphan-proofing.
 - **Delegation Mechanism**: Seamless handovers (e.g., from creator to owner) via address-based delegation in Polygon tx data.
-- **Lightweight Design**: No smart contracts; raw 116-byte Polygon data payloads; cheap, permanent Arweave storage.
+- **Lightweight Design**: No smart contracts; raw 127-byte Polygon data payloads; cheap, permanent Arweave storage.
 - **Open Uploads**: Anyone can post to Arweave; Polygon signatures make it official.
 - **Efficient Verification**: Start from any file/tx, extract genesis, scan Polygon for matches, fetch Arweave blobs.
 - **Resilience**: Polygon as index; Arweave for data; compatible with hardware wallets (e.g., Ledger via BIP39).
@@ -47,7 +47,7 @@ All nodes embed the genesis hash.
    - Scan delegate addresses' tx history on Polygon, filter by genesis prefix.
    - Traverse chain via previous/next links; fetch linked Arweave data.
 
-For full details, see [SPEC.md](./SPEC.md).
+For full details, see [protocol.md](./protocol.md).
 
 ## Why ChainRoute?
 
@@ -55,7 +55,7 @@ Compared to protocols like VeChain (enterprise-heavy with tokens) or OriginTrail
 
 ## Getting Started
 
-1. **Read the Spec**: Check [SPEC.md](./SPEC.md) for byte-level details and JSON schemas.
+1. **Read the spec**: Check [protocol.md](./protocol.md) for byte-level details and JSON schemas. See [docs/examples](./docs/examples) for sample Arweave blobs and Polygon payloads, and [docs/diagrams](./docs/diagrams) for chain structure and data-flow diagrams.
 2. **Implement a Poster** (Pseudocode Example):
    ```javascript
    // Using web3.js and Arweave SDK
@@ -66,7 +66,7 @@ Compared to protocols like VeChain (enterprise-heavy with tokens) or OriginTrail
      const mainBlob = { genesis: genesisHash, summary: "...", supports: supportIDs };
      const arweaveID = await uploadToArweave(mainBlob);
      // Sign Polygon tx
-     const payload = Buffer.concat([genesisHash, prevPolyHash, arweaveID, nextDelegate]);
+     const payload = Buffer.concat([genesisHash, prevPolyHash, Buffer.from(arweaveID, 'utf8'), nextDelegate]); // 127 bytes
      await signer.sendTransaction({ data: '0x' + payload.toString('hex') });
    }
    ```
@@ -83,7 +83,7 @@ Reference implementations coming soon in `/reference-impl/`.
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines. We welcome spec refinements, examples, and implementations.
+See [CONTRIBUTE.md](./CONTRIBUTE.md) for guidelines. We welcome spec refinements, examples, and implementations.
 
 ## License
 

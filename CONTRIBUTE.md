@@ -1,6 +1,6 @@
 # Contributing to ChainRoute Protocol
 
-Thank you for your interest in contributing to ChainRoute! This is a specification-first project aimed at defining a lightweight provenance protocol. We welcome contributions that improve the docs, refine the spec, add examples, or propose extensions. All contributions are under the [MIT License](../LICENSE).
+Thank you for your interest in contributing to ChainRoute! This is a specification-first project aimed at defining a lightweight provenance protocol. We welcome contributions that improve the docs, refine the spec, add examples, or propose extensions. All contributions are under the [MIT License](./LICENSE).
 
 ## Code of Conduct
 
@@ -27,7 +27,7 @@ This project adheres to the [Contributor Covenant Code of Conduct](../CODE_OF_CO
 1. Fork the repo and create your branch from `main` (e.g., `feature/new-example`).
 2. Make your changes:
    - For spec/docs: Use clear markdown; update version if needed.
-   - For code/examples: Add to `/examples/` or `/reference-impl/`; ensure it's MIT-licensed.
+   - For code/examples: Add to `docs/examples/` or `docs/code/` (or `/reference-impl/` when available); ensure it's MIT-licensed.
    - Keep commits atomic and descriptive.
 3. Test your changes (e.g., validate JSON schemas).
 4. Open a PR with:
