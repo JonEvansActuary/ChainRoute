@@ -2,8 +2,6 @@
 
 A lightweight, decentralized provenance protocol using Polygon for immutable chaining and delegation, and Arweave for permanent data storage. It enables verifiable trails of events (e.g., ownership transfers, certifications) for physical or digital items, anchored by a single genesis root for easy traceability.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
 ## Overview
 
 ChainRoute addresses the need for tamper-proof provenance in a simple, cost-effective way. Traditional systems often rely on heavy smart contracts or custom blockchains, leading to high fees and complexity. ChainRoute separates data storage (permanent on Arweave) from signing and chaining (immutable on Polygon), allowing anyone to upload data while only authorized delegates canonize it via signed transactions. All elements reference a genesis Polygon hash, making verification straightforward without internal links in Arweave.
@@ -36,11 +34,11 @@ All nodes embed the genesis hash.
 
 ## How It Works
 
-1. **Genesis Creation**: Sign a Polygon tx with zeros for hashes and self as delegate. This hash becomes the root.
+1. **Genesis Creation**: Sign a Polygon tx with 32-byte zero genesis hash, 32-byte zero previous hash, 43-byte zero Arweave ID, and self as delegate (20 bytes). This tx hash becomes the root.
 2. **Event Posting**:
    - Upload supporting files to Arweave (embed genesis hash); get IDs.
    - Compile main JSON blob (summary fields + supports array + genesis hash); upload to Arweave; get ID.
-   - Sign Polygon tx (by current delegate) with: genesis hash, previous Polygon hash, Arweave ID, next delegate.
+   - Sign Polygon tx (by current delegate) with: genesis hash (32 bytes), previous Polygon hash (32 bytes), Arweave blob ID (43 bytes UTF-8), next delegate (20 bytes)—127 bytes total.
 3. **Delegation**: Update the delegate address in Polygon tx to transfer control.
 4. **Verification**:
    - Extract genesis hash from any entry.
@@ -55,18 +53,20 @@ Compared to protocols like VeChain (enterprise-heavy with tokens) or OriginTrail
 
 ## Getting Started
 
-1. **Read the spec**: Check [protocol.md](./protocol.md) for byte-level details and JSON schemas. See [docs/examples](./docs/examples) for sample Arweave blobs and Polygon payloads, and [docs/diagrams](./docs/diagrams) for chain structure and data-flow diagrams.
+1. **Read the spec**: Check [protocol.md](./protocol.md) for byte-level details and JSON schemas. For a general-audience overview (motivation, ideas, applications), open [docs/ChainRoute-Protocol-Slides.html](./docs/ChainRoute-Protocol-Slides.html) in a browser. See [docs/examples](./docs/examples) for sample Arweave blobs and Polygon payloads (including [HypotheticalPainting](./docs/examples/HypotheticalPainting) with 127-byte payload JSONs and an example **Polygon event signer file** listing who signed each tx). For confidentiality and security, signer/contact data may not be publicly posted to Arweave (or may be posted only in encrypted form) but may need to be provided to regulators, auditors, or other parties with a legitimate need to audit the provenance chain.
 2. **Implement a Poster** (Pseudocode Example):
    ```javascript
-   // Using web3.js and Arweave SDK
+   // Using web3.js and Arweave SDK. Payload: 32 + 32 + 43 + 20 = 127 bytes (see protocol.md §3.1).
    async function postEvent(signer, genesisHash, prevPolyHash, supports) {
-     // Upload supports to Arweave, get IDs
      const supportIDs = await uploadSupports(supports, genesisHash);
-     // Build main blob
      const mainBlob = { genesis: genesisHash, summary: "...", supports: supportIDs };
-     const arweaveID = await uploadToArweave(mainBlob);
-     // Sign Polygon tx
-     const payload = Buffer.concat([genesisHash, prevPolyHash, Buffer.from(arweaveID, 'utf8'), nextDelegate]); // 127 bytes
+     const arweaveID = await uploadToArweave(mainBlob); // 43-char base64url string
+     const payload = Buffer.concat([
+       Buffer.from(genesisHash, 'hex'),      // 32 bytes
+       Buffer.from(prevPolyHash, 'hex'),     // 32 bytes
+       Buffer.from(arweaveID, 'utf8'),       // 43 bytes (genesis: 43 zero bytes)
+       Buffer.from(nextDelegate.slice(2), 'hex')  // 20 bytes, no 0x
+     ]);
      await signer.sendTransaction({ data: '0x' + payload.toString('hex') });
    }
    ```
@@ -85,8 +85,8 @@ See [CONTRIBUTE.md](./CONTRIBUTE.md) for guidelines. We welcome spec refinements
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+See the [LICENSE](./LICENSE) file for copyright and terms.
 
-Copyright (c) 2026 TechnoGoogie
+Copyright (c) 2026 Jonathan Palmer Evans. All rights reserved.
 
 Questions? Open an issue or reach out on X: [@TechnoGoogie](https://x.com/TechnoGoogie)

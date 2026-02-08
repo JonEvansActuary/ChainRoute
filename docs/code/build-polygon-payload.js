@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 /**
  * Build the 127-byte Polygon transaction data payload from a JSON object.
- * ChainRoute Protocol: genesisHash (32) + previousPolygonHash (32) + arweaveId (43 UTF-8) + delegate (20).
+ * ChainRoute Protocol: genesisHash (32) + previousPolygonHash (32) + arweaveId (43) + delegate (20).
+ * The Arweave ID field is always 43 bytes; for genesis (no blob) it is zero-padded to 43 bytes so the payload is always exactly 127 bytes.
  *
  * Usage:
  *   node build-polygon-payload.js <path-to-payload.json>
@@ -13,7 +14,7 @@ const ARWEAVE_ID_LEN = 43;
 
 /**
  * Build 127-byte payload buffer from a Polygon payload JSON.
- * @param {object} payload - { genesisHash, previousPolygonHash, arweaveId (43-char string or null/empty for genesis), delegate }
+ * @param {object} payload - { genesisHash, previousPolygonHash, arweaveId (43-char string, or null/empty/0 for genesis), delegate }
  * @returns {Buffer} 127 bytes
  */
 function buildPayload(payload) {
@@ -23,12 +24,13 @@ function buildPayload(payload) {
   if (!HEX_32.test(previousPolygonHash)) throw new Error('previousPolygonHash must be 64 hex chars');
   if (!DELEGATE.test(delegate)) throw new Error('delegate must be 0x + 40 hex chars');
 
+  // Arweave ID is always 43 bytes in the payload (zero-padded when no blob, e.g. genesis)
   let arweaveIdBuf;
-  if (arweaveId == null || arweaveId === '') {
+  if (arweaveId == null || arweaveId === '' || arweaveId === 0) {
     arweaveIdBuf = Buffer.alloc(ARWEAVE_ID_LEN, 0);
   } else {
     if (typeof arweaveId !== 'string' || arweaveId.length !== ARWEAVE_ID_LEN) {
-      throw new Error('arweaveId must be 43-character string (or null/empty for genesis)');
+      throw new Error('arweaveId must be 43-character string (or null/empty/0 for genesis)');
     }
     arweaveIdBuf = Buffer.from(arweaveId, 'utf8');
     if (arweaveIdBuf.length !== ARWEAVE_ID_LEN) {

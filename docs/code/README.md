@@ -8,7 +8,7 @@ Runnable JavaScript helpers for the [ChainRoute Protocol](../../protocol.md). Fu
 
 | File | Description |
 |------|-------------|
-| [build-polygon-payload.js](./build-polygon-payload.js) | Build 127-byte Polygon tx `data` from JSON (genesisHash, previousPolygonHash, arweaveId as 43-char string or null for genesis, delegate). |
+| [build-polygon-payload.js](./build-polygon-payload.js) | Build 127-byte Polygon tx `data` from JSON (genesisHash, previousPolygonHash, arweaveId as 43-char string or null/empty/0 for genesis, delegate). |
 | [validate-arweave-blob.js](./validate-arweave-blob.js) | Validate provenance blob (genesis, eventType, timestamp, summary, supports). |
 
 ## Scripts (require `npm install`)
@@ -26,6 +26,10 @@ Shared modules (no CLI): [arweave-post.js](./arweave-post.js) — `postDataToArw
 
 ```bash
 cd docs/code && npm install
+
+# 0. (Optional) Post genesis Polygon tx first; then use its tx hash as <genesis-hash> below.
+#    node post-polygon-anchor.js 0000...0 0000...0 "" <delegate-address> --key path/to/polygon-key
+#    Or: node build-polygon-payload.js path/to/genesis-payload.json and sign/send the hex with your wallet.
 
 # 1. Post supporting files to Arweave (optional --genesis)
 node post-support-to-arweave.js photo.jpg --genesis <genesis-64-hex> --key path/to/arweave-key.json
@@ -64,6 +68,6 @@ Output: `{ "polygonTxHash": "...", "arweaveBlobTxId": "..." }`. Use the blob ID 
 - **Arweave**: JWK key file. Set `ARWEAVE_KEY_PATH` or pass `--key` (post-support, post-provenance-blob) or `--arweave-key` (post-event).
 - **Polygon**: Private key (hex) or Ledger. Set `POLYGON_PRIVATE_KEY` or pass `--key` (post-polygon-anchor) or `--polygon-key` (post-event). Use `--key ledger` / `--polygon-key ledger` to sign with a **Ledger Stax** (or other Ledger device): connect via USB, open the Ethereum app, and enable **Blind signing** or **Contract data** in app settings for data-only txs. Optional `--ledger-path` / `POLYGON_LEDGER_PATH` (default `44'/60'/0'/0/0`).
 
-For a **mainnet test plan** (hypothetical provenance data, Polygon + Arweave live), see [examples/test1/mainnet-test-plan.md](../examples/test1/mainnet-test-plan.md).
+For examples with full payload JSONs and a signer file, see [HypotheticalPainting](../examples/HypotheticalPainting/). A mainnet test plan may be added under `docs/examples/` for live Polygon + Arweave testing.
 
 You can also `require()` the modules and call the exported functions from your own code.

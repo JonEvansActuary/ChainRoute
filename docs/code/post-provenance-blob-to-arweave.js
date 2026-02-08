@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { postDataToArweave } = require('./arweave-post.js');
+const { validateBlob } = require('./validate-arweave-blob.js');
 
 const GENESIS_PATTERN = /^[0-9a-fA-F]{64}$/;
 
@@ -114,6 +115,12 @@ async function main() {
     blob = buildProvenanceBlob(genesisHash, event, supports);
   } catch (e) {
     console.error('Invalid input:', e.message);
+    process.exit(1);
+  }
+
+  const validation = validateBlob(blob);
+  if (!validation.valid) {
+    validation.errors.forEach((e) => console.error(e));
     process.exit(1);
   }
 

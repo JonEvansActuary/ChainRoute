@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ChainRoute Protocol — Provenance Without the Heavy Lifting</title>
+  <style>
+    :root {
+      --bg: #0f0f1a;
+      --card: #1a1a2e;
+      --accent: #00d4aa;
+      --accent2: #7b68ee;
+      --text: #e8e8e8;
+      --muted: #888;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    .deck {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .slide {
+      min-height: 100vh;
+      padding: 2.5rem 3.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      scroll-snap-align: start;
+    }
+    .slide h1 { font-size: 2.25rem; margin: 0 0 0.75rem; font-weight: 700; color: #fff; }
+    .slide h2 { font-size: 1.4rem; margin: 0 0 0.6rem; font-weight: 600; color: var(--accent); }
+    .slide p { font-size: 1.1rem; line-height: 1.6; margin: 0 0 0.5rem; }
+    .slide .muted { color: var(--muted); font-size: 0.95rem; }
+    .slide ul { margin: 0.4rem 0 0.75rem; padding-left: 1.4rem; }
+    .slide li { margin-bottom: 0.3rem; line-height: 1.5; }
+    .slide img { max-width: 100%; max-height: 42vh; width: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); }
+    .slide .img-caption { font-size: 0.85rem; color: var(--muted); margin-top: 0.4rem; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 0.5rem; }
+    .title-slide { text-align: center; }
+    .title-slide h1 { font-size: 2.5rem; }
+    .title-slide .sub { font-size: 1.2rem; color: var(--muted); margin-top: 0.5rem; }
+    .nav-hint { position: fixed; bottom: 1rem; right: 1.5rem; font-size: 0.8rem; color: var(--muted); }
+    .pill { display: inline-block; background: var(--card); padding: 0.25rem 0.6rem; border-radius: 999px; font-size: 0.9rem; margin: 0.15rem 0.15rem 0.15rem 0; }
+    @media (max-width: 768px) {
+      .slide { padding: 1.5rem 1.25rem; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <!-- 1. Title -->
+    <section class="slide title-slide">
+      <h1>ChainRoute Protocol</h1>
+      <p class="sub">Provenance without the heavy lifting</p>
+      <p class="muted" style="margin-top: 1.5rem;">A lightweight way to create tamper-proof trails for art, collectibles, and supply chains</p>
+    </section>
+
+    <!-- 2. The problem -->
+    <section class="slide">
+      <h2>The problem with provenance</h2>
+      <p>Knowing where something came from and who handled it matters—for art, luxury goods, critical parts, or certifications. But today:</p>
+      <ul>
+        <li><strong>Centralized systems</strong> can be gamed or shut down.</li>
+        <li><strong>Heavy blockchains and smart contracts</strong> mean high fees and complexity.</li>
+        <li><strong>Custom tokens and incentives</strong> add overhead when you just want a simple, auditable history.</li>
+      </ul>
+      <p class="muted">ChainRoute aims for the opposite: minimal, cheap, and verifiable—without contracts or tokens.</p>
+    </section>
+
+    <!-- 3. The big idea -->
+    <section class="slide">
+      <h2>The big idea</h2>
+      <p><strong>Separate “who says it happened” from “where the data lives.”</strong></p>
+      <ul>
+        <li><strong>Storage</strong> → Permanent, open. Anyone can upload documents and event summaries (we use Arweave).</li>
+        <li><strong>Authority</strong> → Only designated “delegates” sign the chain. Their signatures live on a cheap, immutable chain (we use Polygon).</li>
+        <li><strong>One root</strong> → A single “genesis” transaction ties everything together. Every event and file points back to it.</li>
+      </ul>
+      <p class="muted">Result: a tamper-proof trail you can verify from any link, without trusting a central server.</p>
+    </section>
+
+    <!-- 4. Two layers -->
+    <section class="slide">
+      <h2>Two layers, one chain</h2>
+      <div class="two-col">
+        <div>
+          <p><strong>Polygon</strong> (the index)</p>
+          <ul>
+            <li>One small transaction per event (127 bytes of data).</li>
+            <li>Links: genesis hash, previous event, Arweave ID of this event’s summary, next delegate.</li>
+            <li>No smart contracts—just signed data. Low fees, works with hardware wallets.</li>
+          </ul>
+        </div>
+        <div>
+          <p><strong>Arweave</strong> (the archive)</p>
+          <ul>
+            <li>Permanent storage for event summaries (JSON) and supporting files (photos, PDFs, etc.).</li>
+            <li>Each item can tag the genesis hash so you can find everything for one chain.</li>
+            <li>Retrieve anything via a stable ID—no chain reorgs, no deletion.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Key innovation -->
+    <section class="slide">
+      <h2>Key innovation: open uploads, authorized signing</h2>
+      <p>Anyone can post data to Arweave. That’s good for flexibility—agents, labs, carriers can upload evidence without needing the “owner” key.</p>
+      <p><strong>But</strong> only the current delegate signs the next Polygon transaction. So:</p>
+      <ul>
+        <li>Data can be open and redundant; the <em>order</em> and <em>authority</em> stay on-chain.</li>
+        <li>Handovers are simple: put the new signer’s address in the next tx; they take over.</li>
+      </ul>
+      <p class="muted">You get decentralization of data and a clear, single chain of who authorized what.</p>
+    </section>
+
+    <!-- 6. How it works -->
+    <section class="slide">
+      <h2>How it works (in practice)</h2>
+      <ol style="padding-left: 1.5rem;">
+        <li><strong>Genesis</strong> — Create the chain with one Polygon tx (zeros for hashes, yourself as first delegate). Its hash is the root.</li>
+        <li><strong>For each event</strong> — Upload supporting files to Arweave; build a short JSON summary (event type, timestamp, links to those files); upload that to Arweave; then sign a Polygon tx with genesis hash, previous tx hash, this event’s Arweave ID, and the next delegate.</li>
+        <li><strong>Verification</strong> — From any Polygon tx or Arweave file, read the genesis hash, then scan Polygon for all txs with that genesis and walk backward/forward. For each tx, fetch the Arweave summary and supports.</li>
+      </ol>
+    </section>
+
+    <!-- 7. Architecture (with diagram) -->
+    <section class="slide">
+      <h2>Architecture</h2>
+      <p>One root; events chain backward; data lives on Arweave.</p>
+      <img src="diagrams/tree-structure.jpeg" alt="Chain structure: Genesis → events → Arweave blobs → supporting files">
+      <p class="img-caption">Genesis Polygon tx → events (Polygon) → main blobs + supporting files (Arweave).</p>
+    </section>
+
+    <!-- 8. Design goals -->
+    <section class="slide">
+      <h2>Design goals</h2>
+      <p><span class="pill">Simplicity</span> <span class="pill">Resilience</span> <span class="pill">Flexibility</span> <span class="pill">Efficiency</span> <span class="pill">Security</span> <span class="pill">Extensibility</span></p>
+      <ul>
+        <li><strong>Simplicity</strong> — 127 bytes per Polygon tx; no contracts.</li>
+        <li><strong>Resilience</strong> — Single genesis root; no forks or orphans.</li>
+        <li><strong>Flexibility</strong> — Delegation for handovers; anyone can upload to Arweave.</li>
+        <li><strong>Efficiency</strong> — Cheap fees; verify by scanning Polygon and fetching Arweave.</li>
+        <li><strong>Security</strong> — Chain immutability + hardware wallets.</li>
+        <li><strong>Extensibility</strong> — Optional multi-sig, event types, or other chains later.</li>
+      </ul>
+    </section>
+
+    <!-- 9. Possible applications -->
+    <section class="slide">
+      <h2>Possible applications</h2>
+      <ul>
+        <li><strong>Art & collectibles</strong> — Authentication, sales, loans, conservation. One chain per work; photos and certs on Arweave, order and signers on Polygon.</li>
+        <li><strong>Supply chain</strong> — Shipments, inspections, handoffs. Each leg can add an event; delegates can be carriers, customs, or buyers.</li>
+        <li><strong>Certifications & credentials</strong> — Training, compliance, audits. Issuer creates genesis; later events record renewals or revocations.</li>
+        <li><strong>High-value assets</strong> — Anything where “who had it when” matters and you want a minimal, verifiable record without running a full blockchain.</li>
+      </ul>
+    </section>
+
+    <!-- 10. Example: Hypothetical Painting -->
+    <section class="slide">
+      <h2>Example: Hypothetical Painting</h2>
+      <p>We built a <strong>fictional</strong> six-stage provenance example for a high-value painting: authentication (Paris) → secure transport → auction drop-off → live sale → handover → long-term storage (London).</p>
+      <ul>
+        <li>One genesis; six events; each event has a JSON summary on Arweave plus supporting files (photos, reports, receipts).</li>
+        <li>Fictional signers (estate, authenticator, logistics, auction house, buyer’s counsel, vault) show how delegation can pass from party to party.</li>
+      </ul>
+      <p class="muted">See <code>docs/examples/HypotheticalPainting</code> for payloads, event JSONs, and a slide deck. All data is made up for protocol demonstration.</p>
+    </section>
+
+    <!-- 11. Verification -->
+    <section class="slide">
+      <h2>Verification</h2>
+      <p>You don’t need to trust a single company or API. To audit a chain:</p>
+      <ol style="padding-left: 1.5rem;">
+        <li>Get the genesis hash from any Polygon tx or Arweave file in that chain.</li>
+        <li>Query Polygon (e.g. Polygonscan) for transactions whose data starts with that hash.</li>
+        <li>Walk backward using the “previous Polygon hash” field; walk forward by following delegate addresses.</li>
+        <li>For each Polygon tx, load the Arweave blob by ID; check that its genesis matches; optionally fetch linked support files.</li>
+      </ol>
+      <p class="muted">Everything is public and independently verifiable.</p>
+    </section>
+
+    <!-- 12. Why ChainRoute vs others -->
+    <section class="slide">
+      <h2>Why ChainRoute vs other approaches?</h2>
+      <p>Protocols like VeChain or OriginTrail bring tokens, complex graphs, or enterprise stacks. ChainRoute is deliberately minimal:</p>
+      <ul>
+        <li><strong>No tokens</strong> — You don’t need to hold or spend a protocol token.</li>
+        <li><strong>No smart contracts</strong> — Just 127-byte payloads and standard wallets.</li>
+        <li><strong>Low cost</strong> — Polygon fees are small; Arweave is one-time pay-for-permanence.</li>
+      </ul>
+      <p>Good fit when you want a simple, auditable history. For heavy compliance or tokenized ecosystems, other tools may still make sense.</p>
+    </section>
+
+    <!-- 13. Learn more -->
+    <section class="slide title-slide">
+      <h1>Learn more</h1>
+      <p class="sub">ChainRoute Protocol · Specification v0.1 (Draft)</p>
+      <p style="margin-top: 1.5rem;"><a href="../protocol.md" style="color: var(--accent);">protocol.md</a> — Full spec</p>
+      <p><a href="../README.md" style="color: var(--accent);">README</a> — Overview & getting started</p>
+      <p><a href="examples/HypotheticalPainting/">examples/HypotheticalPainting</a> — Fictional painting example</p>
+      <p><a href="code/">docs/code</a> — Scripts (build payload, post to Arweave/Polygon)</p>
+      <p class="muted" style="margin-top: 1rem;">See <a href="../LICENSE" style="color: var(--accent);">LICENSE</a> for copyright and terms. Feedback welcome via issues/PRs.</p>
+    </section>
+  </div>
+  <div class="nav-hint">Scroll or swipe to advance</div>
+</body>
+</html>
