@@ -1,0 +1,62 @@
+{
+  "genesisHash": "647bca002532e1d2710e8c61e30eb83129294a213beb9d0107a8f3740b2580dc",
+  "polygonAnchors": [
+    {
+      "step": "genesis",
+      "txHash": "0x647bca002532e1d2710e8c61e30eb83129294a213beb9d0107a8f3740b2580dc",
+      "prevHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "arweaveBlobId": null,
+      "delegate": "0x8db69f820004eb12a01c7ede5e269e5561202512"
+    },
+    {
+      "step": "event1",
+      "txHash": "0x81d4f6cbae65445974157382f8040d43785e47a3ed092332af6a83c41eadc652",
+      "prevHash": "647bca002532e1d2710e8c61e30eb83129294a213beb9d0107a8f3740b2580dc",
+      "arweaveBlobId": "Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU",
+      "delegate": "0xab6cb77a629b56f5d9efd131404ebf692d4a7371"
+    },
+    {
+      "step": "event2",
+      "txHash": "0xf5d1acd1ada1f113830ea236280b602d86580b5cb18f8c69098e732cf6dab97c",
+      "prevHash": "81d4f6cbae65445974157382f8040d43785e47a3ed092332af6a83c41eadc652",
+      "arweaveBlobId": "XhNLpcCR5WvlxCa5IgKQYBJy2FHX3YSm6MOZnvECD78",
+      "delegate": "0xbf411ced6f35c8125ba6b146615276b43ebaaa91"
+    },
+    {
+      "step": "event3",
+      "txHash": "0xe8f94f3b626cf0071eebdf2685d7990af6aefe423550cad1b99bdc525ca8ad41",
+      "prevHash": "f5d1acd1ada1f113830ea236280b602d86580b5cb18f8c69098e732cf6dab97c",
+      "arweaveBlobId": "rpCsFRLH-Ocbi0lflgfZaVPc0sE_mtxiQXPrYLDsrhU",
+      "delegate": "0x23439a839f0b6710e0dee4c4a9788b06d0e72a8a"
+    },
+    {
+      "step": "event4",
+      "txHash": "0x9acf7a7c0e26c5eda439b8f4c78a08429764644452e8f2e1e7ead733cdeee6a0",
+      "prevHash": "e8f94f3b626cf0071eebdf2685d7990af6aefe423550cad1b99bdc525ca8ad41",
+      "arweaveBlobId": "DO9EMjJC8G_9g0CfDfyqko0ODQ4IAiO0QgtpabZ0580",
+      "delegate": "0xa54df49497fff3e331ed4c5fe6e6d64be01fe606"
+    },
+    {
+      "step": "event5",
+      "txHash": "0xdd6c1cad1b8bb603f45f1209d67b39ecfc560e2e5482296cb142bc87efc60240",
+      "prevHash": "9acf7a7c0e26c5eda439b8f4c78a08429764644452e8f2e1e7ead733cdeee6a0",
+      "arweaveBlobId": "JhIZvFI-og1p1Ux9rYEDavfE_5tqiSkSVKxQ0spb_o8",
+      "delegate": "0x83abb8781f4535ca1820bd2fa9fb95059c0c02cf"
+    },
+    {
+      "step": "event6",
+      "txHash": "0xbb65b7600091790c123d42f1d2b613ea4b2b091102c3866384014e152f8f391a",
+      "prevHash": "dd6c1cad1b8bb603f45f1209d67b39ecfc560e2e5482296cb142bc87efc60240",
+      "arweaveBlobId": "dj-IWkTn2z9zsSs0id_nS1_Um3NiM2yFiqB5Tjsnqoc",
+      "delegate": "0x83abb8781f4535ca1820bd2fa9fb95059c0c02cf"
+    }
+  ],
+  "arweaveBlobs": [
+    { "step": "event1", "blobId": "Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU", "supportsFile": "event1-supports.json" },
+    { "step": "event2", "blobId": "XhNLpcCR5WvlxCa5IgKQYBJy2FHX3YSm6MOZnvECD78", "supportsFile": "event2-supports.json" },
+    { "step": "event3", "blobId": "rpCsFRLH-Ocbi0lflgfZaVPc0sE_mtxiQXPrYLDsrhU", "supportsFile": "event3-supports.json" },
+    { "step": "event4", "blobId": "DO9EMjJC8G_9g0CfDfyqko0ODQ4IAiO0QgtpabZ0580", "supportsFile": "event4-supports.json" },
+    { "step": "event5", "blobId": "JhIZvFI-og1p1Ux9rYEDavfE_5tqiSkSVKxQ0spb_o8", "supportsFile": "event5-supports.json" },
+    { "step": "event6", "blobId": "dj-IWkTn2z9zsSs0id_nS1_Um3NiM2yFiqB5Tjsnqoc", "supportsFile": "event6-supports.json" }
+  ]
+}

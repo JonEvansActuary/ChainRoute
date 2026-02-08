@@ -56,6 +56,26 @@ function buildPayloadHex(payload) {
   return buildPayload(payload).toString('hex');
 }
 
+const PAYLOAD_LEN = 32 + 32 + 43 + 20;
+
+/**
+ * Decode 127-byte ChainRoute payload (e.g. from Polygon tx data) into components.
+ * @param {Buffer|string} data - 127 bytes or hex string (with or without 0x)
+ * @returns {{ genesisHash: string, previousPolygonHash: string, arweaveId: string, delegate: string }}
+ */
+function decodePayload(data) {
+  const buf = Buffer.isBuffer(data) ? data : Buffer.from(data.replace(/^0x/i, ''), 'hex');
+  if (buf.length !== PAYLOAD_LEN) {
+    throw new Error(`Payload must be ${PAYLOAD_LEN} bytes, got ${buf.length}`);
+  }
+  const genesisHash = buf.slice(0, 32).toString('hex');
+  const previousPolygonHash = buf.slice(32, 64).toString('hex');
+  const arweaveIdBuf = buf.slice(64, 107);
+  const arweaveId = arweaveIdBuf.every((b) => b === 0) ? '' : arweaveIdBuf.toString('utf8');
+  const delegate = '0x' + buf.slice(107, 127).toString('hex');
+  return { genesisHash, previousPolygonHash, arweaveId, delegate };
+}
+
 // CLI
 if (require.main === module) {
   const fs = require('fs');
@@ -81,4 +101,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { buildPayload, buildPayloadHex };
+module.exports = { buildPayload, buildPayloadHex, decodePayload, PAYLOAD_LEN };

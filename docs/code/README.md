@@ -8,8 +8,10 @@ Runnable JavaScript helpers for the [ChainRoute Protocol](../../protocol.md). Fu
 
 | File | Description |
 |------|-------------|
-| [build-polygon-payload.js](./build-polygon-payload.js) | Build 127-byte Polygon tx `data` from JSON (genesisHash, previousPolygonHash, arweaveId as 43-char string or null/empty/0 for genesis, delegate). |
+| [build-polygon-payload.js](./build-polygon-payload.js) | Build 127-byte Polygon tx `data` from JSON (genesisHash, previousPolygonHash, arweaveId as 43-char string or null/empty/0 for genesis, delegate). Exports `decodePayload(data)` for the reverse. |
 | [validate-arweave-blob.js](./validate-arweave-blob.js) | Validate provenance blob (genesis, eventType, timestamp, summary, supports). |
+| [verify-chain.js](./verify-chain.js) | **Verify a full chain**: given a [chain-manifest.json](../examples/HypotheticalPainting/chain-manifest.json), checks each Polygon anchor (genesis/prev/blob ID/delegate) and each Arweave blob (genesis + support IDs). `node verify-chain.js path/to/chain-manifest.json [--rpc url] [--arweave-gateway url]` |
+| [verify-support-tags.js](./verify-support-tags.js) | **Verify support-file genesis tags**: checks that every Arweave support tx in the manifest’s supports files has the `ChainRoute-Genesis` tag set to the chain genesis hash (via Arweave GraphQL). `node verify-support-tags.js path/to/chain-manifest.json [--gateway url]` |
 
 ## Scripts (require `npm install`)
 
