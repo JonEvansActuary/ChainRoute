@@ -6,12 +6,12 @@ Hypothetical provenance sequence for a **rare fine art painting** (valued ~$8–
 
 | Stage | Outline (HypPaintOutline.txt) | Main provenance event | Supporting files |
 |-------|-------------------------------|------------------------|------------------|
-| 1 | Authentication | [1-authentication.json](./1-authentication.json) (certification) | [supports/](./supports/): UV_Analysis_Picasso_Hypothetical.jpg, Spectral_Analysis_Report_v1.pdf, Notary_Seal_Paris.jpg, ArtSecure_Cert_12345.pdf |
-| 2 | Secure Transport | [2-secure-transport.json](./2-secure-transport.json) (transfer) | Crate_Photo_Paris.jpg, Flight_Manifest_AF034.pdf, Insurance_Policy_8M.pdf, Customs_Clearance_JFK.jpg |
-| 3 | Auction Drop-Off | [3-auction-dropoff.json](./3-auction-dropoff.json) (transfer) | DropOff_Photo_Manhattan.jpg, Condition_Report_NY.pdf, Receipt_AuctionHouse.pdf, Security_Log_Entry.txt |
-| 4 | Live Bidding Event | [4-live-bidding.json](./4-live-bidding.json) (transfer) | Bidding_Event_Photo.jpg, Sale_Transcript.pdf, Transaction_Receipt_12M.pdf, Buyer_Agreement_Redacted.pdf |
-| 5 | Secure Handover | [5-secure-handover.json](./5-secure-handover.json) (transfer) | Handover_Photo_London.jpg, Transfer_Documents.pdf, Jet_Manifest.pdf, Vault_Entry_Log.txt |
-| 6 | Long-Term Storage | [6-long-term-storage.json](./6-long-term-storage.json) (certification) | Storage_Photo_Vault.jpg, Climate_Control_Report.pdf, Access_Log_Initial.txt, Insurance_Update_PostSale.pdf |
+| 1 | Authentication | [1-authentication.json](./1-authentication.json) (certification) | [supports/](./supports/): UV_Analysis_Picasso_Hypothetical.png, Spectral_Analysis_Report_v1.pdf, Notary_Seal_Paris.png, ArtSecure_Cert_12345.pdf |
+| 2 | Secure Transport | [2-secure-transport.json](./2-secure-transport.json) (transfer) | Crate_Photo_Paris.png, Flight_Manifest_AF034.pdf, Insurance_Policy_8M.pdf, Customs_Clearance_JFK.png |
+| 3 | Auction Drop-Off | [3-auction-dropoff.json](./3-auction-dropoff.json) (transfer) | DropOff_Photo_Manhattan.png, Condition_Report_NY.pdf, Receipt_AuctionHouse.pdf, Security_Log_Entry.txt |
+| 4 | Live Bidding Event | [4-live-bidding.json](./4-live-bidding.json) (transfer) | Bidding_Event_Photo.png, Sale_Transcript.pdf, Transaction_Receipt_12M.pdf, Buyer_Agreement_Redacted.pdf |
+| 5 | Secure Handover | [5-secure-handover.json](./5-secure-handover.json) (transfer) | Handover_Photo_London.png, Transfer_Documents.pdf, Jet_Manifest.pdf, Vault_Entry_Log.txt |
+| 6 | Long-Term Storage | [6-long-term-storage.json](./6-long-term-storage.json) (certification) | Storage_Photo_Vault.png, Climate_Control_Report.pdf, Access_Log_Initial.txt, Insurance_Update_PostSale.pdf |
 
 ## Event JSON (placeholders)
 

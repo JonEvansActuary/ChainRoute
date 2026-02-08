@@ -1,9 +1,0 @@
-ChainRoute mainnet test – hypothetical certificate
-
-Item: Test Artifact #1
-Certifier: ChainRoute Test Suite
-Certification: Hypothetical provenance test – not a real certificate
-Date: 2026-01-28
-Standard: ChainRoute Provenance Protocol v0.1
-
-This file is for protocol testing only. No legal or commercial value.
