@@ -48,6 +48,12 @@ async function main() {
     genesis = args[genesisIdx + 1];
     args.splice(genesisIdx, 2);
   }
+  const hostIdx = args.indexOf('--host');
+  const opts = {};
+  if (hostIdx !== -1 && args[hostIdx + 1]) {
+    opts.host = args[hostIdx + 1];
+    args.splice(hostIdx, 2);
+  }
   const [filePath] = args;
 
   if (!filePath) {
@@ -60,7 +66,7 @@ async function main() {
   }
 
   try {
-    const txId = await postSupportToArweave(filePath, keyPath, { genesis });
+    const txId = await postSupportToArweave(filePath, keyPath, { genesis, ...opts });
     console.log(txId);
   } catch (e) {
     console.error('Post to Arweave failed:', e.message);

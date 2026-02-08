@@ -8,20 +8,41 @@
 
 const { buildPayload } = require('./build-polygon-payload.js');
 
+/** Ledger Live: account 0 = 44'/60'/0'/0/0, account 1 = 44'/60'/1'/0/0, etc. */
 const DEFAULT_PATH = "44'/60'/0'/0/0";
 const POLYGON_CHAIN_ID = 137;
 const GAS_LIMIT = 100000;
 
 /**
+ * Resolve path to Ledger Live derivation. Ledger Live uses account index in the 4th component
+ * (44'/60'/n'/0/0), not the address index in the 5th (44'/60'/0'/0/n). So "account 1" is
+ * 44'/60'/1'/0/0, not 44'/60'/0'/0/1. Converts runbook-style 44'/60'/0'/0/n → 44'/60'/n'/0/0
+ * so signer 0..6 match keys/EVMaddresses.txt.
+ * @param {string} path - e.g. "44'/60'/0'/0/0", "44'/60'/0'/0/1", or "44'/60'/1'/0/0"
+ * @returns {string} Ledger Live path 44'/60'/n'/0/0
+ */
+function resolveLedgerLivePath(path) {
+  const p = String(path).trim();
+  const match = p.match(/^44'\/60'\/0'\/(\d+)\/(\d+)$/);
+  if (match) {
+    const accountIndex = match[2];
+    return `44'/60'/${accountIndex}'/0/0`;
+  }
+  return p;
+}
+
+/**
  * Get the signer address from the Ledger for the given BIP32 path.
+ * Path is resolved to Ledger Live format (44'/60'/n'/0/0) so account 0, 1, ... match EVMaddresses.txt.
  * @param {object} eth - Ledger Eth instance (from @ledgerhq/hw-app-eth)
- * @param {string} path - BIP32 path (e.g. "44'/60'/0'/0/0")
+ * @param {string} path - BIP32 path (e.g. "44'/60'/0'/0/0" or "44'/60'/0'/0/1")
  * @param {string} [chainId] - Optional chain ID for Stax display
  * @returns {Promise<string>} Ethereum address (0x-prefixed)
  */
 async function getLedgerAddress(eth, path = DEFAULT_PATH, chainId) {
+  const resolved = resolveLedgerLivePath(path);
   const opts = chainId ? { chainId: String(chainId) } : undefined;
-  const result = await eth.getAddress(path, false, false, opts?.chainId);
+  const result = await eth.getAddress(resolved, false, false, opts?.chainId);
   return result.address;
 }
 
@@ -40,6 +61,7 @@ async function signAndSendWithLedger(params, path = DEFAULT_PATH, opts = {}) {
   const { createFeeMarket1559Tx } = require('@ethereumjs/tx');
   const { bytesToHex } = require('@ethereumjs/util');
 
+  const resolvedPath = resolveLedgerLivePath(path);
   const rpcUrl = opts.rpcUrl || 'https://polygon-rpc.com';
   const chainId = opts.chainId ?? POLYGON_CHAIN_ID;
   const provider = new ethers.JsonRpcProvider(rpcUrl);
@@ -83,7 +105,7 @@ async function signAndSendWithLedger(params, path = DEFAULT_PATH, opts = {}) {
     const unsignedSerialized = tx.getMessageToSign();
     const rawTxHex = bytesToHex(unsignedSerialized).slice(2);
 
-    const { v, r, s } = await eth.signTransaction(path, rawTxHex, null);
+    const { v, r, s } = await eth.signTransaction(resolvedPath, rawTxHex, null);
 
     const signedTx = tx.addSignature(
       BigInt('0x' + v),
@@ -104,5 +126,6 @@ async function signAndSendWithLedger(params, path = DEFAULT_PATH, opts = {}) {
 module.exports = {
   getLedgerAddress,
   signAndSendWithLedger,
+  resolveLedgerLivePath,
   DEFAULT_PATH,
 };

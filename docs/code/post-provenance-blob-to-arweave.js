@@ -76,6 +76,12 @@ async function main() {
     supportsPath = args[supportsIdx + 1];
     args.splice(supportsIdx, 2);
   }
+  const hostIdx = args.indexOf('--host');
+  const arweaveOpts = {};
+  if (hostIdx !== -1 && args[hostIdx + 1]) {
+    arweaveOpts.host = args[hostIdx + 1];
+    args.splice(hostIdx, 2);
+  }
   const [genesisHash, eventPath] = args;
 
   if (!genesisHash || !eventPath) {
@@ -125,7 +131,7 @@ async function main() {
   }
 
   try {
-    const txId = await postProvenanceBlobToArweave(blob, keyPath);
+    const txId = await postProvenanceBlobToArweave(blob, keyPath, arweaveOpts);
     console.log(txId);
   } catch (e) {
     console.error('Post to Arweave failed:', e.message);

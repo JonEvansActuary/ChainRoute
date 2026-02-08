@@ -66,7 +66,7 @@ Output: `{ "polygonTxHash": "...", "arweaveBlobTxId": "..." }`. Use the blob ID 
 ## Env / keys
 
 - **Arweave**: JWK key file. Set `ARWEAVE_KEY_PATH` or pass `--key` (post-support, post-provenance-blob) or `--arweave-key` (post-event).
-- **Polygon**: Private key (hex) or Ledger. Set `POLYGON_PRIVATE_KEY` or pass `--key` (post-polygon-anchor) or `--polygon-key` (post-event). Use `--key ledger` / `--polygon-key ledger` to sign with a **Ledger Stax** (or other Ledger device): connect via USB, open the Ethereum app, and enable **Blind signing** or **Contract data** in app settings for data-only txs. Optional `--ledger-path` / `POLYGON_LEDGER_PATH` (default `44'/60'/0'/0/0`).
+- **Polygon**: Private key (hex) or Ledger. Set `POLYGON_PRIVATE_KEY` or pass `--key` (post-polygon-anchor) or `--polygon-key` (post-event). Use `--key ledger` / `--polygon-key ledger` to sign with a **Ledger Stax** (or other Ledger device): connect via USB, open the Ethereum app, and enable **Blind signing** or **Contract data** in app settings for data-only txs. Optional `--ledger-path` / `POLYGON_LEDGER_PATH` (default `44'/60'/0'/0/0`). Path `44'/60'/0'/0/n` is resolved to Ledger Live account path `44'/60'/n'/0/0` so signer 0..6 match `keys/EVMaddresses.txt`. Run `node show-ledger-address.js --ledger-path "44'/60'/0'/0/0"` to confirm which address a path gives.
 
 For examples with full payload JSONs and a signer file, see [HypotheticalPainting](../examples/HypotheticalPainting/). A mainnet test plan may be added under `docs/examples/` for live Polygon + Arweave testing.
 
