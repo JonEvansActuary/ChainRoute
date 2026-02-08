@@ -71,14 +71,12 @@ Compared to protocols like VeChain (enterprise-heavy with tokens) or OriginTrail
    }
    ```
 3. **Verify a Chain**: Use Polygonscan API to query txs by address, filter by genesis, fetch Arweave via gateway (arweave.net/tx/ID).
-4. **Tools**: Integrate with Ledger for signing (Ed25519 for Arweave, ECDSA for Polygon via BIP39 seeds).
-
-Reference implementations coming soon in `/reference-impl/`.
+4. **Tools**: Example scripts in [docs/code](./docs/code) (build payload, validate blob, post to Arweave/Polygon). Polygon signing supports **Ledger Stax** (or other Ledger devices) via `--key ledger`. Arweave uses JWK key files; Polygon can use a hex key file or Ledger. Reference libraries planned in `/reference-impl/`.
 
 ## Status
 
 - Specification: v0.1 (Draft as of January 2026)
-- Reference Code: Planned (JS/Python libraries for posting/verifying)
+- Example code: [docs/code](./docs/code) (Node.js scripts for build/validate/post; Polygon supports Ledger Stax). Reference libraries (JS/Python) planned in `/reference-impl/`.
 - Community: Open for feedback via issues/PRs.
 
 ## Contributing

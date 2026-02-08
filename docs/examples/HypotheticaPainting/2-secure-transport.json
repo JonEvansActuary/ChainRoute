@@ -1,0 +1,23 @@
+{
+  "genesis": "REPLACE_WITH_GENESIS_HASH_64_HEX",
+  "eventType": "transfer",
+  "timestamp": "2026-02-20T18:00:00Z",
+  "summary": {
+    "from": "Paris",
+    "to": "New York",
+    "method": "Secure crate via Air France flight AF034",
+    "insurance": "$8 million coverage",
+    "tracking": "Shipment ID TRK-789012",
+    "customs": "Fees of $10,000 cleared at JFK",
+    "date": "2026-02-20",
+    "gpsDeparture": "48.860294 N, 2.338629 E",
+    "gpsArrival": "40.641766 N, -73.780968 W",
+    "description": "Stage 2: Secure transport Paris to New York – hypothetical."
+  },
+  "supports": [
+    { "id": "REPLACE_ARWEAVE_ID_CRATE_PHOTO", "label": "Crate_Photo_Paris" },
+    { "id": "REPLACE_ARWEAVE_ID_FLIGHT_MANIFEST", "label": "Flight_Manifest_AF034" },
+    { "id": "REPLACE_ARWEAVE_ID_INSURANCE_8M", "label": "Insurance_Policy_8M" },
+    { "id": "REPLACE_ARWEAVE_ID_CUSTOMS_JFK", "label": "Customs_Clearance_JFK" }
+  ]
+}

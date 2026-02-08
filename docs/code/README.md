@@ -2,7 +2,7 @@
 
 Runnable JavaScript helpers for the [ChainRoute Protocol](../../protocol.md). Full flow: (1) post **supporting files** to Arweave and get their IDs, (2) build and post the **provenance event blob** (genesis + event metadata + list of those support IDs) to Arweave and get its ID, (3) post the **Polygon anchor** tx with that blob ID in the 127-byte payload.
 
-**Node 18+** required for scripts that use npm deps. Run from `docs/code/` after `npm install`, or use paths from repo root (e.g. `node docs/code/build-polygon-payload.js docs/examples/Polygon/genesis-payload.json`). NPM scripts: `npm run post-support`, `npm run post-blob`, `npm run post-anchor`, `npm run post-event`.
+**Node 18+** required for scripts that use npm deps. Run from `docs/code/` after `npm install` (installs ethers, arweave, Ledger + EthereumJS deps for Polygon signing). Use paths from repo root (e.g. `node docs/code/build-polygon-payload.js docs/examples/Polygon/genesis-payload.json`). NPM scripts: `npm run post-support`, `npm run post-blob`, `npm run post-anchor`, `npm run post-event`.
 
 ## Scripts (no npm deps)
 
@@ -17,10 +17,10 @@ Runnable JavaScript helpers for the [ChainRoute Protocol](../../protocol.md). Fu
 |------|-------------|
 | [post-support-to-arweave.js](./post-support-to-arweave.js) | Post a **supporting file** (image, PDF, etc.) to Arweave. Optional `--genesis` tag. Returns Arweave tx ID. **Requires** `arweave`. |
 | [post-provenance-blob-to-arweave.js](./post-provenance-blob-to-arweave.js) | Build the **provenance event blob** (genesis + eventType + timestamp + summary + list of support IDs), post to Arweave. Returns blob’s Arweave tx ID. Supports from `--supports` file or from event file’s `supports` key. **Requires** `arweave`. |
-| [post-polygon-anchor.js](./post-polygon-anchor.js) | Build 127-byte payload (genesis, prev hash, **full 43-char blob’s Arweave ID**, delegate), sign and send Polygon data-only tx. Returns Polygon tx hash. **Requires** `ethers`. |
-| [post-event.js](./post-event.js) | **Orchestrator**: upload support files → post provenance blob → post Polygon anchor. Returns `{ polygonTxHash, arweaveBlobTxId }`. **Requires** `arweave` and `ethers`. |
+| [post-polygon-anchor.js](./post-polygon-anchor.js) | Build 127-byte payload (genesis, prev hash, **full 43-char blob’s Arweave ID**, delegate), sign and send Polygon data-only tx. Returns Polygon tx hash. **Requires** `ethers`. Supports **Ledger** (e.g. Stax): use `--key ledger` [and optional `--ledger-path`]. |
+| [post-event.js](./post-event.js) | **Orchestrator**: upload support files → post provenance blob → post Polygon anchor. Returns `{ polygonTxHash, arweaveBlobTxId }`. **Requires** `arweave` and `ethers`. Use `--polygon-key ledger` for Ledger signing. |
 
-Shared module (no CLI): [arweave-post.js](./arweave-post.js) — `postDataToArweave(data, keyPath, tags, opts)` used by the Arweave-posting scripts.
+Shared modules (no CLI): [arweave-post.js](./arweave-post.js) — `postDataToArweave(...)` for Arweave; [polygon-ledger-sign.js](./polygon-ledger-sign.js) — `signAndSendWithLedger(...)` for Ledger Stax/device (EIP-1559).
 
 ## Full flow (step by step)
 
@@ -44,6 +44,7 @@ node post-provenance-blob-to-arweave.js <genesis-hash> event.json --supports sup
 
 # 4. Post Polygon anchor with that blob ID (43-char string stored as 43 bytes in payload)
 node post-polygon-anchor.js <genesis-hash> <prev-polygon-hash> <arweave-blob-tx-id> <delegate-address> --key path/to/polygon-key-hex.txt
+# Or with Ledger Stax/device: --key ledger [--ledger-path "44'/60'/0'/0/0"]
 # → Polygon tx hash (use as prev hash for next event)
 ```
 
@@ -51,6 +52,7 @@ node post-polygon-anchor.js <genesis-hash> <prev-polygon-hash> <arweave-blob-tx-
 
 ```bash
 node post-event.js <genesis-hash> <prev-polygon-hash> <delegate-address> event.json photo.jpg photo invoice.pdf invoice --arweave-key path/to/arweave-key.json --polygon-key path/to/polygon-key-hex.txt
+# Or with Ledger for Polygon: --polygon-key ledger [--ledger-path "44'/60'/0'/0/0"]
 # Or with a manifest: node post-event.js <genesis> <prev> <delegate> event.json --supports manifest.json
 # manifest.json: [ { "path": "photo.jpg", "label": "photo" }, { "path": "invoice.pdf", "label": "invoice" } ]
 ```
@@ -60,6 +62,8 @@ Output: `{ "polygonTxHash": "...", "arweaveBlobTxId": "..." }`. Use the blob ID 
 ## Env / keys
 
 - **Arweave**: JWK key file. Set `ARWEAVE_KEY_PATH` or pass `--key` (post-support, post-provenance-blob) or `--arweave-key` (post-event).
-- **Polygon**: Private key (hex). Set `POLYGON_PRIVATE_KEY` or pass `--key` (post-polygon-anchor) or `--polygon-key` (post-event, path to file containing hex).
+- **Polygon**: Private key (hex) or Ledger. Set `POLYGON_PRIVATE_KEY` or pass `--key` (post-polygon-anchor) or `--polygon-key` (post-event). Use `--key ledger` / `--polygon-key ledger` to sign with a **Ledger Stax** (or other Ledger device): connect via USB, open the Ethereum app, and enable **Blind signing** or **Contract data** in app settings for data-only txs. Optional `--ledger-path` / `POLYGON_LEDGER_PATH` (default `44'/60'/0'/0/0`).
+
+For a **mainnet test plan** (hypothetical provenance data, Polygon + Arweave live), see [examples/test1/mainnet-test-plan.md](../examples/test1/mainnet-test-plan.md).
 
 You can also `require()` the modules and call the exported functions from your own code.

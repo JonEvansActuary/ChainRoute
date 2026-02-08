@@ -1,0 +1,22 @@
+{
+  "genesis": "REPLACE_WITH_GENESIS_HASH_64_HEX",
+  "eventType": "certification",
+  "timestamp": "2026-02-14T12:00:00Z",
+  "summary": {
+    "item": "Hypothetical Picasso painting (fine art)",
+    "location": "Galerie Lumière, Rue de Rivoli, Paris",
+    "gps": "48.860294 N, 2.338629 E",
+    "expert": "Dr. Elise Moreau",
+    "provenance": "Last owned by Swiss collector in 1982",
+    "transaction": "Digital certificate issued for €50,000",
+    "date": "2026-02-14",
+    "findings": "Authentic pigments, no modern dyes",
+    "description": "Stage 1: Authentication – hypothetical provenance example."
+  },
+  "supports": [
+    { "id": "REPLACE_ARWEAVE_ID_UV_ANALYSIS", "label": "UV_Analysis_Picasso_Hypothetical" },
+    { "id": "REPLACE_ARWEAVE_ID_SPECTRAL_REPORT", "label": "Spectral_Analysis_Report_v1" },
+    { "id": "REPLACE_ARWEAVE_ID_NOTARY_SEAL", "label": "Notary_Seal_Paris" },
+    { "id": "REPLACE_ARWEAVE_ID_ARTSECURE_CERT", "label": "ArtSecure_Cert_12345" }
+  ]
+}

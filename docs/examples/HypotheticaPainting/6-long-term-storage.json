@@ -1,0 +1,21 @@
+{
+  "genesis": "REPLACE_WITH_GENESIS_HASH_64_HEX",
+  "eventType": "certification",
+  "timestamp": "2026-03-06T00:00:00Z",
+  "summary": {
+    "location": "Climate-controlled vault, London",
+    "gps": "51.517500 N, -0.109722 W",
+    "conditions": "20°C, 50% humidity, 24/7 monitoring",
+    "access": "Restricted, biometric logs",
+    "date": "Ongoing from 2026-03-06",
+    "maintenance": "Annual inspections planned",
+    "value": "Insured at $12 million",
+    "description": "Stage 6: Long-term storage – hypothetical."
+  },
+  "supports": [
+    { "id": "REPLACE_ARWEAVE_ID_STORAGE_PHOTO", "label": "Storage_Photo_Vault" },
+    { "id": "REPLACE_ARWEAVE_ID_CLIMATE_REPORT", "label": "Climate_Control_Report" },
+    { "id": "REPLACE_ARWEAVE_ID_ACCESS_LOG", "label": "Access_Log_Initial" },
+    { "id": "REPLACE_ARWEAVE_ID_INSURANCE_UPDATE", "label": "Insurance_Update_PostSale" }
+  ]
+}

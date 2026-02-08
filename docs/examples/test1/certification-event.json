@@ -1,0 +1,15 @@
+{
+  "genesis": "REPLACE_WITH_GENESIS_HASH_64_HEX",
+  "eventType": "certification",
+  "timestamp": "2026-01-28T09:00:00Z",
+  "summary": {
+    "item": "Test Artifact #1",
+    "certifier": "ChainRoute Test Suite",
+    "certification": "Hypothetical – protocol test only",
+    "description": "ChainRoute mainnet test – hypothetical certification (3 of 3).",
+    "standard": "ChainRoute Provenance Protocol v0.1"
+  },
+  "supports": [
+    { "id": "REPLACE_WITH_ARWEAVE_TX_ID_CERTIFICATE", "label": "certificate" }
+  ]
+}

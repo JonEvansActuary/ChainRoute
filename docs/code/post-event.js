@@ -5,14 +5,14 @@
  * (3) post the Polygon anchor tx with the blob's Arweave ID. Outputs Polygon tx hash and
  * Arweave blob ID.
  *
- * Requires: npm install arweave ethers
- * ARWEAVE_KEY_PATH, POLYGON_PRIVATE_KEY (or --arweave-key, --polygon-key)
+ * Requires: npm install arweave ethers (and Ledger deps for --polygon-key ledger)
+ * ARWEAVE_KEY_PATH, POLYGON_PRIVATE_KEY (or --arweave-key, --polygon-key path|ledger)
  *
  * Usage:
- *   node post-event.js <genesis-hash> <prev-polygon-hash> <delegate-address> <event-file.json> <support-file-1> [label1] [<support-file-2> [label2] ...] [--arweave-key path] [--polygon-key path]
+ *   node post-event.js <genesis-hash> <prev-polygon-hash> <delegate-address> <event-file.json> <support-file-1> [label1] ... [--arweave-key path] [--polygon-key path|ledger] [--ledger-path path]
  *
  * Or with a supports manifest (no inline labels):
- *   node post-event.js <genesis-hash> <prev-polygon-hash> <delegate-address> <event-file.json> --supports manifest.json [--arweave-key path] [--polygon-key path]
+ *   node post-event.js <genesis-hash> <prev-polygon-hash> <delegate-address> <event-file.json> --supports manifest.json [--arweave-key path] [--polygon-key path|ledger] [--ledger-path path]
  *
  * manifest.json: [ { "path": "photo.jpg", "label": "photo" }, { "path": "invoice.pdf", "label": "invoice" } ]
  */
@@ -27,6 +27,7 @@ async function main() {
   const args = process.argv.slice(2);
   let arweaveKeyPath = process.env.ARWEAVE_KEY_PATH;
   let polygonKeyPath = process.env.POLYGON_PRIVATE_KEY;
+  let ledgerPath = process.env.POLYGON_LEDGER_PATH || "44'/60'/0'/0/0";
   let supportsManifestPath;
 
   const arweaveKeyIdx = args.indexOf('--arweave-key');
@@ -37,13 +38,22 @@ async function main() {
   const polygonKeyIdx = args.indexOf('--polygon-key');
   if (polygonKeyIdx !== -1 && args[polygonKeyIdx + 1]) {
     const v = args[polygonKeyIdx + 1];
-    try {
-      polygonKeyPath = fs.readFileSync(path.resolve(v), 'utf8').trim();
-    } catch (e) {
-      console.error('Failed to read polygon key file:', e.message);
-      process.exit(1);
+    if (v.toLowerCase() === 'ledger') {
+      polygonKeyPath = 'ledger';
+    } else {
+      try {
+        polygonKeyPath = fs.readFileSync(path.resolve(v), 'utf8').trim();
+      } catch (e) {
+        console.error('Failed to read polygon key file:', e.message);
+        process.exit(1);
+      }
     }
     args.splice(polygonKeyIdx, 2);
+  }
+  const ledgerPathIdx = args.indexOf('--ledger-path');
+  if (ledgerPathIdx !== -1 && args[ledgerPathIdx + 1]) {
+    ledgerPath = args[ledgerPathIdx + 1];
+    args.splice(ledgerPathIdx, 2);
   }
   const supportsIdx = args.indexOf('--supports');
   if (supportsIdx !== -1 && args[supportsIdx + 1]) {
@@ -56,7 +66,7 @@ async function main() {
   if (!genesisHash || !prevHash || !delegate || !eventPath) {
     console.error('Usage: node post-event.js <genesis-hash> <prev-polygon-hash> <delegate-address> <event-file.json> [support-file-1 [label1] support-file-2 [label2] ...]');
     console.error('   Or: node post-event.js <genesis-hash> <prev-polygon-hash> <delegate-address> <event-file.json> --supports manifest.json');
-    console.error('   Options: --arweave-key path, --polygon-key path');
+    console.error('   Options: --arweave-key path, --polygon-key path|ledger, --ledger-path path');
     process.exit(1);
   }
   if (!arweaveKeyPath || !polygonKeyPath) {
@@ -104,11 +114,21 @@ async function main() {
   const blob = buildProvenanceBlob(genesisHash, event, supports);
   const arweaveBlobTxId = await postProvenanceBlobToArweave(blob, arweaveKeyPath);
 
-  const polygonTxHash = await postPolygonAnchor(
-    { genesisHash, previousPolygonHash: prevHash, arweaveBlobTxId, delegate },
-    polygonKeyPath,
-    {}
-  );
+  let polygonTxHash;
+  if (polygonKeyPath.trim().toLowerCase() === 'ledger') {
+    const { signAndSendWithLedger } = require('./polygon-ledger-sign.js');
+    polygonTxHash = await signAndSendWithLedger(
+      { genesisHash, previousPolygonHash: prevHash, arweaveBlobTxId, delegate },
+      ledgerPath,
+      {}
+    );
+  } else {
+    polygonTxHash = await postPolygonAnchor(
+      { genesisHash, previousPolygonHash: prevHash, arweaveBlobTxId, delegate },
+      polygonKeyPath,
+      {}
+    );
+  }
 
   console.log(JSON.stringify({ polygonTxHash, arweaveBlobTxId }, null, 2));
 }

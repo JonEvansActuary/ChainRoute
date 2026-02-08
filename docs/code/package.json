@@ -9,6 +9,11 @@
     "post-event": "node post-event.js"
   },
   "dependencies": {
+    "@ethereumjs/common": "^10.1.0",
+    "@ethereumjs/tx": "^10.1.0",
+    "@ethereumjs/util": "^10.1.0",
+    "@ledgerhq/hw-app-eth": "^6.45.0",
+    "@ledgerhq/hw-transport-node-hid": "^6.29.0",
     "arweave": "^1.15.0",
     "ethers": "^6.13.0"
   },
