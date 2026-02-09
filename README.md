@@ -13,7 +13,7 @@ ChainRoute addresses the need for tamper-proof provenance in a simple, cost-effe
 - **Lightweight Design**: No smart contracts; raw 127-byte Polygon data payloads; cheap, permanent Arweave storage.
 - **Open Uploads**: Anyone can post to Arweave; Polygon signatures make it official.
 - **Efficient Verification**: Start from any file/tx, extract genesis, scan Polygon for matches, fetch Arweave blobs.
-- **Resilience**: Polygon as index; Arweave for data; compatible with hardware wallets (e.g., Ledger via BIP39).
+- **Resilience**: Polygon as index; Arweave for data; compatible with hardware wallets (e.g., Ledger via BIP32/BIP44 derivation paths).
 
 ## Architecture
 
@@ -70,8 +70,8 @@ Compared to protocols like VeChain (enterprise-heavy with tokens) or OriginTrail
      await signer.sendTransaction({ data: '0x' + payload.toString('hex') });
    }
    ```
-3. **Verify a Chain**: Use Polygonscan API to query txs by address, filter by genesis, fetch Arweave via gateway (arweave.net/tx/ID).
-4. **Tools**: Example scripts in [docs/code](./docs/code) (build payload, validate blob, post to Arweave/Polygon). Polygon signing supports **Ledger Stax** (or other Ledger devices) via `--key ledger`. Arweave uses JWK key files; Polygon can use a hex key file or Ledger. Reference libraries planned in `/reference-impl/`.
+3. **Verify a Chain**: Use Polygonscan API to query txs by address, filter by genesis, fetch Arweave via gateway (arweave.net/tx/ID). The [docs/code](./docs/code) scripts include **verify-chain.js** (Polygon payloads + Arweave blob refs) and **verify-support-tags.js** (genesis tag on support files) for a manifest-based chain.
+4. **Tools**: Example scripts in [docs/code](./docs/code) (build payload, validate blob, post to Arweave/Polygon, verify chain). Polygon signing supports **Ledger Stax** (or other Ledger devices) via `--key ledger`. Arweave uses JWK key files; Polygon can use a hex key file or Ledger. Reference libraries planned in `/reference-impl/`.
 
 ## Status
 

@@ -1,0 +1,23 @@
+ChainRoute Protocol — 127-Byte Polygon Payload Layout
+======================================================
+Fixed 127 bytes, big-endian, no separators. Parse as raw concatenated bytes (no ABI).
+
+  Offset    Size    Field                  Genesis Tx              Event Tx (e.g. Event 1)
+  ------    ----    -----                  ----------              -----------------------
+  0–31      32      Genesis Hash           32 zero bytes           64-hex genesis tx hash (32 bytes)
+  32–63     32      Previous Polygon Hash  32 zero bytes           Previous event tx hash (32 bytes)
+  64–106    43      Arweave ID             43 zero bytes           43-char base64url tx ID (UTF-8)
+  107–126   20      Delegate Address       20-byte signer address  20-byte next signer (or same)
+
+  Total: 32 + 32 + 43 + 20 = 127 bytes
+
+  Genesis tx: does not contain a “genesis hash” in the payload because it creates the chain ID;
+  the hash of the genesis tx itself becomes the genesis hash used everywhere else (Arweave tags,
+  event payloads, support-file tags).
+
+  Arweave ID: always 43 bytes in the payload. For genesis (no blob) use 43 zeros so length is fixed.
+
+  Delegate: Ethereum-style 20-byte address (no 0x in payload; strip prefix before packing).
+
+  Example (hex) event payload idea:
+  <32-byte genesis hex><32-byte prev tx hex><43-byte UTF-8 arweave id><20-byte delegate hex>

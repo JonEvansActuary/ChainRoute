@@ -68,4 +68,4 @@ Before running: set **genesisHash** to your genesis Polygon tx hash (64 hex), **
    - Post the provenance blob (e.g. `post-provenance-blob-to-arweave.js`); record the 43-char Arweave blob ID.
    - In the matching `*-payload.json`, set `genesisHash`, `previousPolygonHash` (previous step’s Polygon tx hash), `arweaveId` (this event’s blob ID), and `delegate`; then build and post the Polygon anchor with `build-polygon-payload.js`.
 
-See [docs/code](../code/) for posting scripts and commands; a [mainnet test plan](../test1/mainnet-test-plan.md) may exist under `examples/test1/` for detailed verification and safety.
+See [docs/code](../code/) for posting scripts and commands. To verify a posted chain (Polygon payloads and Arweave blobs), use [verify-chain.js](../code/verify-chain.js) with [chain-manifest.json](./chain-manifest.json); to verify support-file genesis tags, use [verify-support-tags.js](../code/verify-support-tags.js). See [transaction-ids.md](./transaction-ids.md) for the verification section.

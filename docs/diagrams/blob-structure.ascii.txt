@@ -1,0 +1,40 @@
+ChainRoute Protocol — Arweave Data Structures
+==============================================
+
+  Main provenance blob (one per event, posted to Arweave as JSON)
+  ---------------------------------------------------------------
+  Required: genesis, eventType, timestamp, summary.
+  Optional: supports (array of { id, label }) — Arweave tx IDs of supporting files.
+
+  ┌─────────────────────────────────────────────────────────────┐
+  │  {                                                           │
+  │    "genesis": "<64 hex Polygon genesis tx hash>",            │
+  │    "eventType": "authentication" | "transfer" | ... ,        │
+  │    "timestamp": "2026-01-27T18:37:00Z",                      │
+  │    "summary": { "key": "value", ... },                        │
+  │    "supports": [                                             │
+  │      { "id": "<43-char Arweave tx ID>", "label": "photo" },  │
+  │      { "id": "<43-char Arweave tx ID>", "label": "invoice" } │
+  │    ]                                                         │
+  │  }                                                           │
+  └─────────────────────────────────────────────────────────────┘
+
+  The Polygon tx for this event stores this blob’s Arweave tx ID in the 43-byte field (64–106).
+  Validators fetch the blob by that ID and check genesis match; then fetch each support by id.
+
+
+  Supporting files (images, PDFs, etc.)
+  ------------------------------------
+  • Content: raw file (JPEG, PDF, …). Optionally prefix with 32-byte genesis hash for binary embedding.
+  • Arweave tagging (recommended): tag name = "ChainRoute-Genesis", value = 64-hex genesis hash.
+    This allows verification without parsing file content (see verify-support-tags.js).
+  • Script: post-support-to-arweave.js <file> --genesis <64-hex> tags the upload.
+
+
+  Relationship
+  ------------
+  Genesis hash ties everything together:
+  • Polygon genesis tx hash (64 hex) = chain ID.
+  • Every event Polygon payload includes it (except the genesis tx itself, which has zeros).
+  • Every main blob JSON has "genesis" field.
+  • Every support file should have ChainRoute-Genesis tag (or embedded hash) equal to that chain ID.

@@ -1,38 +1,47 @@
-ChainRoute Protocol — Chain / Tree Structure
-=============================================
-All nodes embed the genesis hash. Polygon = ordering & delegation; Arweave = storage.
+ChainRoute Protocol — Chain Structure
+======================================
+Linear chain: one genesis anchor, then events in order. Polygon = ordering & delegation; Arweave = storage.
+All event data and support files reference the same genesis hash (chain identity).
 
-    ┌─────────────────────────────────────┐
-    │   Genesis Polygon Tx (Root)          │
-    │   data: 0..0 | 0..0 | 0..0 | delegate│
-    │   → tx hash = genesis hash            │
-    └─────────────────┬───────────────────┘
-                      │
-        ┌─────────────┼─────────────┐
-        │             │             │
-        ▼             ▼             ▼
-   ┌─────────┐  ┌─────────┐  ┌─────────┐
-   │ Event 1  │  │ Event 2  │  │ Event N  │  ... (forward via delegates)
-   │ Polygon  │  │ Polygon  │  │ Polygon  │
-   │ Tx       │  │ Tx       │  │ Tx       │
-   └────┬─────┘  └────┬─────┘  └────┬─────┘
-        │             │             │
-        │ prev=0       │ prev=tx1    │ prev=tx(N-1)
-        │             │             │
-        ▼             ▼             ▼
-   ┌─────────┐  ┌─────────┐  ┌─────────┐
-   │ Arweave │  │ Arweave │  │ Arweave │
-   │ Main    │  │ Main    │  │ Main    │
-   │ Blob    │  │ Blob    │  │ Blob    │
-   │ (JSON)  │  │ (JSON)  │  │ (JSON)  │
-   └────┬─────┘  └────┬─────┘  └────┬─────┘
-        │             │             │
-        │ supports[]  │ supports[]  │ supports[]
-        ▼             ▼             ▼
-   ┌─────┐ ┌─────┐ ┌─────┐ ┌─────┐
-   │Support│Support│Support│Support│  (images, PDFs, etc.)
-   │ File 1│ │ File 2│ │ File 1│ │ File 2│
-   └─────┘ └─────┘ └─────┘ └─────┘
+    ┌─────────────────────────────────────────────────────────┐
+    │   Genesis Polygon Tx (root)                             │
+    │   payload: 32 zeros | 32 zeros | 43 zeros | delegate     │
+    │   (No genesis hash in payload—this tx creates it.)       │
+    │   → tx hash = genesis hash (64 hex) for the chain        │
+    └─────────────────────────┬───────────────────────────────┘
+                              │ prev = zeros (no prior tx)
+                              ▼
+    ┌─────────────────────────────────────────────────────────┐
+    │   Event 1 Polygon Tx                                     │
+    │   payload: genesisHash | prev=genesis | arweaveBlobId |   │
+    │            delegate (next signer)                        │
+    └─────────────────────────┬───────────────────────────────┘
+                              │ prev = Event 1 tx hash
+                              ▼
+    ┌─────────────────────────────────────────────────────────┐
+    │   Event 2 Polygon Tx   …  →  Event N                     │
+    │   (same payload shape; prev = previous event tx hash)     │
+    └─────────────────────────┬───────────────────────────────┘
+                              │
+         Each event tx points to one Arweave main blob (43-char ID in payload)
+                              │
+        ┌─────────────────────┼─────────────────────┐
+        ▼                     ▼                     ▼
+   ┌─────────┐          ┌─────────┐          ┌─────────┐
+   │ Arweave │          │ Arweave │          │ Arweave │
+   │ Main    │          │ Main    │          │ Main    │
+   │ Blob 1  │          │ Blob 2  │          │ Blob N  │
+   │ (JSON)  │          │ (JSON)  │          │ (JSON)  │
+   └────┬────┘          └────┬────┘          └────┬────┘
+        │ supports[]         │ supports[]        │ supports[]
+        ▼                    ▼                   ▼
+   ┌─────────┐          ┌─────────┐          ┌─────────┐
+   │Support  │          │Support  │          │Support  │
+   │ files   │          │ files   │          │ files   │
+   │(tag:    │          │(tag:    │          │(tag:    │
+   │ChainRoute│         │ChainRoute│         │ChainRoute│
+   │-Genesis)│          │-Genesis)│          │-Genesis)│
+   └─────────┘          └─────────┘          └─────────┘
 
 Backward traversal: follow "previous Polygon hash" in each tx.
 Forward: scan next delegate's txs filtered by genesis hash.

@@ -126,7 +126,7 @@ Implementations may maintain a **signer/event-operator file** (e.g. one row per 
 5. Check timestamps/signers for consistency.
 
 ## 5. Security Considerations
-- **Key Management**: Use hardware wallets (Ledger supports both chains via BIP39).
+- **Key Management**: Use hardware wallets (Ledger supports Polygon signing via BIP32/BIP44 paths; see docs/code for Ledger Live path resolution).
 - **Compromise**: If delegate key stolen, chain can be spoofed post-theft—mitigate with multi-sig extensions or revocations (future).
 - **Replay Attacks**: Polygon nonces prevent; Arweave IDs are unique.
 - **Availability**: Relies on Polygon/Arweave uptime—use gateways/mirrors.

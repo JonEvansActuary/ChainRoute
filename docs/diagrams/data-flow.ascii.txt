@@ -1,31 +1,35 @@
 ChainRoute Protocol — Data Flow
 ==============================
 
+  POSTING GENESIS (first anchor)
+  -------------------------------
+  • Build 127-byte payload: 32 zero bytes (no genesis yet—this tx creates it) | 32 zeros (prev) | 43 zeros (no blob) | delegate (20 bytes).
+  • Sign with delegate, broadcast. Tx hash of this tx becomes the genesis hash (64 hex) for the whole chain.
+
   POSTING AN EVENT (current delegate)
   ------------------------------------
 
      ┌──────────────┐
-     │ Supporting   │
-     │ files        │  (images, PDFs, etc.; embed genesis hash)
+     │ Supporting   │  (images, PDFs, etc.)
+     │ files        │  Tag on Arweave: ChainRoute-Genesis = <64-hex> (or embed 32-byte hash in file)
      └──────┬───────┘
-            │ 1. Upload to Arweave
+            │ 1. Upload to Arweave (with --genesis <hash> in scripts)
             ▼
      ┌──────────────┐     support IDs
      │ Arweave      │ ──────────────────┐
      │ (support tx) │                   │
-     └──────────────┘                   │
-                                        │ 2. Build main JSON blob
-     ┌──────────────┐                   │    (genesis, eventType, timestamp,
-     │ Main JSON    │ ◄─────────────────┘    summary, supports[])
+     └──────────────┘                   │ 2. Build main JSON blob
+                                        │    (genesis, eventType, timestamp,
+     ┌──────────────┐                   │    summary, supports[])
+     │ Main JSON    │ ◄─────────────────┘
      │ blob         │
      └──────┬───────┘
             │ 3. Upload to Arweave
             ▼
-     ┌──────────────┐     Arweave tx ID
+     ┌──────────────┐     Arweave tx ID (43 chars base64url)
      │ Arweave      │ ──────────────────┐
-     │ (main blob)  │                   │
-     └──────────────┘                   │ 4. Build 127-byte payload:
-                                        │    genesisHash | prevHash | arweaveId (43 bytes) | delegate
+     │ (main blob)  │                   │ 4. Build 127-byte payload:
+     └──────────────┘                   │    genesisHash (32) | prevHash (32) | arweaveId (43) | delegate (20)
                                         ▼
      ┌──────────────┐
      │ Polygon tx   │  5. Sign (current delegate), broadcast
@@ -35,6 +39,11 @@ ChainRoute Protocol — Data Flow
 
   VERIFICATION
   ------------
+  • From any Polygon tx or Arweave file: extract genesis hash.
+  • Polygon: query by delegate, filter by genesis; traverse backward (prev hash) / forward (next delegate txs).
+  • Arweave: fetch main blob by ID from Polygon payload; validate blob.genesis match; fetch supports by IDs in blob.
+  • Support files: verify Arweave tag ChainRoute-Genesis equals chain genesis (e.g. verify-support-tags.js).
+  • Optional: use chain-manifest.json with verify-chain.js and verify-support-tags.js for full manifest-based checks.
 
      Any Polygon tx or Arweave file
                 │
@@ -55,6 +64,6 @@ ChainRoute Protocol — Data Flow
      ┌──────────────────┐     ┌──────────────────┐
      │ Traverse chain:   │     │ Validate genesis │
      │ backward = prev   │     │ match; fetch     │
-     │ hash; forward =  │     │ supports         │
-     │ next delegate txs │     │                  │
+     │ hash; forward =  │     │ supports; check  │
+     │ next delegate txs │     │ support tags     │
      └──────────────────┘     └──────────────────┘

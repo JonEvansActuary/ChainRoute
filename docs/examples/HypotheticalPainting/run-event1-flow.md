@@ -36,6 +36,8 @@ cd docs/code && node post-polygon-anchor.js \
   --key ledger --ledger-path "44'/60'/0'/0/0"
 ```
 
+If the default RPC fails (e.g. gas station error), add `--rpc https://polygon-bor-rpc.publicnode.com`.
+
 - **Sign on Ledger** when prompted.
 - **Capture output:** the Polygon transaction hash (e.g. `0xabc...`).
 - Set for next steps (use 64 hex **without** `0x` for genesis hash in Arweave/next Polygon):
@@ -129,6 +131,21 @@ cd docs/code && node post-polygon-anchor.js \
 
 - **Sign on Ledger** when prompted (account 2 = Event 1 signer).
 - **Capture output:** Event 1 Polygon tx hash → use as `previousPolygonHash` for Event 2.
+
+If the default RPC fails, add `--rpc https://polygon-bor-rpc.publicnode.com`.
+
+---
+
+## Verifying the chain
+
+After posting, verify Polygon anchors and Arweave blobs (and support-file genesis tags):
+
+```bash
+node docs/code/verify-chain.js docs/examples/HypotheticalPainting/chain-manifest.json
+node docs/code/verify-support-tags.js docs/examples/HypotheticalPainting/chain-manifest.json
+```
+
+See [transaction-ids.md](./transaction-ids.md) for details and for Events 2–6.
 
 ---
 

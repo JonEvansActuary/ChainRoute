@@ -1,0 +1,47 @@
+ChainRoute Protocol — Verification Flow
+=========================================
+
+  1. Ad-hoc verification (any starting point)
+  --------------------------------------------
+  • From a Polygon tx or Arweave URL: extract genesis hash (from tx data or blob JSON / support tag).
+  • Polygon: query by sender/delegate, filter txs whose data starts with that genesis hash; decode 127-byte payloads; traverse backward (prev hash) to genesis, forward via next delegate.
+  • Arweave: for each Polygon tx with non-zero Arweave ID, fetch blob at arweave.net/<ID>; check blob.genesis matches; fetch each support in blob.supports[] and optionally verify ChainRoute-Genesis tag.
+
+  2. Manifest-based verification (recommended for a known chain)
+  --------------------------------------------------------------
+  Maintain a chain-manifest.json with:
+  • genesisHash
+  • polygonAnchors[]: step, txHash, prevHash, arweaveBlobId, delegate
+  • arweaveBlobs[]: step, blobId, supportsFile (e.g. event1-supports.json)
+
+     ┌─────────────────────────┐
+     │ chain-manifest.json      │
+     └────────────┬─────────────┘
+                  │
+        ┌─────────┴─────────┐
+        ▼                   ▼
+  ┌──────────────┐   ┌──────────────────┐
+  │verify-chain  │   │verify-support-   │
+  │.js           │   │tags.js           │
+  └──────┬───────┘   └────────┬─────────┘
+         │                    │
+         ▼                    ▼
+  • Fetch each Polygon tx;   • For each eventN-supports.json,
+    decode 127-byte data.      query Arweave GraphQL for each
+  • Genesis: expect 32 zero     support tx ID; check tags for
+    bytes in first 32 bytes.    ChainRoute-Genesis = genesisHash.
+  • Events: check genesis,   
+    prev, blob ID, delegate  
+    match manifest.           
+  • Fetch each Arweave blob; 
+    validate genesis +        
+    supports IDs vs manifest. 
+
+  Run:
+    node docs/code/verify-chain.js docs/examples/HypotheticalPainting/chain-manifest.json
+    node docs/code/verify-support-tags.js docs/examples/HypotheticalPainting/chain-manifest.json
+
+  3. Public verification (no manifest)
+  ------------------------------------
+  • Polygonscan: look up address, inspect tx input data (127 bytes).
+  • Arweave gateways: arweave.net/<txId>, viewblock.io/arweave/tx/<txId>, arweave.dev (if one gateway fails, try another).

@@ -2,7 +2,7 @@
 
 Runnable JavaScript helpers for the [ChainRoute Protocol](../../protocol.md). Full flow: (1) post **supporting files** to Arweave and get their IDs, (2) build and post the **provenance event blob** (genesis + event metadata + list of those support IDs) to Arweave and get its ID, (3) post the **Polygon anchor** tx with that blob ID in the 127-byte payload.
 
-**Node 18+** required for scripts that use npm deps. Run from `docs/code/` after `npm install` (installs ethers, arweave, Ledger + EthereumJS deps for Polygon signing). Use paths from repo root (e.g. `node docs/code/build-polygon-payload.js docs/examples/Polygon/genesis-payload.json`). NPM scripts: `npm run post-support`, `npm run post-blob`, `npm run post-anchor`, `npm run post-event`.
+**Node 18+** required for scripts that use npm deps. Run from `docs/code/` after `npm install` (installs ethers, arweave, Ledger + EthereumJS deps for Polygon signing). Use paths from repo root (e.g. `node docs/code/build-polygon-payload.js docs/examples/HypotheticalPainting/genesis-payload.json`). NPM scripts: `npm run post-support`, `npm run post-blob`, `npm run post-anchor`, `npm run post-event`.
 
 ## Scripts (no npm deps)
 
