@@ -15,7 +15,7 @@
 
 ### POST (or GET) /verify
 
-- **Input:** `txHash` (Polygon, genesis or any event) or `genesisHash` or `arweaveBlobId`. Optional: `manifestUrl` or `manifest` JSON for support-tag and full-chain check.
+- **Input:** `txHash` (Polygon, genesis or any event), `genesisHash`, `arweaveBlobId` (event blob), or `arweaveSupportFileId` (support file; resolve via ChainRoute-Genesis tag then forward walk). Optional: `manifestUrl` or `manifest` JSON for support-tag and full-chain check.
 - **Output:**  
   - `status`: `"verified"` | `"invalid"` | `"partial"`  
   - `genesisHash`, `chainLength`, `events`: array of `{ step, txHash, prevHash, arweaveBlobId, delegate, blobSummary?, supportTagOk? }`  
@@ -32,7 +32,7 @@
 
 ## Implementation Notes
 
-- Backend runs logic equivalent to [verify-chain.js](../docs/code/verify-chain.js) and [verify-support-tags.js](../docs/code/verify-support-tags.js): fetch Polygon txs (public RPC), decode 127-byte payloads, fetch Arweave blobs and support tags (GraphQL or gateway).
+- Backend runs logic equivalent to [verify-chain.js](../../docs/code/verify-chain.js) and [verify-support-tags.js](../../docs/code/verify-support-tags.js): fetch Polygon txs (public RPC), decode 127-byte payloads, fetch Arweave blobs and support tags (GraphQL or gateway).
 - Rate limiting and API keys for heavy consumers.
 - Optional caching: chain result keyed by genesis (or last tx) with TTL.
 - No PII; only public chain data.

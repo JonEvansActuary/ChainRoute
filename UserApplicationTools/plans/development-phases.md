@@ -8,8 +8,9 @@ Suggested order to build and ship ChainRoute user-facing tools for maximum impac
 
 | Step | Deliverable | Dependencies |
 |------|-------------|--------------|
-| 1.1 | **Verification API** (minimal): POST /verify with txHash or genesisHash; return chain + status. | Protocol; [docs/code/verify-chain.js](../docs/code/verify-chain.js) |
-| 1.2 | **Web Verifier** (MVP): Input (paste tx/URL); call API or embed verification logic; timeline + status + links to blobs/supports. | Verification API or client-side Polygon + Arweave |
+| — | **Web Verifier prototype** (done): [UserApplicationTools/web-verifier](../web-verifier/) accepts Polygon anchor, event blob ID, support file ID, or genesis hash; backward walk (anchor) or forward walk; timeline + status. Run `npm install && npm start`. | Protocol; ethers; Polygonscan API for forward walk |
+| 1.1 | **Verification API** (minimal): POST /verify with input (txHash, genesisHash, or Arweave ID); return chain + status. | Protocol; [docs/code/verify-chain.js](../../docs/code/verify-chain.js); align with web-verifier resolve + walk logic |
+| 1.2 | **Web Verifier** (production): Harden prototype; optional QR scan; shareable URL; or call Verification API. | Web Verifier prototype or Verification API |
 | 1.3 | **QR and share:** Scan QR or open link with ?tx=; shareable verifier URL. | Web Verifier |
 
 **Outcome:** “Is this real?” answered in one place; shareable; foundation for mobile and extension.

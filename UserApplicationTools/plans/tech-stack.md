@@ -1,14 +1,14 @@
 # Tech Stack Suggestions
 
-Recommendations for implementing the [concepts](../concepts/) and [development phases](./development-phases.md). Prefer reuse of [docs/code](../docs/code) and protocol consistency.
+Recommendations for implementing the [concepts](../concepts/) and [development phases](./development-phases.md). Prefer reuse of [docs/code](../../docs/code) and protocol consistency.
 
 ## Shared / Protocol Layer
 
 | Concern | Suggestion | Notes |
 |---------|------------|------|
-| **127-byte payload** | Reuse or port [build-polygon-payload.js](../docs/code/build-polygon-payload.js) (build + decode) | TypeScript/JS module for web and Node |
-| **Blob schema** | [validate-arweave-blob.js](../docs/code/validate-arweave-blob.js); JSON Schema (e.g. AJV) in all builders | |
-| **Verification logic** | Port [verify-chain.js](../docs/code/verify-chain.js), [verify-support-tags.js](../docs/code/verify-support-tags.js) to TS/JS; call from API, Web Verifier, or extension | Single source of truth |
+| **127-byte payload** | Reuse or port [build-polygon-payload.js](../../docs/code/build-polygon-payload.js) (build + decode) | TypeScript/JS module for web and Node |
+| **Blob schema** | [validate-arweave-blob.js](../../docs/code/validate-arweave-blob.js); JSON Schema (e.g. AJV) in all builders | |
+| **Verification logic** | Port [verify-chain.js](../../docs/code/verify-chain.js), [verify-support-tags.js](../../docs/code/verify-support-tags.js) to TS/JS; call from API, Web Verifier, or extension | Single source of truth |
 | **Polygon RPC** | Public RPC or dedicated (e.g. Alchemy, Infura); same for all clients | |
 | **Arweave** | arweave-js or gateway REST; post + GraphQL for tags | |
 
@@ -86,7 +86,7 @@ Recommendations for implementing the [concepts](../concepts/) and [development p
 
 ## Summary
 
-- **Reuse:** Protocol and [docs/code](../docs/code) everywhere; one verification implementation (API or shared lib).
+- **Reuse:** Protocol and [docs/code](../../docs/code) everywhere; one verification implementation (API or shared lib).
 - **Web-first:** Verifier and Builder as SPAs; API for verification and optional orchestration.
 - **Keys:** Browser = wallet + optional Ledger; Desktop = Ledger + local key store; Mobile = optional key or relay.
 - **AI:** Tool-calling agents that consume APIs and suggest drafts; no signing by agent.

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ChainRoute Verifier</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>ChainRoute Verifier</h1>
+      <p class="tagline">Verify provenance from any post: Polygon anchor, event blob, support file, or genesis ID</p>
+    </header>
+
+    <section class="input-section">
+      <label for="input">Polygon tx hash, Arweave ID (event blob or support file), or genesis hash (64 hex)</label>
+      <div class="input-row">
+        <input type="text" id="input" placeholder="0x... or Arweave ID or 64-hex genesis" spellcheck="false" autocomplete="off">
+        <button type="button" id="verifyBtn">Verify</button>
+      </div>
+      <p class="hint">Polygon anchor = fastest (backward walk). Event blob, support file, or genesis = forward walk.</p>
+    </section>
+
+    <div id="loading" class="loading hidden">Verifying chain…</div>
+    <div id="error" class="error hidden"></div>
+
+    <section id="result" class="result hidden">
+      <div id="statusBadge" class="status-badge"></div>
+      <p id="genesisLine" class="genesis-line"></p>
+      <h2>Chain timeline</h2>
+      <ol id="timeline" class="timeline"></ol>
+      <div id="errorsBlock" class="errors-block hidden"></div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

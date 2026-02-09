@@ -70,7 +70,7 @@ Compared to protocols like VeChain (enterprise-heavy with tokens) or OriginTrail
      await signer.sendTransaction({ data: '0x' + payload.toString('hex') });
    }
    ```
-3. **Verify a Chain**: Use Polygonscan API to query txs by address, filter by genesis, fetch Arweave via gateway (arweave.net/tx/ID). The [docs/code](./docs/code) scripts include **verify-chain.js** (Polygon payloads + Arweave blob refs) and **verify-support-tags.js** (genesis tag on support files) for a manifest-based chain.
+3. **Verify a Chain**: Use Polygonscan API to query txs by address, filter by genesis, fetch Arweave via gateway (arweave.net/tx/ID). A **Web Verifier prototype** in [UserApplicationTools/web-verifier](./UserApplicationTools/web-verifier/) accepts any single post (Polygon tx hash, Arweave event blob or support file ID, or genesis hash) and shows a verification timeline; it uses backward walk when you have an anchor (fast) or forward walk otherwise. The [docs/code](./docs/code) scripts include **verify-chain.js** (manifest-based: Polygon payloads + Arweave blob refs) and **verify-support-tags.js** (genesis tag on support files).
 4. **Tools**: Example scripts in [docs/code](./docs/code) (build payload, validate blob, post to Arweave/Polygon, verify chain). Polygon signing supports **Ledger Stax** (or other Ledger devices) via `--key ledger`. Arweave uses JWK key files; Polygon can use a hex key file or Ledger. Reference libraries planned in `/reference-impl/`.
 
 ## Status

@@ -43,6 +43,7 @@ Concepts, outlines, and plans for smartphone, desktop, web, and cloud applicatio
 | [README.md](./README.md) | This overview and index. |
 | [concepts/](./concepts/) | Concept docs and outlines per app/service. |
 | [plans/](./plans/) | Development phases, tech stack, deployment. |
+| [web-verifier/](./web-verifier/) | **Web Verifier prototype**: verify from any post (Polygon anchor, event blob, support file, or genesis ID); backward or forward walk. Run with `npm install && npm start`. |
 
 ## AI and Agents
 

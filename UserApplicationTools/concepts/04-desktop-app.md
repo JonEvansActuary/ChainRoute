@@ -38,7 +38,7 @@
 ## Tech Outline
 
 - **Stack:** Tauri (Rust + web view) or Electron; reuse Web Builder UI as web view or share components.
-- **Ledger:** Use existing [docs/code/polygon-ledger-sign.js](../docs/code/polygon-ledger-sign.js) logic; port to Rust (ledger-transport) or Node in Electron.
+- **Ledger:** Use existing [docs/code/polygon-ledger-sign.js](../../docs/code/polygon-ledger-sign.js) logic; port to Rust (ledger-transport) or Node in Electron.
 - **Arweave:** Node or Rust SDK; read JWK from key store; post to gateway.
 - **Polygon:** ethers.js or equivalent; same payload build as docs/code.
 

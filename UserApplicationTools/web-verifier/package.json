@@ -1,0 +1,19 @@
+{
+  "name": "chainroute-web-verifier",
+  "description": "ChainRoute Web Verifier prototype - verify provenance from a Polygon tx hash",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "ethers": "^6.13.0",
+    "express": "^4.21.0",
+    "cors": "^2.8.5"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
