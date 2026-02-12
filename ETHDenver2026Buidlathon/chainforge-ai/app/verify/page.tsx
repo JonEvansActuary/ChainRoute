@@ -2,7 +2,11 @@ import Link from "next/link";
 import { Verifier } from "@/components/Verifier";
 import { Button } from "@/components/ui/button";
 
-export default function VerifyPage() {
+type Props = { searchParams: Promise<{ input?: string }> };
+
+export default async function VerifyPage({ searchParams }: Props) {
+  const params = await searchParams;
+  const initialInput = typeof params.input === "string" ? params.input : undefined;
   return (
     <div className="min-h-screen">
       <header className="border-b border-border px-4 py-3">
@@ -22,7 +26,10 @@ export default function VerifyPage() {
       </header>
       <main className="mx-auto max-w-2xl px-4 py-8">
         <h1 className="mb-6 text-2xl font-bold">Verify provenance chain</h1>
-        <Verifier />
+        <p className="mb-4 text-sm text-muted-foreground">
+          Paste a Polygon (Amoy) transaction hash or genesis hash. To try without creating a chain: create a genesis and one event on the home page first, then paste the event tx hash here.
+        </p>
+        <Verifier initialInput={initialInput} />
       </main>
     </div>
   );

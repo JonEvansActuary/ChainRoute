@@ -72,7 +72,13 @@ export default function HomePage() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to post blob");
+      if (!res.ok) {
+        const msg = data.error || "Failed to post blob";
+        if (res.status === 503) {
+          throw new Error("Arweave keys not configured. You can still create genesis and use Verify with existing chains.");
+        }
+        throw new Error(msg);
+      }
       const arweaveId = data.arweaveId as string;
 
       const params = {
@@ -282,7 +288,7 @@ export default function HomePage() {
                   </p>
                 )}
                 <div className="flex gap-2">
-                  <Link href={`/chain/${genesisHash}`}>
+                  <Link href={lastTxHash ? `/chain/${genesisHash}?txes=${encodeURIComponent(lastTxHash)}` : `/chain/${genesisHash}`}>
                     <Button variant="chain">View chain</Button>
                   </Link>
                   <Button

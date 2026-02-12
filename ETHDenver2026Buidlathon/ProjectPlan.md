@@ -58,9 +58,10 @@ All paths above are relative to the **ChainRoute repo root**.
 **Install (from app root)**
 
 ```bash
-npm install wagmi viem @tanstack/react-query lucide-react reactflow qrcode.react arweave @bundlr-network/client
+npm install wagmi viem @tanstack/react-query lucide-react reactflow qrcode.react arweave
 npm install -D @types/node
 ```
+(Arweave is used directly via the `arweave` package; Bundlr is not required for this app.)
 
 Add shadcn/ui per [shadcn docs](https://ui.shadcn.com/). Use **reactflow** (not `react-flow-renderer`) for the chain visualizer.
 
@@ -75,7 +76,11 @@ chainforge-ai/
 ├── app/
 │   ├── page.tsx                    # Home / Wizard
 │   ├── chain/[genesis]/page.tsx    # Public chain viewer
-│   └── verify/page.tsx             # Public verifier
+│   ├── continue/page.tsx           # Add events to existing chain (genesis/tx lookup)
+│   ├── verify/page.tsx             # Public verifier
+│   └── api/                        # AI + Arweave API routes
+│       ├── ai/caption/, suggest-event/
+│       └── arweave/post-blob/, post-support/
 ├── components/
 │   ├── WalletConnect.tsx
 │   ├── GenesisWizard.tsx
@@ -87,16 +92,16 @@ chainforge-ai/
 ├── lib/
 │   ├── chainroute/                 # Adapted from docs/code (TypeScript)
 │   │   ├── build-payload.ts
-│   │   ├── arweave-utils.ts
+│   │   ├── build-blob.ts, validate-blob.ts
 │   │   ├── polygon-anchor.ts
 │   │   ├── verifier.ts
 │   │   └── types.ts
 │   └── ai.ts                       # Grok/OpenAI prompts
 ├── public/
 │   └── demo/                       # Optional: HypotheticalPainting sample
-├── types/
 └── README.md
 ```
+(Arweave posting is implemented in app/api/arweave/* and lib/chainroute build-blob/validate-blob; no separate arweave-utils.ts. Types live in lib/chainroute/types.ts.)
 
 ---
 

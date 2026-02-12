@@ -69,7 +69,13 @@ export function EventBuilder({
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        const msg = (data.error as string) || "";
+        if (msg.includes("API") || msg.includes("key") || msg.includes("OPENAI") || msg.includes("GROK")) {
+          throw new Error("AI suggestions disabled (no API key). Fill in event type and summary manually.");
+        }
+        throw new Error(msg);
+      }
       setEventType(data.eventType ?? eventType);
       if (data.summary && typeof data.summary === "object") {
         setSummaryText(JSON.stringify(data.summary, null, 2));

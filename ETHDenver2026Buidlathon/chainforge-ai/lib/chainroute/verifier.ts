@@ -127,7 +127,37 @@ export interface VerifySingleTxResult {
   decoded?: DecodedPayload;
   blob?: ProvenanceBlob;
   blobValid: boolean;
+  supportTagsOk: boolean | null;
   error?: string;
+}
+
+const CHAINROUTE_GENESIS_TAG = "ChainRoute-Genesis";
+
+/**
+ * Check that all support tx IDs in a blob have the ChainRoute-Genesis tag matching genesisHash.
+ */
+export async function checkSupportTags(
+  blob: ProvenanceBlob,
+  genesisHash: string,
+  graphqlUrl = ARWEAVE_GRAPHQL
+): Promise<boolean> {
+  const supports = blob.supports;
+  if (!supports?.length) return true;
+  const genesisLower = genesisHash.toLowerCase();
+  for (const s of supports) {
+    const id = typeof s === "object" && s !== null && "id" in s ? (s as { id: string }).id : undefined;
+    if (!id) continue;
+    try {
+      const tags = await getArweaveTxTags(id, graphqlUrl);
+      const hasGenesis = tags.some(
+        (t) => t.name === CHAINROUTE_GENESIS_TAG && (t.value || "").toLowerCase() === genesisLower
+      );
+      if (!hasGenesis) return false;
+    } catch {
+      return false;
+    }
+  }
+  return true;
 }
 
 export async function verifySingleTx(
@@ -138,12 +168,12 @@ export async function verifySingleTx(
 ): Promise<VerifySingleTxResult> {
   const tx = await getPolygonTxPayload(txHash, rpcUrl);
   if (!tx) {
-    return { blobValid: false, error: "Tx not found or no data" };
+    return { blobValid: false, supportTagsOk: null, error: "Tx not found or no data" };
   }
 
   const decoded = decodePayloadFromHex(tx.data);
   if (decoded.genesisHash !== expectedGenesis && decoded.genesisHash !== "0".repeat(64)) {
-    return { decoded, blobValid: false, error: "Genesis mismatch" };
+    return { decoded, blobValid: false, supportTagsOk: null, error: "Genesis mismatch" };
   }
 
   let blob: ProvenanceBlob | undefined;
@@ -153,18 +183,27 @@ export async function verifySingleTx(
       blob = await fetchArweaveBlob(decoded.arweaveId, gateway);
       const v = validateBlob(blob);
       blobValid = v.valid;
-      if (!blobValid) return { decoded, blob, blobValid, error: v.errors.join("; ") };
+      if (!blobValid) return { decoded, blob, blobValid, supportTagsOk: null, error: v.errors.join("; ") };
       if (blob.genesis.toLowerCase() !== expectedGenesis.toLowerCase()) {
-        return { decoded, blob, blobValid: false, error: "Blob genesis mismatch" };
+        return { decoded, blob, blobValid: false, supportTagsOk: null, error: "Blob genesis mismatch" };
       }
     } catch (e) {
-      return { decoded, blobValid: false, error: (e as Error).message };
+      return { decoded, blobValid: false, supportTagsOk: null, error: (e as Error).message };
     }
   } else {
     blobValid = true; // genesis tx has no blob
   }
 
-  return { decoded, blob, blobValid };
+  let supportTagsOk: boolean | null = null;
+  if (blob?.supports?.length) {
+    try {
+      supportTagsOk = await checkSupportTags(blob, expectedGenesis);
+    } catch {
+      supportTagsOk = false;
+    }
+  }
+
+  return { decoded, blob, blobValid, supportTagsOk };
 }
 
 /**
@@ -240,6 +279,26 @@ export async function verifyChainFromTxList(
     }
   }
 
+  let supportTagsOk: boolean | null = null;
+  const blobsWithSupports = arweaveResults.filter((r) => r.blob?.supports?.length);
+  if (blobsWithSupports.length > 0) {
+    let allOk = true;
+    for (const r of blobsWithSupports) {
+      if (!r.blob) continue;
+      try {
+        const ok = await checkSupportTags(r.blob, genesisHash);
+        if (!ok) {
+          allOk = false;
+          break;
+        }
+      } catch {
+        allOk = false;
+        break;
+      }
+    }
+    supportTagsOk = allOk;
+  }
+
   const valid =
     polygonErrors.length === 0 &&
     arweaveErrors.length === 0;
@@ -248,7 +307,7 @@ export async function verifyChainFromTxList(
     genesisHash,
     polygon: { errors: polygonErrors, results: polygonResults },
     arweave: { errors: arweaveErrors, results: arweaveResults },
-    supportTagsOk: null,
+    supportTagsOk,
     valid,
   };
 }

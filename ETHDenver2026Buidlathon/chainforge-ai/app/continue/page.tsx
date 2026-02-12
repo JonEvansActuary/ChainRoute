@@ -108,7 +108,13 @@ export default function ContinuePage() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Failed to post blob");
+      if (!res.ok) {
+        const msg = data.error || "Failed to post blob";
+        if (res.status === 503) {
+          throw new Error("Arweave keys not configured. You can still use Verify with existing chains.");
+        }
+        throw new Error(msg);
+      }
       const arweaveId = data.arweaveId as string;
       const params = {
         genesisHash: chainGenesis,

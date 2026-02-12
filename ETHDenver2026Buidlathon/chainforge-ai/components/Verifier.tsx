@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,8 +17,11 @@ import { ChainVisualizer } from "./ChainVisualizer";
 const AMOY_RPC = "https://rpc-amoy.polygon.technology";
 const GATEWAY = "https://arweave.net";
 
-export function Verifier() {
-  const [input, setInput] = useState("");
+export function Verifier({ initialInput }: { initialInput?: string }) {
+  const [input, setInput] = useState(initialInput ?? "");
+  useEffect(() => {
+    if (initialInput != null) setInput(initialInput);
+  }, [initialInput]);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -54,7 +57,7 @@ export function Verifier() {
               results: [{ step: "tx", txHash, ok: false, decoded: single.decoded, error: single.error }],
             },
             arweave: { errors: [], results: [] },
-            supportTagsOk: null,
+            supportTagsOk: single.supportTagsOk ?? null,
             valid: false,
           });
         } else {
@@ -67,7 +70,7 @@ export function Verifier() {
             arweave: single.blob
               ? { errors: [], results: [{ step: "blob", blobId: single.decoded?.arweaveId ?? "", ok: true, blob: single.blob }] }
               : { errors: [], results: [] },
-            supportTagsOk: null,
+            supportTagsOk: single.supportTagsOk ?? null,
             valid: true,
           });
         }
@@ -137,6 +140,11 @@ export function Verifier() {
                   <li key={i}>{e}</li>
                 ))}
               </ul>
+            )}
+            {result.supportTagsOk !== null && (
+              <p className={`text-sm ${result.supportTagsOk ? "text-chain-neon" : "text-destructive"}`}>
+                Support tags (ChainRoute-Genesis): {result.supportTagsOk ? "OK" : "Missing or mismatch"}
+              </p>
             )}
             {chainNodes.length > 0 && result.genesisHash && (
               <ChainVisualizer

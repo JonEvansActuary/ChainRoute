@@ -29,6 +29,7 @@ export function SupportUploader({
 }: SupportUploaderProps) {
   const [dragOver, setDragOver] = useState(false);
   const [labelInputs, setLabelInputs] = useState<Record<number, string>>({});
+  const [aiUnavailable, setAiUnavailable] = useState(false);
 
   const uploadFileAt = useCallback(
     async (list: SupportWithFile[], index: number) => {
@@ -46,7 +47,13 @@ export function SupportUploader({
           body: form,
         });
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || "Upload failed");
+        if (!res.ok) {
+          const msg = data.error || "Upload failed";
+          if (res.status === 503) {
+            throw new Error("Arweave upload disabled (no server key). You can still create genesis and continue without support files.");
+          }
+          throw new Error(msg);
+        }
         const done = [...next];
         done[index] = {
           ...entry,
@@ -104,7 +111,13 @@ export function SupportUploader({
             body: JSON.stringify({ imageDataUrl: dataUrl }),
           });
           const data = await res.json();
-          if (!res.ok) throw new Error(data.error);
+          if (!res.ok) {
+            const msg = (data.error as string) || "";
+            if (msg.includes("API") || msg.includes("key") || msg.includes("OPENAI") || msg.includes("GROK")) {
+              setAiUnavailable(true);
+            }
+            throw new Error(msg);
+          }
           const list = [...supports];
           list[index] = {
             ...list[index],
@@ -131,6 +144,11 @@ export function SupportUploader({
         <CardDescription>
           Upload images or PDFs. Optionally get AI captions; files are posted to Arweave with ChainRoute-Genesis tag.
         </CardDescription>
+        {aiUnavailable && (
+          <p className="text-xs text-muted-foreground">
+            AI labels disabled (no API key). You can still add labels manually.
+          </p>
+        )}
       </CardHeader>
       <CardContent className="space-y-4">
         <div
