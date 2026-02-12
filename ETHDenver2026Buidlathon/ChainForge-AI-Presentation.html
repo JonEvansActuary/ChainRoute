@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChainForge AI – Presentation</title>
+  <style>
+    :root {
+      --bg: #0a0f0d;
+      --card: #111a16;
+      --neon: #00ff9d;
+      --neon-dim: rgba(0, 255, 157, 0.4);
+      --text: #e8f5f1;
+      --muted: #7a9b8e;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); }
+    .deck { height: 100%; position: relative; }
+    .slide { position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 4rem; text-align: center; }
+    .slide.active { display: flex; }
+    .slide h1 { font-size: clamp(2rem, 6vw, 4rem); font-weight: 800; margin-bottom: 0.5rem; color: var(--neon); letter-spacing: -0.02em; }
+    .slide h2 { font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 600; margin-bottom: 1.5rem; color: var(--text); }
+    .slide .tagline { font-size: clamp(1rem, 2.5vw, 1.35rem); color: var(--muted); max-width: 28ch; line-height: 1.5; }
+    .slide ul { list-style: none; text-align: left; max-width: 480px; }
+    .slide li { font-size: 1.25rem; margin: 1rem 0; padding-left: 2.5rem; position: relative; line-height: 1.4; }
+    .slide li::before { content: ""; position: absolute; left: 0; top: 0.35em; width: 1rem; height: 1rem; background: var(--neon); border-radius: 50%; box-shadow: 0 0 12px var(--neon-dim); }
+    .visual { margin: 2rem 0; }
+    .chain-diagram { display: flex; align-items: center; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+    .chain-node { width: 56px; height: 56px; border-radius: 50%; background: var(--card); border: 2px solid var(--neon); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--neon); font-size: 1.25rem; box-shadow: 0 0 20px var(--neon-dim); }
+    .chain-node.genesis { background: var(--neon); color: var(--bg); }
+    .chain-link { width: 24px; height: 3px; background: var(--neon); opacity: 0.7; }
+    .pillars { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin: 2rem 0; }
+    .pillar { width: 160px; padding: 1.5rem; background: var(--card); border-radius: 1rem; border: 1px solid var(--neon-dim); text-align: center; }
+    .pillar .icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .pillar .name { font-weight: 700; color: var(--neon); margin-bottom: 0.25rem; }
+    .pillar .desc { font-size: 0.9rem; color: var(--muted); }
+    .steps { display: flex; align-items: flex-start; justify-content: center; gap: 1rem; flex-wrap: wrap; max-width: 900px; margin: 2rem 0; }
+    .step { flex: 1; min-width: 120px; padding: 1rem; background: var(--card); border-radius: 0.75rem; border: 1px solid var(--neon-dim); }
+    .step .num { display: inline-block; width: 28px; height: 28px; line-height: 28px; border-radius: 50%; background: var(--neon); color: var(--bg); font-weight: 800; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .step .title { font-weight: 700; color: var(--neon); font-size: 0.95rem; }
+    .step .sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
+    .problem-box { max-width: 420px; padding: 2rem; background: var(--card); border-radius: 1rem; border-left: 4px solid #e74c3c; margin: 1.5rem 0; text-align: left; }
+    .problem-box .q { font-size: 1.5rem; color: #f5a0a0; margin-bottom: 0.5rem; }
+    .solution-box { max-width: 420px; padding: 2rem; background: var(--card); border-radius: 1rem; border-left: 4px solid var(--neon); margin: 1.5rem 0; text-align: left; }
+    .solution-box .head { font-size: 1.25rem; color: var(--neon); margin-bottom: 0.5rem; font-weight: 700; }
+    .nav { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; align-items: center; background: var(--card); padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid var(--neon-dim); z-index: 10; }
+    .nav button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--neon); background: transparent; color: var(--neon); cursor: pointer; font-size: 1.2rem; }
+    .nav button:hover { background: var(--neon-dim); }
+    .nav .indicator { font-size: 0.9rem; color: var(--muted); min-width: 4ch; }
+    .who-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; max-width: 560px; margin: 2rem 0; }
+    .who-item { padding: 1.25rem; background: var(--card); border-radius: 0.75rem; border: 1px solid var(--neon-dim); text-align: center; }
+    .who-item .emoji { font-size: 2rem; margin-bottom: 0.25rem; }
+    .who-item .label { font-weight: 600; color: var(--neon); }
+    .cta { margin-top: 1.5rem; padding: 1rem 2rem; background: var(--neon); color: var(--bg); font-weight: 800; font-size: 1.1rem; border-radius: 0.5rem; border: none; cursor: pointer; box-shadow: 0 0 24px var(--neon-dim); }
+    .cta:hover { filter: brightness(1.1); }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <!-- 1. Title -->
+    <section class="slide active" data-slide="1">
+      <h1>ChainForge AI</h1>
+      <p class="tagline">Forge unbreakable provenance chains in minutes.</p>
+      <div class="visual chain-diagram" style="margin-top: 2rem;">
+        <span class="chain-node genesis">1</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">2</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">3</span>
+      </div>
+      <p class="tagline" style="margin-top: 1rem;">AI co-pilots the story. The chain anchors it forever.</p>
+      <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--muted);">ETHDenver 2026 Buidlathon</p>
+    </section>
+
+    <!-- 2. The problem -->
+    <section class="slide" data-slide="2">
+      <h2>The problem</h2>
+      <div class="problem-box">
+        <p class="q">“Where did this come from?”</p>
+        <p>Art, collectibles, and high-value items have a history. But that history is often scattered, hard to prove, or controlled by one company.</p>
+      </div>
+      <ul>
+        <li>Paper trails get lost or faked</li>
+        <li>Provenance is expensive or centralized</li>
+        <li>Buyers and creators can’t easily verify the full story</li>
+      </ul>
+    </section>
+
+    <!-- 3. The solution -->
+    <section class="slide" data-slide="3">
+      <h2>The solution</h2>
+      <div class="solution-box">
+        <p class="head">One story. Anchored forever.</p>
+        <p>ChainForge AI lets you build a verifiable chain of events—who created it, who held it, what happened—without smart contracts or custom tokens. The data lives permanently; the chain is cheap and fast.</p>
+      </div>
+      <div class="visual chain-diagram">
+        <span class="chain-node genesis">Start</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">Event 1</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">Event 2</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">…</span>
+      </div>
+      <p class="tagline" style="margin-top: 1rem;">Anyone can verify the full chain, anytime.</p>
+    </section>
+
+    <!-- 4. How it works – three pillars -->
+    <section class="slide" data-slide="4">
+      <h2>How it works</h2>
+      <p class="tagline" style="margin-bottom: 0.5rem;">Three pieces working together</p>
+      <div class="pillars">
+        <div class="pillar">
+          <div class="icon">⛓️</div>
+          <div class="name">Polygon</div>
+          <div class="desc">Cheap, fast anchors. Each step in the chain is a tiny transaction. No custom tokens.</div>
+        </div>
+        <div class="pillar">
+          <div class="icon">📦</div>
+          <div class="name">Arweave</div>
+          <div class="desc">Permanent storage. Your documents, photos, and event details live forever and can’t be changed.</div>
+        </div>
+        <div class="pillar">
+          <div class="icon">✨</div>
+          <div class="name">AI</div>
+          <div class="desc">Your co-pilot. Suggests labels for photos and helps you write the story of each event.</div>
+        </div>
+      </div>
+      <p class="tagline" style="margin-top: 1rem;">You tell the story. The chain proves it.</p>
+    </section>
+
+    <!-- 5. Your journey -->
+    <section class="slide" data-slide="5">
+      <h2>Your journey</h2>
+      <p class="tagline" style="margin-bottom: 0.5rem;">From zero to a verifiable chain</p>
+      <div class="steps">
+        <div class="step">
+          <span class="num">1</span>
+          <div class="title">Connect</div>
+          <div class="sub">Link your wallet (e.g. Polygon)</div>
+        </div>
+        <div class="step">
+          <span class="num">2</span>
+          <div class="title">Create genesis</div>
+          <div class="sub">One click starts the chain</div>
+        </div>
+        <div class="step">
+          <span class="num">3</span>
+          <div class="title">Upload proof</div>
+          <div class="sub">Photos, PDFs, certificates</div>
+        </div>
+        <div class="step">
+          <span class="num">4</span>
+          <div class="title">Tell the story</div>
+          <div class="sub">AI helps with labels & summary</div>
+        </div>
+        <div class="step">
+          <span class="num">5</span>
+          <div class="title">Sign & done</div>
+          <div class="sub">Chain is live. Anyone can verify.</div>
+        </div>
+      </div>
+      <p class="tagline" style="margin-top: 0.5rem;">No coding required.</p>
+    </section>
+
+    <!-- 6. What you get -->
+    <section class="slide" data-slide="6">
+      <h2>What you get</h2>
+      <ul>
+        <li>A verifiable chain of events tied to your item</li>
+        <li>Permanent records (documents + metadata) that can’t be altered</li>
+        <li>A public verifier: paste a link or tx and see the full story</li>
+        <li>QR codes for physical items—scan to verify</li>
+        <li>Optional export for NFT metadata</li>
+      </ul>
+      <div class="visual chain-diagram" style="margin-top: 2rem;">
+        <span class="chain-node">🔗</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">📄</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">✓</span>
+      </div>
+    </section>
+
+    <!-- 7. Who it's for -->
+    <section class="slide" data-slide="7">
+      <h2>Who it’s for</h2>
+      <p class="tagline" style="margin-bottom: 0.5rem;">Anyone who cares where something came from</p>
+      <div class="who-grid">
+        <div class="who-item"><div class="emoji">🎨</div><div class="label">Artists</div></div>
+        <div class="who-item"><div class="emoji">🖼️</div><div class="label">Collectors</div></div>
+        <div class="who-item"><div class="emoji">📜</div><div class="label">NFT creators</div></div>
+        <div class="who-item"><div class="emoji">🏠</div><div class="label">RWA / assets</div></div>
+        <div class="who-item"><div class="emoji">🔍</div><div class="label">Buyers & verifiers</div></div>
+      </div>
+      <p class="tagline" style="margin-top: 1.5rem;">Built on the ChainRoute protocol—simple, open, no lock-in.</p>
+    </section>
+
+    <!-- 8. Try it / Close -->
+    <section class="slide" data-slide="8">
+      <h1>ChainForge AI</h1>
+      <p class="tagline" style="margin-top: 0.5rem;">Forge unbreakable provenance chains in minutes.</p>
+      <div class="visual chain-diagram" style="margin: 2rem 0;">
+        <span class="chain-node genesis">1</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">2</span>
+        <span class="chain-link"></span>
+        <span class="chain-node">3</span>
+      </div>
+      <p class="tagline">AI co-pilots the story. Polygon + Arweave anchor it forever.</p>
+      <a href="https://github.com/ChainRoute" target="_blank" rel="noopener" class="cta">Try ChainForge AI</a>
+      <p style="margin-top: 2rem; font-size: 0.9rem; color: var(--muted);">ETHDenver 2026 Buidlathon · ChainRoute protocol</p>
+    </section>
+  </div>
+
+  <nav class="nav" aria-label="Slide navigation">
+    <button type="button" id="prev" aria-label="Previous">←</button>
+    <span class="indicator" id="indicator">1 / 8</span>
+    <button type="button" id="next" aria-label="Next">→</button>
+  </nav>
+
+  <script>
+    (function () {
+      const slides = document.querySelectorAll(".slide");
+      const total = slides.length;
+      let current = 0;
+
+      function show(i) {
+        current = (i + total) % total;
+        slides.forEach((s, k) => s.classList.toggle("active", k === current));
+        document.getElementById("indicator").textContent = (current + 1) + " / " + total;
+      }
+
+      document.getElementById("prev").addEventListener("click", () => show(current - 1));
+      document.getElementById("next").addEventListener("click", () => show(current + 1));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") show(current - 1);
+        if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); show(current + 1); }
+      });
+      document.querySelector(".deck").addEventListener("click", (e) => {
+        if (e.target.closest("a, button")) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        if (e.clientX > rect.left + rect.width / 2) show(current + 1);
+        else show(current - 1);
+      });
+      show(0);
+    })();
+  </script>
+</body>
+</html>
