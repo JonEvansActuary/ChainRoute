@@ -3,7 +3,7 @@
 **Purpose**: Honest assessment of the project’s likelihood of winning or making a strong showing at ETHDenver 2026 Buidlathon (solo submission).  
 **Date**: Feb 12, 2026.
 
-**Update (post-improvements):** The recommended improvements below have been implemented: chain viewer supports `?txes=` for multiple nodes and shows helper copy when only genesis is visible; “View chain” from success step includes the new event tx; support tags are checked and shown in the Verifier; graceful degradation for missing AI/Arweave keys; demo script and scope statement in README and `chainforge-ai/DEMO-SCRIPT.md`; deploy note and Verify page demo hint. Production build verified (`npm run build`).
+**Update (post-improvements):** The recommended improvements below have been implemented: chain viewer supports `?txes=` for multiple nodes and shows helper copy when only genesis is visible; “View chain” from success step includes the new event tx; support tags are checked and shown in the Verifier; graceful degradation for missing AI/Arweave keys; demo script and ONE-PAGER; **Ledger Stax cold signing** (GenesisWizard); **one-click NFT metadata export** (chain page); **Load Example Chain** (HypotheticalPainting) on Verify; shared constants. Production build verified (`npm run build`).
 
 ---
 
@@ -52,7 +52,7 @@
 ### 3.3 Narrative and differentiation
 
 - **Problem/solution**: “Provenance is fragmented/expensive/centralized” → “One flow, no contracts, permanent data + cheap anchors” is clear.
-- **Differentiators** (from plan): Real protocol, optional Ledger (not built), public verifier + QR, AI labels/suggestions. Three of four are implemented and demoable.
+- **Differentiators** (from plan): Real protocol, **Ledger cold signing**, public verifier + QR + Load Example Chain, AI labels/suggestions, NFT metadata export. All implemented and demoable.
 
 ---
 
@@ -67,8 +67,8 @@
 ### 4.2 Notable but not blocking (partially addressed)
 
 - **Support tags** – **Addressed.** Verifier now checks `ChainRoute-Genesis` on support tx IDs and shows “Support tags (ChainRoute-Genesis): OK” or “Missing or mismatch” in the UI when applicable.
-- **Stretch goals not implemented**  
-  Ledger Stax signing and NFT metadata export remain stretch; scope is documented in README and DEMO-SCRIPT.md.
+- **Stretch goals**  
+  **Implemented:** Ledger Stax signing (GenesisWizard, WebHID), NFT metadata export (chain page), Load Example Chain (Verify page, HypotheticalPainting). Documented in README, DEMO-SCRIPT.md, ONE-PAGER.md.
 - **Demo dependency on env** – **Addressed.** Graceful messages when keys are missing: “AI labels disabled (no API key)”, “Arweave upload disabled (no server key). You can still create genesis and continue without support files”, “Arweave keys not configured. You can still create genesis and use Verify with existing chains.”
 
 ### 4.3 Minor
@@ -92,10 +92,10 @@
 5. **Graceful degradation when keys missing** – **Done.** AI and Arweave 503/500 messages surfaced with clear copy in SupportUploader, EventBuilder, home, and continue pages.
 6. **Deploy and test on Vercel** – **Build verified.** `npm run build` passes; README updated with deploy note and “share live URL in submission.”
 
-### 5.3 Lower impact (not done)
+### 5.3 Lower impact ✅
 
-7. **Ledger path** – Not implemented (stretch).
-8. **Preloaded demo data** – Verify page has a short “try without creating” hint; no preloaded tx (would require a known Amoy tx).
+7. **Ledger path** – **Done.** GenesisWizard has Ledger mode (WebHID, path 44'/60'/0'/0/0); cold-sign genesis on device.
+8. **Preloaded demo data** – **Done.** “Load Example Chain” on Verify loads HypotheticalPainting (genesis + 2 events, Polygon mainnet); tx links use polygonscan.com.
 
 ---
 
@@ -119,4 +119,4 @@ Using a simple 1–5 scale (5 = best):
 
 - **Probability of winning (track or overall)**: **Moderate** – Competitive idea and implementation; chain viewer and narrative improvements applied. Rehearse using `chainforge-ai/DEMO-SCRIPT.md`.
 - **Probability of a good showing** (finalist, category mention, sponsor bounty): **High** – Real protocol, working E2E, AI, verifier with support tags, and QR are in place; graceful degradation when keys are missing.
-- **Done before submission**: Chain viewer with `?txes=`, scope statement, demo script doc, support tags in Verifier, graceful degradation, deploy note, Verify page hint. Run `npm run build` and deploy; share live URL in submission.
+- **Done before submission**: Chain viewer with `?txes=`, scope statement, demo script and ONE-PAGER, support tags in Verifier, Ledger and NFT export and Load Example Chain, graceful degradation, deploy note. Run `npm run build` and deploy; share live URL in submission.

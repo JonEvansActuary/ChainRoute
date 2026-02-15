@@ -2,12 +2,10 @@
  * Post ChainRoute anchor tx to Polygon using viem (browser wallet).
  */
 
-import { createPublicClient, createWalletClient, custom, type Hash } from "viem";
+import { type Hash } from "viem";
 import { polygonAmoy } from "viem/chains";
 import { buildPayloadHex } from "./build-payload";
-
-const AMOY_RPC = "https://rpc-amoy.polygon.technology";
-const CHAIN_ID = 80002;
+import { AMOY_RPC, CHAIN_ID } from "./constants";
 
 export interface AnchorParams {
   genesisHash: string;
@@ -49,5 +47,14 @@ export async function postPolygonAnchor(
   });
   return hash;
 }
+
+/**
+ * Sign and send anchor tx using Ledger (browser WebHID). Enable "Blind signing" in Ethereum app.
+ */
+export {
+  signAndSendWithLedger,
+  getLedgerAddress,
+  LEDGER_PATH,
+} from "./ledger-sign";
 
 export { polygonAmoy, AMOY_RPC, CHAIN_ID };

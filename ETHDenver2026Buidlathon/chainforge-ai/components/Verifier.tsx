@@ -11,11 +11,15 @@ import {
   decodePayloadFromHex,
 } from "@/lib/chainroute/verifier";
 import type { VerifyResult } from "@/lib/chainroute/verifier";
-import { CheckCircle2, XCircle, Loader2, Search } from "lucide-react";
+import { AMOY_RPC } from "@/lib/chainroute/polygon-anchor";
+import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
+import {
+  DEMO_CHAIN_GENESIS_TX,
+  DEMO_CHAIN_EVENT_TXES,
+  DEMO_CHAIN_MAINNET_RPC,
+} from "@/lib/demo-chain";
+import { CheckCircle2, XCircle, Loader2, Search, BookOpen } from "lucide-react";
 import { ChainVisualizer } from "./ChainVisualizer";
-
-const AMOY_RPC = "https://rpc-amoy.polygon.technology";
-const GATEWAY = "https://arweave.net";
 
 export function Verifier({ initialInput }: { initialInput?: string }) {
   const [input, setInput] = useState(initialInput ?? "");
@@ -25,6 +29,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [usedDemoChain, setUsedDemoChain] = useState(false);
 
   async function verify() {
     const raw = input.trim();
@@ -32,6 +37,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
     setLoading(true);
     setError(null);
     setResult(null);
+    setUsedDemoChain(false);
     try {
       const hex64 = raw.replace(/^0x/, "");
       const isTxHash = hex64.length === 64 && /^[0-9a-fA-F]{64}$/.test(hex64);
@@ -48,7 +54,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
         const ZERO_64 = "0".repeat(64);
         const chainGenesis =
           decoded.genesisHash === ZERO_64 ? hex64.toLowerCase() : decoded.genesisHash.toLowerCase();
-        const single = await verifySingleTx(txHash, chainGenesis, AMOY_RPC, GATEWAY);
+        const single = await verifySingleTx(txHash, chainGenesis, AMOY_RPC, ARWEAVE_GATEWAY);
         if (single.error || !single.blobValid) {
           setResult({
             genesisHash: chainGenesis,
@@ -75,9 +81,30 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
           });
         }
       } else {
-        const res = await verifyChainFromTxList(hex64, [], AMOY_RPC, GATEWAY);
+        const res = await verifyChainFromTxList(hex64, [], AMOY_RPC, ARWEAVE_GATEWAY);
         setResult(res);
       }
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function loadExampleChain() {
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    setUsedDemoChain(true);
+    setInput(DEMO_CHAIN_EVENT_TXES[DEMO_CHAIN_EVENT_TXES.length - 1] ?? DEMO_CHAIN_GENESIS_TX);
+    try {
+      const res = await verifyChainFromTxList(
+        DEMO_CHAIN_GENESIS_TX,
+        DEMO_CHAIN_EVENT_TXES,
+        DEMO_CHAIN_MAINNET_RPC,
+        ARWEAVE_GATEWAY
+      );
+      setResult(res);
     } catch (e) {
       setError((e as Error).message);
     } finally {
@@ -105,10 +132,21 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
           Verify chain
         </CardTitle>
         <CardDescription>
-          Enter a Polygon (Amoy) transaction hash or genesis hash to verify.
+          Enter a Polygon (Amoy) transaction hash or genesis hash to verify. Or load the example chain (HypotheticalPainting, Polygon mainnet).
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={loadExampleChain}
+          disabled={loading}
+          className="mb-2 flex items-center gap-1"
+        >
+          <BookOpen className="h-4 w-4" />
+          Load Example Chain
+        </Button>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-stretch">
           <Input
             placeholder="0x... or 64-char genesis/tx hash"
@@ -150,6 +188,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
               <ChainVisualizer
                 genesisHash={result.genesisHash}
                 nodes={chainNodes}
+                explorerBaseUrl={usedDemoChain ? "https://polygonscan.com" : undefined}
               />
             )}
           </div>

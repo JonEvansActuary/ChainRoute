@@ -8,7 +8,7 @@ import { EventBuilder, type EventForm } from "@/components/EventBuilder";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { getAnchorTxData } from "@/lib/chainroute/polygon-anchor";
+import { getAnchorTxData, AMOY_RPC } from "@/lib/chainroute/polygon-anchor";
 import {
   getPolygonTxPayload,
   decodePayloadFromHex,
@@ -17,7 +17,6 @@ import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address
 import { useAccount, useWalletClient } from "wagmi";
 import { Loader2, ArrowRight, UserPlus, CheckCircle2, AlertCircle } from "lucide-react";
 
-const AMOY_RPC = "https://rpc-amoy.polygon.technology";
 const ZERO_64 = "0".repeat(64);
 
 export default function ContinuePage() {
@@ -311,7 +310,7 @@ export default function ContinuePage() {
             </CardHeader>
             <CardContent className="space-y-3">
               <p className="font-mono text-xs text-chain-neon break-all">Tx: {anchorDone}</p>
-              <Link href={`/chain/${chainGenesis}`}>
+              <Link href={`/chain/${chainGenesis}?txes=${encodeURIComponent(anchorDone)}`}>
                 <Button variant="chain">View chain</Button>
               </Link>
             </CardContent>

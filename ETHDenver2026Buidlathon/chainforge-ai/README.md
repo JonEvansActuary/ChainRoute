@@ -4,7 +4,7 @@
 
 ETHDenver 2026 Buidlathon project. No-code/low-code dApp to create, delegate, and verify provenance chains using the [ChainRoute protocol](https://github.com/ChainRoute) (127-byte payload, Arweave blobs).
 
-**Scope:** MVP = create genesis, one event with supports and AI, anchor on Polygon, verify any tx and show QR. Stretch = Ledger signing and NFT metadata export (not in this build). See [DEMO-SCRIPT.md](./DEMO-SCRIPT.md) for the 2-minute demo script and pitch one-liner.
+**Scope:** Create genesis (wallet or **Ledger cold sign**), one event with supports and AI, anchor on Polygon, verify any tx, QR code, **one-click NFT metadata export**, and **Load Example Chain** (HypotheticalPainting) on Verify. See [DEMO-SCRIPT.md](./DEMO-SCRIPT.md) for the 2-minute demo script and [ONE-PAGER.md](./ONE-PAGER.md) for submission.
 
 ## Stack
 
@@ -39,13 +39,14 @@ Without Arweave keys, support upload and blob post show a clear message; you can
 
 ## Flow
 
-1. Connect Polygon (Amoy) wallet
-2. Create genesis transaction (127-byte payload)
+1. Connect Polygon (Amoy) wallet or **Ledger** (WebHID; enable Blind signing in Ethereum app)
+2. Create genesis (127-byte payload) — toggle **Ledger** to cold-sign on device
 3. Upload support files → optional AI labels → post to Arweave with `ChainRoute-Genesis` tag
 4. Build event (eventType + summary) with optional AI suggestion
 5. Post blob to Arweave → sign & send anchor tx on Polygon
-6. View chain at `/chain/[genesis]`, verify at `/verify`, QR code for verifier link  
-   - **Continue**: Use `/continue` to add events to an existing chain (paste genesis or tx hash).
+6. View chain at `/chain/[genesis]` → **Export NFT metadata** (ERC-721–style JSON)
+7. **Verify** at `/verify` — paste tx hash or click **Load Example Chain** (HypotheticalPainting, Polygon mainnet); QR code for physical items
+8. **Continue**: Use `/continue` to add events to an existing chain (paste genesis or tx hash)
 
 ## Deploy
 

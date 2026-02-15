@@ -13,7 +13,7 @@
 - **Differentiators**: (1) Real protocol with exact 127-byte payload and Arweave blob spec. (2) Optional Ledger Stax signing for “cold” provenance. (3) Public verifier + QR for physical-world use. (4) AI that labels supports and suggests event copy.
 - **2-minute demo script**: Connect wallet → Create genesis (one click or Ledger) → Upload 1–2 support files, show AI labels → Add one event with AI-suggested summary → Sign anchor → Open chain viewer → Paste tx on verifier page → Show QR. Keep Ledger as optional “wow” if time.
 
-**Scope**: MVP = wizard (genesis + one event with supports + AI labels) + verifier + chain viewer. Stretch = Ledger path, QR + NFT export, full HypotheticalPainting demo preload.
+**Scope**: MVP = wizard (genesis + one event with supports + AI labels) + verifier + chain viewer. **Stretch (implemented):** Ledger path (WebHID in GenesisWizard), QR + NFT metadata export (chain page), full HypotheticalPainting demo preload (Load Example Chain on Verify).
 
 ---
 

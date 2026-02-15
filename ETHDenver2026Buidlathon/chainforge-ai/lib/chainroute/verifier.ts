@@ -5,10 +5,11 @@
 import { decodePayload, type DecodedPayload } from "./build-payload";
 import { validateBlob } from "./validate-blob";
 import type { ProvenanceBlob } from "./types";
+import { ARWEAVE_GATEWAY } from "./constants";
 
 export type { DecodedPayload };
 
-const DEFAULT_ARWEAVE_GATEWAY = "https://arweave.net";
+const DEFAULT_ARWEAVE_GATEWAY = ARWEAVE_GATEWAY;
 const ARWEAVE_GRAPHQL = "https://arweave.net/graphql";
 
 export interface VerifiedAnchor {

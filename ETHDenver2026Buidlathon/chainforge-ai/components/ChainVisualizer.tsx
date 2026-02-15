@@ -34,6 +34,8 @@ interface ChainVisualizerProps {
     blob?: ProvenanceBlob;
   }>;
   className?: string;
+  /** When set (e.g. for Polygon mainnet demo chain), tx links use this base instead of amoy.polygonscan.com */
+  explorerBaseUrl?: string;
 }
 
 function buildNodesAndEdges(
@@ -43,7 +45,6 @@ function buildNodesAndEdges(
   const chainNodes: Node<ChainNodeData>[] = [];
   const edges: Edge[] = [];
   let y = 0;
-  const width = 260;
 
   nodes.forEach((n, i) => {
     const isGenesis = i === 0;
@@ -77,10 +78,13 @@ function buildNodesAndEdges(
 
 type NodeData = ChainNodeData;
 
-export function ChainVisualizer({ genesisHash, nodes, className = "" }: ChainVisualizerProps) {
+const AMOY_EXPLORER = "https://amoy.polygonscan.com";
+
+export function ChainVisualizer({ genesisHash, nodes, className = "", explorerBaseUrl }: ChainVisualizerProps) {
   const { nodes: initialNodes, edges: initialEdges } = buildNodesAndEdges(genesisHash, nodes);
   const [nodesState, setNodesState] = useNodesState(initialNodes);
   const [edgesState, setEdgesState] = useEdgesState(initialEdges);
+  const explorerBase = explorerBaseUrl ?? AMOY_EXPLORER;
 
   const nodeTypes: NodeTypes = {
     default: ({ data }) => (
@@ -88,7 +92,7 @@ export function ChainVisualizer({ genesisHash, nodes, className = "" }: ChainVis
         <div className="font-semibold text-chain-neon">{data.label}</div>
         {data.txHash && (
           <a
-            href={`https://amoy.polygonscan.com/tx/${data.txHash}`}
+            href={`${explorerBase}/tx/${data.txHash}`}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-1 block truncate text-xs text-muted-foreground hover:text-chain-neon"

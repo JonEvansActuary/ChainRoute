@@ -11,10 +11,9 @@ import {
   decodePayloadFromHex,
   fetchArweaveBlob,
 } from "@/lib/chainroute/verifier";
-import { ArrowLeft, Loader2, Info } from "lucide-react";
-
-const AMOY_RPC = "https://rpc-amoy.polygon.technology";
-const GATEWAY = "https://arweave.net";
+import { AMOY_RPC } from "@/lib/chainroute/polygon-anchor";
+import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
+import { ArrowLeft, Loader2, Info, Download } from "lucide-react";
 
 type NodeItem = {
   txHash: string;
@@ -53,7 +52,7 @@ export default function ChainPage() {
         const list: NodeItem[] = [{ txHash: genesisTxHash, decoded }];
         if (decoded.arweaveId) {
           try {
-            const blob = await fetchArweaveBlob(decoded.arweaveId, GATEWAY);
+            const blob = await fetchArweaveBlob(decoded.arweaveId, ARWEAVE_GATEWAY);
             if (list[0]) list[0].blob = blob;
           } catch {
             // ignore
@@ -72,7 +71,7 @@ export default function ChainPage() {
           const item: NodeItem = { txHash: eventTxHash, decoded: eventDecoded };
           if (eventDecoded.arweaveId) {
             try {
-              item.blob = await fetchArweaveBlob(eventDecoded.arweaveId, GATEWAY);
+              item.blob = await fetchArweaveBlob(eventDecoded.arweaveId, ARWEAVE_GATEWAY);
             } catch {
               // ignore
             }
@@ -110,10 +109,38 @@ export default function ChainPage() {
     );
   }
 
+  function exportNftMetadata() {
+    const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+    const verifyUrl = `${baseUrl}/verify?input=${genesis.startsWith("0x") ? genesis : `0x${genesis}`}`;
+    const events = nodes.slice(1).map((n, i) => ({
+      index: i + 1,
+      txHash: n.txHash,
+      decoded: n.decoded,
+      arweaveId: n.decoded?.arweaveId || null,
+      blob: n.blob ?? null,
+    }));
+    const metadata = {
+      name: "ChainRoute Provenance Chain",
+      description: "Provenance chain anchored on Polygon and Arweave (ChainRoute protocol).",
+      genesis: genesis.startsWith("0x") ? genesis : `0x${genesis}`,
+      events,
+      arweaveIds: nodes.map((n) => n.decoded?.arweaveId).filter(Boolean),
+      verifyUrl,
+      external_url: verifyUrl,
+    };
+    const blob = new Blob([JSON.stringify(metadata, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `chain-${genesis.slice(0, 16)}-metadata.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   return (
     <div className="min-h-screen">
       <header className="border-b border-border px-4 py-3">
-        <div className="mx-auto flex max-w-4xl items-center gap-4">
+        <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-2">
           <Link href="/">
             <Button variant="ghost" size="sm">
               <ArrowLeft className="h-4 w-4" />
@@ -125,6 +152,10 @@ export default function ChainPage() {
               Verify this chain
             </Button>
           </Link>
+          <Button variant="outline" size="sm" onClick={exportNftMetadata}>
+            <Download className="h-4 w-4" />
+            Export NFT metadata
+          </Button>
           <h1 className="text-lg font-semibold text-chain-neon">Chain</h1>
         </div>
       </header>
