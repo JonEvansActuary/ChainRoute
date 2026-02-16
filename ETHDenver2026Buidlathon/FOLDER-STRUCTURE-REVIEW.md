@@ -2,6 +2,8 @@
 
 Review date: Feb 12, 2026. This document summarizes inconsistencies and recommended updates for the ChainForge AI project layout and docs.
 
+**Updates applied (Feb 2026):** ProjectPlan Section 3 already includes `continue/page.tsx` and the lib/chainroute note (no arweave-utils, types in lib/chainroute). ProjectPlan tech table now states Arweave is used directly (no Bundlr). README includes `/continue` in Flow and references `.env.example`. `.env.example` exists in `chainforge-ai/`. Chain viewer has a "Verify this chain" link to `/verify`. No further structural changes required.
+
 ---
 
 ## 1. Current Layout (Actual)
@@ -14,7 +16,7 @@ ETHDenver2026Buidlathon/
 │   │   │   ├── ai/caption/route.ts, suggest-event/route.ts
 │   │   │   └── arweave/post-blob/route.ts, post-support/route.ts
 │   │   ├── chain/[genesis]/page.tsx
-│   │   ├── continue/page.tsx      # ← Not in ProjectPlan Section 3
+│   │   ├── continue/page.tsx
 │   │   ├── verify/page.tsx
 │   │   ├── globals.css, layout.tsx, page.tsx
 │   │   └── (no app-level loading/error/not-found)

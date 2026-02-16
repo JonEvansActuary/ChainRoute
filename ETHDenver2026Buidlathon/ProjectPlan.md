@@ -50,7 +50,7 @@ All paths above are relative to the **ChainRoute repo root**.
 | **UI** | shadcn/ui + Radix + Lucide icons + **reactflow** (chain tree) |
 | **Wallet & signing** | wagmi + viem (preferred) or ethers v6 to align with `docs/code/` |
 | **ChainRoute** | Copy/adapt from `docs/code/`: see Section 5 |
-| **Arweave** | `arweave` npm + Bundlr (MATIC-funded) where applicable |
+| **Arweave** | `arweave` npm (direct post; Bundlr not required) |
 | **AI** | Grok API or OpenAI (vision + text) for captions and event summary |
 | **QR** | `qrcode.react` |
 | **Deploy** | Vercel + **Polygon Amoy testnet** (Chain ID 80002; Mumbai is deprecated) |
