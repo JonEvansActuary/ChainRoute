@@ -125,7 +125,7 @@ export function SupportUploader({
             caption: data.caption,
           };
           onSupportsChange(list);
-        } catch (_) {
+        } catch {
           // ignore
         }
       };

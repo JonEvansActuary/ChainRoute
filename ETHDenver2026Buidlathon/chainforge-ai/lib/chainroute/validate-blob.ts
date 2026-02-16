@@ -2,7 +2,7 @@
  * Validate a ChainRoute Arweave main provenance blob (JSON).
  */
 
-import type { ProvenanceBlob, ValidateBlobResult } from "./types";
+import type { ValidateBlobResult } from "./types";
 
 const GENESIS_PATTERN = /^[0-9a-fA-F]{64}$/;
 const SUPPORT_ID_PATTERN = /^[a-zA-Z0-9_-]{43}$/;

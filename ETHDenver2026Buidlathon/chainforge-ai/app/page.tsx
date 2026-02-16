@@ -12,7 +12,7 @@ import { getAnchorTxData } from "@/lib/chainroute/polygon-anchor";
 import { useAccount, useWalletClient } from "wagmi";
 import { Input } from "@/components/ui/input";
 import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address";
-import { Loader2, Link2, QrCode, ArrowRight, UserPlus } from "lucide-react";
+import { Loader2, QrCode, ArrowRight, UserPlus } from "lucide-react";
 import { QRCodeModal } from "@/components/QRCodeModal";
 
 const ZERO_64 = "0".repeat(64);

@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Sparkles, Loader2 } from "lucide-react";
-import type { SupportItem } from "@/lib/chainroute/types";
 
 export interface EventForm {
   eventType: string;
