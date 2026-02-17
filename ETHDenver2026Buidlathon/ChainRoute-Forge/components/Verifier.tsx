@@ -18,8 +18,9 @@ import {
   DEMO_CHAIN_EVENT_TXES,
   DEMO_CHAIN_MAINNET_RPC,
 } from "@/lib/demo-chain";
-import { CheckCircle2, XCircle, Loader2, Search, BookOpen } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Search, BookOpen, QrCode } from "lucide-react";
 import { ChainVisualizer } from "./ChainVisualizer";
+import { QRCodeModal } from "./QRCodeModal";
 
 export function Verifier({ initialInput }: { initialInput?: string }) {
   const [input, setInput] = useState(initialInput ?? "");
@@ -30,6 +31,8 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [usedDemoChain, setUsedDemoChain] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
+  const [qrVerifyUrl, setQrVerifyUrl] = useState("");
 
   async function verify() {
     const raw = input.trim();
@@ -162,7 +165,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
         {error && <p className="text-sm text-destructive">{error}</p>}
         {result && (
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {result.valid ? (
                 <CheckCircle2 className="h-5 w-5 text-chain-neon" />
               ) : (
@@ -171,6 +174,23 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
               <span className={result.valid ? "text-chain-neon" : "text-destructive"}>
                 {result.valid ? "Chain valid" : "Verification failed"}
               </span>
+              {result.valid && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const raw = input.trim();
+                    const hex = raw.startsWith("0x") ? raw : `0x${raw}`;
+                    setQrVerifyUrl(typeof window !== "undefined" ? `${window.location.origin}/verify?input=${encodeURIComponent(hex)}` : "");
+                    setQrOpen(true);
+                  }}
+                  className="ml-auto flex items-center gap-1"
+                >
+                  <QrCode className="h-4 w-4" />
+                  Show QR
+                </Button>
+              )}
             </div>
             {result.polygon.errors.length > 0 && (
               <ul className="text-sm text-destructive">
@@ -194,6 +214,12 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
           </div>
         )}
       </CardContent>
+      <QRCodeModal
+        open={qrOpen}
+        onClose={() => setQrOpen(false)}
+        verifyUrl={qrVerifyUrl}
+        title="Scan to verify"
+      />
     </Card>
   );
 }

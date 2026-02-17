@@ -27,7 +27,7 @@ export default async function VerifyPage({ searchParams }: Props) {
       <main className="mx-auto max-w-2xl px-4 py-8">
         <h1 className="mb-6 text-2xl font-bold">Verify provenance chain</h1>
         <p className="mb-4 text-sm text-muted-foreground">
-          Paste a Polygon (Amoy) transaction hash or genesis hash. To try without creating a chain: create a genesis and one event on the home page first, then paste the event tx hash here.
+          Paste a Polygon (Amoy) transaction hash or genesis hash. Or click **Load Example Chain** below to try the HypotheticalPainting demo (no wallet needed).
         </p>
         <Verifier initialInput={initialInput} />
       </main>

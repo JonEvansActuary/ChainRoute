@@ -13,6 +13,8 @@ This folder contains the ChainRoute-Forge project and planning docs for the Buid
 | [TODO.md](./TODO.md) | Must-do schedule (Camp BUIDL Feb 15–17, event Feb 18–21, MST). |
 | [FOLDER-STRUCTURE-REVIEW.md](./FOLDER-STRUCTURE-REVIEW.md) | Layout review and consistency notes. |
 | [BUIDLATHON-EVALUATION.md](./BUIDLATHON-EVALUATION.md) | Honest assessment and fit for ETHDenver 2026. |
+| [SUBMISSION-CHECKLIST.md](./SUBMISSION-CHECKLIST.md) | What’s implemented + Loom, PDF, QR cards, Devfolio steps. |
+| [SuggestedImprovements.txt](./SuggestedImprovements.txt) | Acceleration plan (all four recommendations implemented). |
 
 ## Quick start
 
