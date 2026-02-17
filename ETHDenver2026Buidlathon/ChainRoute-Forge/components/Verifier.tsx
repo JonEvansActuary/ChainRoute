@@ -19,6 +19,8 @@ import {
   DEMO_CHAIN_MAINNET_RPC,
 } from "@/lib/demo-chain";
 import { CheckCircle2, XCircle, Loader2, Search, BookOpen, QrCode } from "lucide-react";
+
+const DEMO_CHAIN_CACHE_KEY = "chainroute-forge-demo-chain-result";
 import { ChainVisualizer } from "./ChainVisualizer";
 import { QRCodeModal } from "./QRCodeModal";
 
@@ -95,11 +97,27 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
   }
 
   async function loadExampleChain() {
-    setLoading(true);
-    setError(null);
-    setResult(null);
     setUsedDemoChain(true);
     setInput(DEMO_CHAIN_EVENT_TXES[DEMO_CHAIN_EVENT_TXES.length - 1] ?? DEMO_CHAIN_GENESIS_TX);
+    setError(null);
+
+    if (typeof sessionStorage !== "undefined") {
+      try {
+        const cached = sessionStorage.getItem(DEMO_CHAIN_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached) as VerifyResult;
+          setResult(parsed);
+          setLoading(false);
+          void revalidateDemoChainInBackground();
+          return;
+        }
+      } catch {
+        // ignore stale/invalid cache
+      }
+    }
+
+    setLoading(true);
+    setResult(null);
     try {
       const res = await verifyChainFromTxList(
         DEMO_CHAIN_GENESIS_TX,
@@ -108,11 +126,40 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
         ARWEAVE_GATEWAY
       );
       setResult(res);
+      if (typeof sessionStorage !== "undefined" && res.valid) {
+        try {
+          sessionStorage.setItem(DEMO_CHAIN_CACHE_KEY, JSON.stringify(res));
+        } catch {
+          // ignore quota etc.
+        }
+      }
     } catch (e) {
       setError((e as Error).message);
     } finally {
       setLoading(false);
     }
+  }
+
+  function revalidateDemoChainInBackground() {
+    verifyChainFromTxList(
+      DEMO_CHAIN_GENESIS_TX,
+      DEMO_CHAIN_EVENT_TXES,
+      DEMO_CHAIN_MAINNET_RPC,
+      ARWEAVE_GATEWAY
+    )
+      .then((res) => {
+        if (res.valid && typeof sessionStorage !== "undefined") {
+          try {
+            sessionStorage.setItem(DEMO_CHAIN_CACHE_KEY, JSON.stringify(res));
+            setResult(res);
+          } catch {
+            // ignore
+          }
+        }
+      })
+      .catch(() => {
+        // keep showing cached result
+      });
   }
 
   const chainNodes = result

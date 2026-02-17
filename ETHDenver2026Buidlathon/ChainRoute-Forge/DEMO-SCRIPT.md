@@ -7,6 +7,16 @@
 
 ---
 
+## Pre-demo checklist (5–10 min before)
+
+1. **Browser:** Use **Chrome or Edge** (Ledger WebHID and app work best). Avoid Safari for Ledger.
+2. **Smoke test:** Open the live app → go to **Verify** → click **Load Example Chain** once. If it loads, RPC and Arweave are reachable; the result is cached for instant repeat demos.
+3. **Wallet:** Ensure your wallet is on **Polygon Amoy** (Chain ID **80002**). Switch network in MetaMask/wallet if needed.
+4. **MATIC on Amoy:** You need a little MATIC to sign genesis and anchor txs. Faucet: **https://faucet.polygon.technology** (select Polygon Amoy).
+5. **Ledger (if using):** Connect the device once and enable **Blind signing** (or Contract data) in the Ethereum app so you’re not fumbling during the demo.
+
+---
+
 ## 2-minute script (90 seconds)
 
 1. **Table opener (optional):** Hand judge a physical QR card.  
@@ -50,8 +60,10 @@
 
 - **No Arweave key:** *“Upload and blob post need server keys. You can still create genesis and use Verify with existing chains.”*
 - **No AI key:** *“AI is optional; labels and event can be filled manually.”*
-- **Ledger:** *“Use Chrome/Edge with WebHID; enable Blind signing or Contract data in the Ethereum app.”*
+- **Ledger:** *“Use Chrome or Edge with WebHID; enable Blind signing or Contract data in the Ethereum app.”*
+- **Wrong network / no MATIC:** *“Switch to Polygon Amoy (Chain ID 80002) and get test MATIC from faucet.polygon.technology.”*
 - **Chain view only shows genesis:** *“Paste the latest tx hash on Verify to see the full chain and blob.”*
+- **Slow or timeout:** *“Network might be slow here—let me show the example chain instead.”* Click **Load Example Chain** (cached load is instant if you ran the pre-demo check).
 
 ---
 

@@ -32,6 +32,8 @@ Open [http://localhost:3000](http://localhost:3000).
 
 Copy `.env.example` to `.env` and fill in as needed (all keys optional for basic run).
 
+- **RPC (recommended for demos):** `NEXT_PUBLIC_AMOY_RPC` and optionally `NEXT_PUBLIC_POLYGON_MAINNET_RPC` – provider URLs (e.g. Alchemy, Infura) for Polygon Amoy and mainnet. Improves reliability and reduces rate limits vs public RPCs.
+- **Arweave read (optional):** `NEXT_PUBLIC_ARWEAVE_GATEWAY` and/or `NEXT_PUBLIC_ARWEAVE_GRAPHQL` – gateway URL for fetching blobs and GraphQL URL for tag lookups. Use an alternate gateway if you need better reliability than the default arweave.net.
 - `OPENAI_API_KEY` or `GROK_API_KEY` – for AI caption and event suggestions
 - `ARWEAVE_KEY_PATH` or `ARWEAVE_JWK` – for posting supports and blobs to Arweave (server)
 
@@ -50,4 +52,4 @@ Without Arweave keys, support upload and blob post show a clear message; you can
 
 ## Deploy
 
-Vercel-ready. Run `npm run build` to verify production build. Set env vars in the Vercel dashboard. Use Polygon Amoy (Chain ID 80002) for testnet. Share the live URL in your Buidlathon submission.
+Vercel-ready. Run `npm run build` to verify production build. Set env vars in the Vercel dashboard (same as local: RPC, Arweave read, AI, Arweave keys). Use Polygon Amoy (Chain ID 80002) for testnet. Before the event, smoke-test the live URL (e.g. open Verify → **Load Example Chain**). Share the live URL in your Buidlathon submission.
