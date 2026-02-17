@@ -32,7 +32,7 @@ ETHDenver2026Buidlathon/
 │   ├── next-env.d.ts, next.config.ts, package.json, postcss.config.mjs
 │   ├── tailwind.config.ts, tsconfig.json, vercel.json
 │   └── README.md
-├── ChainForge-AI-Presentation.html
+├── chainforge-ai-presentation.html
 ├── LICENSE
 └── ProjectPlan.md
 ```
@@ -59,16 +59,16 @@ ETHDenver2026Buidlathon/
 
 ### 2.3 Missing files / config
 
-- **.env.example** – Not present. Recommended: add with placeholders for `OPENAI_API_KEY`, `GROK_API_KEY`, `ARWEAVE_KEY_PATH`, `ARWEAVE_JWK` (and note that values are optional for basic run).
-- **ESLint config** – No `eslint.config.mjs` or `.eslintrc` in `chainforge-ai`. `package.json` has `"lint": "next lint"` and devDependencies include `eslint` and `eslint-config-next`. Next 15 can work without an explicit config; adding an `eslint.config.mjs` is optional for clarity and future overrides.
+- **.env.example** – Done. Added under `chainforge-ai/` with placeholders for the four env vars (optional for basic run).
+- **ESLint config** – Done. Added `eslint.config.mjs` using FlatCompat to extend `next/core-web-vitals` and `next/typescript`.
 
 ### 2.4 Naming
 
-- **Root** – `ChainForge-AI-Presentation.html` uses “ChainForge-AI” and capitals; app folder and package are `chainforge-ai`. Acceptable; optional normalization would be e.g. `chainforge-ai-presentation.html` for consistency.
+- **Root** – `ChainForge-AI-Presentation.html` uses “ChainForge-AI” and capitals; app folder and package are `chainforge-ai`. Acceptable; Done: renamed to `chainforge-ai-presentation.html` for consistency.
 
 ### 2.5 UX / navigation
 
-- **Chain viewer** – `/chain/[genesis]` has no link to “Verify this chain” (e.g. to `/verify` with genesis/tx pre-filled). Adding such a link would improve discoverability of the verifier.
+- **Chain viewer** – `/chain/[genesis]` has no link to “Verify this chain” (e.g. to `/verify` with genesis/tx pre-filled). Done: link added.
 
 ---
 
@@ -87,4 +87,10 @@ ETHDenver2026Buidlathon/
 1. **ProjectPlan.md** – Add `app/continue/page.tsx` to Section 3 structure; align lib/chainroute and dependencies (no `arweave-utils.ts`, no Bundlr unless re-added); optionally note `public/demo/` and types location.
 2. **README.md** – Add `/continue` to the Flow section; optionally clarify `cd` from Buidlathon folder; reference `.env.example` for env setup.
 3. **.env.example** – Add under `chainforge-ai/` with commented placeholders for the env vars in README.
-4. **Optional** – Add “Verify this chain” link on `/chain/[genesis]` to `/verify`; add `eslint.config.mjs` if you want explicit ESLint config; align presentation filename if you care about naming consistency.
+4. **Optional** – Add “Verify this chain” link on `/chain/[genesis]` to `/verify`; add `eslint.config.mjs` if you want explicit ESLint config; align presentation filename—all done (link, eslint.config.mjs, presentation renamed). See Section 5.
+
+---
+
+## 5. Implementation status (post-update)
+
+All recommended updates from Section 4 have been implemented. ProjectPlan and README reflect the current structure; `.env.example`, `eslint.config.mjs`, chain viewer Verify link, and presentation filename are in place. Lint passes (`npm run lint`); remaining react-hooks/exhaustive-deps warnings are intentional (stable dependency keys).
