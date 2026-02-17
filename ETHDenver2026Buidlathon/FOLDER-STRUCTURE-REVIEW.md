@@ -1,8 +1,8 @@
 # Folder Structure Review – ETHDenver2026Buidlathon
 
-Review date: Feb 12, 2026. This document summarizes inconsistencies and recommended updates for the ChainForge AI project layout and docs.
+Review date: Feb 12, 2026. This document summarizes inconsistencies and recommended updates for the ChainRoute-Forge project layout and docs.
 
-**Updates applied (Feb 2026):** ProjectPlan Section 3 already includes `continue/page.tsx` and the lib/chainroute note (no arweave-utils, types in lib/chainroute). ProjectPlan tech table now states Arweave is used directly (no Bundlr). README includes `/continue` in Flow and references `.env.example`. `.env.example` exists in `chainforge-ai/`. Chain viewer has a "Verify this chain" link to `/verify`. No further structural changes required.
+**Updates applied (Feb 2026):** ProjectPlan Section 3 already includes `continue/page.tsx` and the lib/chainroute note (no arweave-utils, types in lib/chainroute). ProjectPlan tech table now states Arweave is used directly (no Bundlr). README includes `/continue` in Flow and references `.env.example`. `.env.example` exists in `ChainRoute-Forge/`. Chain viewer has a "Verify this chain" link to `/verify`. No further structural changes required.
 
 ---
 
@@ -10,7 +10,7 @@ Review date: Feb 12, 2026. This document summarizes inconsistencies and recommen
 
 ```
 ETHDenver2026Buidlathon/
-├── chainforge-ai/           # Next.js app
+├── ChainRoute-Forge/        # Next.js app
 │   ├── app/
 │   │   ├── api/
 │   │   │   ├── ai/caption/route.ts, suggest-event/route.ts
@@ -32,7 +32,7 @@ ETHDenver2026Buidlathon/
 │   ├── next-env.d.ts, next.config.ts, package.json, postcss.config.mjs
 │   ├── tailwind.config.ts, tsconfig.json, vercel.json
 │   └── README.md
-├── chainforge-ai-presentation.html
+├── ChainRoute-Forge-presentation.html
 ├── LICENSE
 └── ProjectPlan.md
 ```
@@ -54,17 +54,17 @@ ETHDenver2026Buidlathon/
 ### 2.2 README.md
 
 - **Flow** – Documents “View chain at `/chain/[genesis]`, verify at `/verify`” but does not mention **Continue** (`/continue`). Users need to know they can continue an existing chain.
-- **Run instructions** – “cd ETHDenver2026Buidlathon/chainforge-ai” is correct from repo root; consider adding “or `cd chainforge-ai` when already in ETHDenver2026Buidlathon.”
+- **Run instructions** – “cd ETHDenver2026Buidlathon/ChainRoute-Forge” is correct from repo root; consider adding “or `cd ChainRoute-Forge` when already in ETHDenver2026Buidlathon.”
 - **Env** – Env vars are described but there is no `.env.example`; adding one improves local setup.
 
 ### 2.3 Missing files / config
 
-- **.env.example** – Done. Added under `chainforge-ai/` with placeholders for the four env vars (optional for basic run).
+- **.env.example** – Done. Added under `ChainRoute-Forge/` with placeholders for the four env vars (optional for basic run).
 - **ESLint config** – Done. Added `eslint.config.mjs` using FlatCompat to extend `next/core-web-vitals` and `next/typescript`.
 
 ### 2.4 Naming
 
-- **Root** – `ChainForge-AI-Presentation.html` uses “ChainForge-AI” and capitals; app folder and package are `chainforge-ai`. Acceptable; Done: renamed to `chainforge-ai-presentation.html` for consistency.
+- **Root** – `ChainRoute-Forge-Presentation.html` uses “ChainRoute-Forge” and capitals; app folder and package are `chainroute-forge`. Acceptable; Done: renamed to `ChainRoute-Forge-presentation.html` for consistency.
 
 ### 2.5 UX / navigation
 
@@ -86,7 +86,7 @@ ETHDenver2026Buidlathon/
 
 1. **ProjectPlan.md** – Add `app/continue/page.tsx` to Section 3 structure; align lib/chainroute and dependencies (no `arweave-utils.ts`, no Bundlr unless re-added); optionally note `public/demo/` and types location.
 2. **README.md** – Add `/continue` to the Flow section; optionally clarify `cd` from Buidlathon folder; reference `.env.example` for env setup.
-3. **.env.example** – Add under `chainforge-ai/` with commented placeholders for the env vars in README.
+3. **.env.example** – Add under `ChainRoute-Forge/` with commented placeholders for the env vars in README.
 4. **Optional** – Add “Verify this chain” link on `/chain/[genesis]` to `/verify`; add `eslint.config.mjs` if you want explicit ESLint config; align presentation filename—all done (link, eslint.config.mjs, presentation renamed). See Section 5.
 
 ---

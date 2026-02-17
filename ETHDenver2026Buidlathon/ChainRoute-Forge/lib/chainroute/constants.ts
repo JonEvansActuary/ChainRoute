@@ -1,5 +1,5 @@
 /**
- * Shared ChainRoute / ChainForge config (single source of truth).
+ * Shared ChainRoute / ChainRoute-Forge config (single source of truth).
  */
 
 export const AMOY_RPC = "https://rpc-amoy.polygon.technology";

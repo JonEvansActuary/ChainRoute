@@ -1,4 +1,4 @@
-# ChainForge AI – ETHDenver 2026 Buidlathon Evaluation
+# ChainRoute-Forge – ETHDenver 2026 Buidlathon Evaluation
 
 **Purpose**: Honest assessment of the project’s likelihood of winning or making a strong showing at ETHDenver 2026 Buidlathon (solo submission).  
 **Date**: Feb 12, 2026.
@@ -16,13 +16,13 @@
 | **Biggest upside** | Protocol credibility (127-byte spec, Arweave + Polygon), AI differentiation, and “no smart contracts” story. |
 | **Biggest risk** | Largely mitigated: chain view now shows genesis + events when `?txes=` is used; graceful messages when keys missing. |
 
-**Bottom line**: With the improvements applied, the project is well positioned for a **good showing** (finalist / category mention / sponsor bounties). Rehearse the 2-minute script in `chainforge-ai/DEMO-SCRIPT.md` and set env for full flow.
+**Bottom line**: With the improvements applied, the project is well positioned for a **good showing** (finalist / category mention / sponsor bounties). Rehearse the 2-minute script in `ChainRoute-Forge/DEMO-SCRIPT.md` and set env for full flow.
 
 ---
 
 ## 2. Fit vs. ETHDenver 2026
 
-- **Track**: Best fit is **ETHERSPACE** (user-owned internet, creator economies, NFTs). Provenance is core to creator economies and asset authenticity; ChainForge is a builder tool for that.
+- **Track**: Best fit is **ETHERSPACE** (user-owned internet, creator economies, NFTs). Provenance is core to creator economies and asset authenticity; ChainRoute-Forge is a builder tool for that.
 - **Judging** (using common hackathon criteria):  
   - **Tech implementation**: Strong protocol layer and payload handling; chain discovery and full-chain verification are only partial.  
   - **Creativity**: High – AI-assisted labeling, no-contract anchoring, QR for physical world.  
@@ -83,7 +83,7 @@
 ### 5.1 High impact ✅
 
 1. **Chain viewer shows more than genesis** – **Done.** `?txes=eventTxHash` supported; “View chain” from success step includes the new event; helper copy when only genesis is shown.
-2. **Rehearse the 2-minute script** – **Doc added.** See `chainforge-ai/DEMO-SCRIPT.md` for script and fallbacks.
+2. **Rehearse the 2-minute script** – **Doc added.** See `ChainRoute-Forge/DEMO-SCRIPT.md` for script and fallbacks.
 3. **One-line scope statement** – **Done.** In README and DEMO-SCRIPT.md (MVP vs stretch).
 
 ### 5.2 Medium impact ✅
@@ -117,6 +117,6 @@ Using a simple 1–5 scale (5 = best):
 
 ## 7. Summary
 
-- **Probability of winning (track or overall)**: **Moderate** – Competitive idea and implementation; chain viewer and narrative improvements applied. Rehearse using `chainforge-ai/DEMO-SCRIPT.md`.
+- **Probability of winning (track or overall)**: **Moderate** – Competitive idea and implementation; chain viewer and narrative improvements applied. Rehearse using `ChainRoute-Forge/DEMO-SCRIPT.md`.
 - **Probability of a good showing** (finalist, category mention, sponsor bounty): **High** – Real protocol, working E2E, AI, verifier with support tags, and QR are in place; graceful degradation when keys are missing.
 - **Done before submission**: Chain viewer with `?txes=`, scope statement, demo script and ONE-PAGER, support tags in Verifier, Ledger and NFT export and Load Example Chain, graceful degradation, deploy note. Run `npm run build` and deploy; share live URL in submission.
