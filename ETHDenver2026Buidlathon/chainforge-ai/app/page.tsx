@@ -78,12 +78,14 @@ export default function HomePage() {
         {/* Arweave data layer */}
         <section className="mb-12">
           <div className="rounded-lg border border-purple-500/30 bg-purple-500/5 p-5">
-            <h3 className="mb-2 font-semibold text-purple-400">Optional: Arweave data layer</h3>
+            <h3 className="mb-2 font-semibold text-purple-400">Arweave data layer</h3>
             <p className="text-sm text-muted-foreground">
-              The 43-byte <span className="font-mono text-purple-400">arweaveId</span> field can
-              link each anchor to a permanent JSON blob on Arweave containing event metadata,
-              timestamps, and references to support files (images, PDFs, etc). The core chaining
-              protocol works with or without it.
+              The 43-byte <span className="font-mono text-purple-400">arweaveId</span> field
+              links each anchor to a permanent JSON blob on Arweave containing event metadata,
+              timestamps, and references to support files (images, PDFs, etc). Arweave provides
+              the immutable data storage that complements Polygon&apos;s immutable chaining
+              &mdash; together they form the two pillars of ChainRoute. The demo below lets you
+              explore the chaining protocol without needing AR tokens.
             </p>
           </div>
         </section>
