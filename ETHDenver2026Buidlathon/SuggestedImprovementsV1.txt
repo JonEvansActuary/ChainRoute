@@ -1,6 +1,6 @@
-# ChainForge AI – Acceleration Plan: Recommendations to Greatly Improve ETHDenver 2026 Buidlathon Odds
+# ChainRoute-Forge – Acceleration Plan: Recommendations to Greatly Improve ETHDenver 2026 Buidlathon Odds
 
-**Project**: ChainForge AI  
+**Project**: ChainRoute-Forge  
 **Tagline**: *Forge unbreakable provenance chains in minutes. AI co-pilots the story; ChainRoute anchors it forever on Polygon + Arweave.*  
 **Protocol Foundation**: Every recommendation below is **100% anchored in the ChainRoute provenance protocol v0.1** (127-byte payloads, Arweave blobs with `ChainRoute-Genesis` tags, Polygon Amoy anchors, client-side verification). No deviations—enhancements amplify the exact spec from `protocol.md` and `docs/code/`.  
 **Date**: February 15, 2026 (48 hours pre-Buidlathon kickoff; bounties live, ETHERSPACE track open).  

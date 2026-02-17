@@ -1,4 +1,4 @@
-# ChainForge AI – Must-Do List (ETHDenver 2026 Buidlathon)
+# ChainRoute-Forge – Must-Do List (ETHDenver 2026 Buidlathon)
 
 **All times MST.**  
 **Event:** Feb 18–21 · National Western Center · ETHERSPACE track + sponsor bounties.
@@ -73,8 +73,8 @@ All must-do tasks below are scheduled **before 9 AM** or **after 5 PM** on those
 ## Quick reference
 
 - **Camp BUIDL:** Feb 15–17, 9 AM–5 PM, CSU Spur Hydro Building (attend all sessions).
-- **Demo script:** `chainforge-ai/DEMO-SCRIPT.md`
-- **One-pager:** `chainforge-ai/ONE-PAGER.md`
+- **Demo script:** `ChainRoute-Forge/DEMO-SCRIPT.md`
+- **One-pager:** `ChainRoute-Forge/ONE-PAGER.md`
 - **Live app:** [Your Vercel URL]
 - **Bounties:** ETHERSPACE, Polygon (Amoy), Arweave, Base
 
@@ -121,7 +121,7 @@ Use these for each item in the tables above. Check off the item only after compl
 2. Optional: add a query so the QR encodes a specific chain, e.g. `?input=<txHash>` or use **Load Example Chain** and then capture the URL shown.
 3. Use a QR generator (in-app QR modal, or a site like qr-code-generator.com) to create a QR that points to that Verify URL.
 4. Save the QR as an image (PNG/SVG) or screenshot the app’s QR modal.
-5. In a doc or design tool, create a simple card layout: QR code + one line of text (e.g. “Scan — real provenance chain (ChainForge AI)”).
+5. In a doc or design tool, create a simple card layout: QR code + one line of text (e.g. “Scan — real provenance chain (ChainRoute-Forge)”).
 6. Print 5 copies (hotel printer, or cardstock at a print shop). Cut to card size if needed.
 7. Keep the 5 cards with your demo kit.
 
@@ -129,9 +129,9 @@ Use these for each item in the tables above. Check off the item only after compl
 
 ### Feb 15 · 9:00 PM — Fill in ONE-PAGER (Deploy URL + screenshot note)
 
-1. Open `chainforge-ai/ONE-PAGER.md` in an editor.
+1. Open `ChainRoute-Forge/ONE-PAGER.md` in an editor.
 2. Find the line with **`[Deploy URL]`** (in the “Live link” section).
-3. Replace `[Deploy URL]` with your actual live URL (e.g. `https://chainforge-ai.vercel.app`). Keep the rest of the sentence if there’s an example.
+3. Replace `[Deploy URL]` with your actual live URL (e.g. `https://chainroute-forge.vercel.app`). Keep the rest of the sentence if there’s an example.
 4. In the **Screenshot** section, add a short note for yourself: e.g. “Insert: Connect → Genesis (with Ledger toggle) → Verify with Load Example Chain and QR” so you know what to capture before exporting to PDF.
 5. Save the file. You will export this to PDF on Feb 16 morning.
 
@@ -139,7 +139,7 @@ Use these for each item in the tables above. Check off the item only after compl
 
 ### Feb 16 · 7:00 AM — Record 90-second Loom
 
-1. Open `chainforge-ai/DEMO-SCRIPT.md` and read the 2-minute script (sections 1–8).
+1. Open `ChainRoute-Forge/DEMO-SCRIPT.md` and read the 2-minute script (sections 1–8).
 2. Prepare the app: live Vercel URL open, wallet or Ledger ready, no extra tabs needed for the flow.
 3. Start Loom (or similar) and choose “Screen + camera” or “Screen only”; set for ~90 seconds max.
 4. Run the script in order: (1) optional QR card opener, (2) Connect wallet or Ledger, (3) Create genesis (show Ledger if using), (4) Upload 1–2 supports + AI label if available, (5) Build event + AI suggest if available, (6) Post blob & sign anchor, (7) View chain + Export NFT metadata, (8) Verify + Load Example Chain + QR. Speak the talking points from DEMO-SCRIPT.md; keep under 90 seconds.
@@ -149,17 +149,17 @@ Use these for each item in the tables above. Check off the item only after compl
 
 ### Feb 16 · 7:45 AM — Export one-pager to PDF
 
-1. Open `chainforge-ai/ONE-PAGER.md` (with `[Deploy URL]` already replaced).
+1. Open `ChainRoute-Forge/ONE-PAGER.md` (with `[Deploy URL]` already replaced).
 2. Optional: add a screenshot to the Screenshot section (paste image under the “Insert: …” line if your editor supports it).
 3. Export to PDF: use VS Code “Markdown PDF” extension, or paste the rendered markdown into Google Docs / Word and export as PDF, or use a site like md2pdf.
-4. Save the file as e.g. `ChainForge-AI-One-Pager.pdf` in a folder you can find for Devfolio.
+4. Save the file as e.g. `ChainRoute-Forge-One-Pager.pdf` in a folder you can find for Devfolio.
 5. Open the PDF and confirm the live link and formatting look correct.
 
 ---
 
 ### Feb 16 · 5:30 PM — npm run build and deploy to Vercel
 
-1. In a terminal, go to the app: `cd ETHDenver2026Buidlathon/chainforge-ai` (or `cd chainforge-ai` if already in Buidlathon).
+1. In a terminal, go to the app: `cd ETHDenver2026Buidlathon/ChainRoute-Forge` (or `cd ChainRoute-Forge` if already in Buidlathon).
 2. Run `npm run build`. Wait for completion.
 3. If the build fails: read the error (e.g. TypeScript, missing env, lint). Fix the cause (code or config), then run `npm run build` again until it succeeds.
 4. If using Vercel CLI: run `vercel --prod` (or `vercel` then promote), or push to the connected Git branch and let Vercel auto-deploy.
@@ -181,7 +181,7 @@ Use these for each item in the tables above. Check off the item only after compl
 ### Feb 16 · 6:30 PM — Rehearse 2-minute demo with full env (Arweave + AI keys)
 
 1. Ensure your machine and Vercel env have Arweave and AI keys set so support upload and AI suggestions work.
-2. Open the live app and `chainforge-ai/DEMO-SCRIPT.md` side by side.
+2. Open the live app and `ChainRoute-Forge/DEMO-SCRIPT.md` side by side.
 3. Run the full demo once: Connect → genesis (Ledger if desired) → upload supports with AI label → build event with AI suggest → post blob & anchor → View chain → Export NFT metadata → Verify → Load Example Chain → show QR.
 4. Time yourself; stay under 2 minutes. If over, trim talking points or skip one optional step (e.g. second support file).
 5. Note any stumbles or slow parts; practice those once more so the 2-minute run is smooth.
@@ -201,10 +201,10 @@ Use these for each item in the tables above. Check off the item only after compl
 
 1. Go to the ETHDenver 2026 Devfolio (or official submission URL from the event).
 2. Find the project submission form for ETHERSPACE (and any bounty tracks).
-3. Fill in project name (e.g. ChainForge AI), tagline, description (you can use the one-pager text or README summary).
+3. Fill in project name (e.g. ChainRoute-Forge), tagline, description (you can use the one-pager text or README summary).
 4. Set **ETHERSPACE** as the primary track; add bounties: **Polygon** (Amoy), **Arweave**, **Base** as applicable.
 5. In “Video” or “Demo link”, paste your Loom URL (the 90-second recording from Feb 16).
-6. In “Document” or “PDF”, attach your one-pager PDF (ChainForge-AI-One-Pager.pdf).
+6. In “Document” or “PDF”, attach your one-pager PDF (ChainRoute-Forge-One-Pager.pdf).
 7. Add the live app URL in the designated field.
 8. Review all fields; submit. Save the confirmation or submission link.
 

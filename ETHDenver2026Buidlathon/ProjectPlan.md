@@ -1,7 +1,7 @@
-# ChainForge AI – Build Plan & Cursor Instructions
+# ChainRoute-Forge – Build Plan & Cursor Instructions
 
 **ETHDenver 2026 Buidlathon (Solo)**  
-**Project**: ChainForge AI  
+**Project**: ChainRoute-Forge  
 **Tagline**: *Forge unbreakable provenance chains in minutes. AI co-pilots the story; ChainRoute anchors it forever on Polygon + Arweave.*
 
 ---
@@ -73,10 +73,10 @@ Add shadcn/ui per [shadcn docs](https://ui.shadcn.com/). Use **reactflow** (not 
 
 ## 3. Project Structure
 
-Suggested layout (app can live in `ETHDenver2026Buidlathon/chainforge-ai/` or repo root):
+Suggested layout (app can live in `ETHDenver2026Buidlathon/ChainRoute-Forge/` or repo root):
 
 ```
-chainforge-ai/
+ChainRoute-Forge/
 ├── app/
 │   ├── page.tsx                    # Home / Wizard
 │   ├── chain/[genesis]/page.tsx    # Public chain viewer
@@ -205,5 +205,5 @@ Return structured JSON so the app can fill the blob and form without parsing pro
 ## How to Use This Plan in Cursor
 
 1. Save this file in the repo (e.g. `ETHDenver2026Buidlathon/ProjectPlan.md`).  
-2. In Cursor: “Create a new Next.js project called ChainForge AI exactly according to `ETHDenver2026Buidlathon/ProjectPlan.md`. Use TypeScript, Tailwind, and shadcn/ui. Import and reuse the ChainRoute modules from `docs/code/` where possible.”  
+2. In Cursor: “Create a new Next.js project called ChainRoute-Forge exactly according to `ETHDenver2026Buidlathon/ProjectPlan.md`. Use TypeScript, Tailwind, and shadcn/ui. Import and reuse the ChainRoute modules from `docs/code/` where possible.”  
 3. Build in the order of Section 7; keep protocol behavior identical to `docs/code/` and `protocol.md`.

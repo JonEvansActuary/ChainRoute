@@ -1,4 +1,4 @@
-# ChainForge AI
+# ChainRoute-Forge
 
 **Forge unbreakable provenance chains in minutes.** AI co-pilots the story; ChainRoute anchors it forever on Polygon + Arweave.
 
@@ -19,12 +19,12 @@ ETHDenver 2026 Buidlathon project. No-code/low-code dApp to create, delegate, an
 From the repo root:
 
 ```bash
-cd ETHDenver2026Buidlathon/chainforge-ai
+cd ETHDenver2026Buidlathon/ChainRoute-Forge
 npm install
 npm run dev
 ```
 
-(If you're already in `ETHDenver2026Buidlathon`, use `cd chainforge-ai`.)
+(If you're already in `ETHDenver2026Buidlathon`, use `cd ChainRoute-Forge`.)
 
 Open [http://localhost:3000](http://localhost:3000).
 

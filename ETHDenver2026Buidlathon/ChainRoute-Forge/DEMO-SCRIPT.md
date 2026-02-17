@@ -1,4 +1,4 @@
-# ChainForge AI – 2-Minute Demo Script (ETHDenver 2026 Buidlathon)
+# ChainRoute-Forge – 2-Minute Demo Script (ETHDenver 2026 Buidlathon)
 
 ## One-line scope (for submission & pitch)
 
@@ -13,7 +13,7 @@
    *“Scan this—it’s a real provenance chain.”* (Link goes to Verify with example or your chain.)
 
 2. **Connect wallet** (Polygon Amoy) or **Ledger.**  
-   *“ChainForge uses Polygon for cheap anchors and Arweave for permanent data—no smart contracts. You can also sign genesis cold with Ledger.”*
+   *“ChainRoute-Forge uses Polygon for cheap anchors and Arweave for permanent data—no smart contracts. You can also sign genesis cold with Ledger.”*
 
 3. **Create genesis** (one click, or Ledger mode).  
    Toggle **Ledger** → **Use Ledger** (connect device, enable Blind signing in Ethereum app) → **Create genesis (cold sign on Ledger).**  

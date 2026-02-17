@@ -12,7 +12,7 @@ export default async function VerifyPage({ searchParams }: Props) {
       <header className="border-b border-border px-4 py-3">
         <div className="mx-auto flex max-w-4xl items-center justify-between gap-2">
           <Link href="/" className="text-xl font-bold text-chain-neon">
-            ChainForge AI
+            ChainRoute-Forge
           </Link>
           <nav className="flex items-center gap-2">
             <Link href="/continue" className="text-sm text-muted-foreground hover:text-chain-neon">
