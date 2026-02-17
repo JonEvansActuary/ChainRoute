@@ -15,6 +15,7 @@ import ReactFlow, {
 import "reactflow/dist/style.css";
 import type { DecodedPayload } from "@/lib/chainroute/verifier";
 import type { ProvenanceBlob } from "@/lib/chainroute/types";
+import { useNetwork } from "./NetworkContext";
 
 export interface ChainNodeData {
   label: string;
@@ -33,7 +34,7 @@ interface ChainVisualizerProps {
     blob?: ProvenanceBlob;
   }>;
   className?: string;
-  /** When set (e.g. for Polygon mainnet demo chain), tx links use this base instead of amoy.polygonscan.com */
+  /** When set (e.g. for Polygon mainnet demo chain), tx links use this base instead of the active network explorer */
   explorerBaseUrl?: string;
 }
 
@@ -77,13 +78,12 @@ function buildNodesAndEdges(
 
 type NodeData = ChainNodeData;
 
-const AMOY_EXPLORER = "https://amoy.polygonscan.com";
-
 export function ChainVisualizer({ genesisHash, nodes, className = "", explorerBaseUrl }: ChainVisualizerProps) {
+  const { explorerUrl } = useNetwork();
   const { nodes: initialNodes, edges: initialEdges } = buildNodesAndEdges(genesisHash, nodes);
   const [nodesState, setNodesState] = useNodesState(initialNodes);
   const [edgesState, setEdgesState] = useEdgesState(initialEdges);
-  const explorerBase = explorerBaseUrl ?? AMOY_EXPLORER;
+  const explorerBase = explorerBaseUrl ?? explorerUrl;
 
   const nodeTypes: NodeTypes = {
     default: ({ data }) => (

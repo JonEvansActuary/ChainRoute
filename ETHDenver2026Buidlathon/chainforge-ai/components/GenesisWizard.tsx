@@ -12,7 +12,11 @@ import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { TxStatusBadge } from "@/components/TxStatusBadge";
+import { useNetwork } from "@/components/NetworkContext";
+import { useTransactionFlow } from "@/hooks/useTransactionFlow";
 import { Loader2, Zap, UserPlus, ShieldCheck } from "lucide-react";
+import type { Hash } from "viem";
 
 const ZERO_64 = "0".repeat(64);
 
@@ -28,6 +32,8 @@ export function GenesisWizard({
   const [delegate, setDelegate] = useState("");
   const [ledgerMode, setLedgerMode] = useState(false);
   const [ledgerAddress, setLedgerAddress] = useState<string | null>(null);
+  const { rpcUrl, chainId } = useNetwork();
+  const genesisTx = useTransactionFlow();
 
   useEffect(() => {
     if (address && !ledgerMode) setDelegate((d) => (d === "" || !d ? address : d));
@@ -41,11 +47,12 @@ export function GenesisWizard({
     }
     if (ledgerMode) {
       if (!ledgerAddress) {
-        setError("Connect Ledger first (click “Use Ledger” and approve on device)");
+        setError("Connect Ledger first (click \u201CUse Ledger\u201D and approve on device)");
         return;
       }
       setLoading(true);
       setError(null);
+      genesisTx.setPending();
       try {
         const params: AnchorParams = {
           genesisHash: ZERO_64,
@@ -53,11 +60,19 @@ export function GenesisWizard({
           arweaveBlobTxId: "",
           delegate: delegateAddr,
         };
-        const hash = await signAndSendWithLedger(params);
+        const hash = await signAndSendWithLedger(params, { rpcUrl, chainId });
+
+        const receipt = await genesisTx.waitForConfirmation(hash as Hash);
+        if (!receipt) {
+          setError("Transaction failed or reverted");
+          return;
+        }
+
         const genesisHash = (hash.startsWith("0x") ? hash.slice(2) : hash).toLowerCase();
         onGenesisCreated(genesisHash);
       } catch (e) {
         setError((e as Error).message);
+        genesisTx.setStatus("failed");
       } finally {
         setLoading(false);
       }
@@ -69,6 +84,7 @@ export function GenesisWizard({
     }
     setLoading(true);
     setError(null);
+    genesisTx.setPending();
     try {
       const params: AnchorParams = {
         genesisHash: ZERO_64,
@@ -83,10 +99,18 @@ export function GenesisWizard({
         value: 0n,
         gas: 100000n,
       });
+
+      const receipt = await genesisTx.waitForConfirmation(hash as Hash);
+      if (!receipt) {
+        setError("Transaction failed or reverted");
+        return;
+      }
+
       const genesisHash = (hash.startsWith("0x") ? hash.slice(2) : hash).toLowerCase();
       onGenesisCreated(genesisHash);
     } catch (e) {
       setError((e as Error).message);
+      genesisTx.setStatus("failed");
     } finally {
       setLoading(false);
     }
@@ -95,7 +119,7 @@ export function GenesisWizard({
   async function connectLedger() {
     setError(null);
     try {
-      const addr = await getLedgerAddress();
+      const addr = await getLedgerAddress({ rpcUrl, chainId });
       setLedgerAddress(addr);
       setDelegate(addr);
     } catch (e) {
@@ -171,6 +195,7 @@ export function GenesisWizard({
           </p>
         </div>
         {error && <p className="text-sm text-destructive">{error}</p>}
+        <TxStatusBadge status={genesisTx.status} txHash={genesisTx.txHash} />
         <Button
           variant="chain"
           className="w-full"

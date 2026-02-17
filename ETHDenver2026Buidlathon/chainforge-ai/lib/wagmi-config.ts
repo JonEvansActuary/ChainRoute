@@ -1,13 +1,14 @@
 import { http, createConfig } from "wagmi";
-import { polygonAmoy } from "wagmi/chains";
+import { polygon, polygonAmoy } from "wagmi/chains";
 import { injected } from "wagmi/connectors";
-import { AMOY_RPC } from "@/lib/chainroute/constants";
+import { NETWORKS } from "@/lib/chainroute/constants";
 
 export const config = createConfig({
-  chains: [polygonAmoy],
+  chains: [polygonAmoy, polygon],
   connectors: [injected()],
   transports: {
-    [polygonAmoy.id]: http(AMOY_RPC),
+    [polygonAmoy.id]: http(NETWORKS.amoy.rpcUrl),
+    [polygon.id]: http(NETWORKS.polygon.rpcUrl),
   },
   ssr: true,
 });

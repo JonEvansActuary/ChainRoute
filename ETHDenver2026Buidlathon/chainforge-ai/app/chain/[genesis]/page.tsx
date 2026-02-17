@@ -3,17 +3,19 @@
 import { useParams, useSearchParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Header } from "@/components/Header";
 import { ChainVisualizer } from "@/components/ChainVisualizer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CopyButton } from "@/components/CopyButton";
+import { useNetwork } from "@/components/NetworkContext";
 import {
   getPolygonTxPayload,
   decodePayloadFromHex,
   fetchArweaveBlob,
 } from "@/lib/chainroute/verifier";
-import { AMOY_RPC } from "@/lib/chainroute/polygon-anchor";
 import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
-import { ArrowLeft, Loader2, Info, Download } from "lucide-react";
+import { Loader2, Info, Download } from "lucide-react";
 
 type NodeItem = {
   txHash: string;
@@ -32,6 +34,7 @@ export default function ChainPage() {
   const [nodes, setNodes] = useState<NodeItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { rpcUrl } = useNetwork();
 
   useEffect(() => {
     if (!genesis || genesis.length !== 64) {
@@ -43,7 +46,7 @@ export default function ChainPage() {
     (async () => {
       try {
         const genesisTxHash = genesis.startsWith("0x") ? genesis : `0x${genesis}`;
-        const tx = await getPolygonTxPayload(genesisTxHash, AMOY_RPC);
+        const tx = await getPolygonTxPayload(genesisTxHash, rpcUrl);
         if (!tx) {
           if (!cancelled) setError("Genesis transaction not found");
           return;
@@ -60,7 +63,7 @@ export default function ChainPage() {
         }
         for (const eventTxHash of eventTxHashes) {
           if (cancelled) break;
-          const eventTx = await getPolygonTxPayload(eventTxHash, AMOY_RPC);
+          const eventTx = await getPolygonTxPayload(eventTxHash, rpcUrl);
           if (!eventTx) continue;
           let eventDecoded: import("@/lib/chainroute/build-payload").DecodedPayload;
           try {
@@ -88,7 +91,7 @@ export default function ChainPage() {
     return () => {
       cancelled = true;
     };
-  }, [genesis, eventTxHashes.join(",")]);
+  }, [genesis, rpcUrl, eventTxHashes.join(",")]);
 
   if (loading) {
     return (
@@ -139,14 +142,9 @@ export default function ChainPage() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border px-4 py-3">
-        <div className="mx-auto flex max-w-4xl flex-wrap items-center gap-2">
-          <Link href="/">
-            <Button variant="ghost" size="sm">
-              <ArrowLeft className="h-4 w-4" />
-              Home
-            </Button>
-          </Link>
+      <Header activePage="chain" />
+      <main className="mx-auto max-w-4xl px-4 py-8">
+        <div className="mb-4 flex flex-wrap items-center gap-2">
           <Link href={`/verify?input=${encodeURIComponent(genesis.startsWith("0x") ? genesis : `0x${genesis}`)}`}>
             <Button variant="outline" size="sm">
               Verify this chain
@@ -156,10 +154,7 @@ export default function ChainPage() {
             <Download className="h-4 w-4" />
             Export NFT metadata
           </Button>
-          <h1 className="text-lg font-semibold text-chain-neon">Chain</h1>
         </div>
-      </header>
-      <main className="mx-auto max-w-4xl px-4 py-8">
         {nodes.length === 1 && (
           <div className="mb-4 flex items-start gap-2 rounded-lg border border-chain-neon/30 bg-chain-neon/5 p-3 text-sm text-muted-foreground">
             <Info className="h-5 w-5 shrink-0 text-chain-neon" />
@@ -174,8 +169,9 @@ export default function ChainPage() {
         )}
         <Card className="border-chain-neon/30">
           <CardHeader>
-            <CardTitle className="font-mono text-sm text-muted-foreground">
+            <CardTitle className="flex items-center gap-2 font-mono text-sm text-muted-foreground">
               Genesis: {genesis.slice(0, 16)}…{genesis.slice(-8)}
+              <CopyButton text={genesis} />
               {nodes.length > 1 && (
                 <span className="ml-2 text-chain-neon"> · {nodes.length} node{nodes.length !== 1 ? "s" : ""}</span>
               )}

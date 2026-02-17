@@ -11,8 +11,8 @@ import {
   decodePayloadFromHex,
 } from "@/lib/chainroute/verifier";
 import type { VerifyResult } from "@/lib/chainroute/verifier";
-import { AMOY_RPC } from "@/lib/chainroute/polygon-anchor";
 import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
+import { useNetwork } from "./NetworkContext";
 import {
   DEMO_CHAIN_GENESIS_TX,
   DEMO_CHAIN_EVENT_TXES,
@@ -30,6 +30,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [usedDemoChain, setUsedDemoChain] = useState(false);
+  const { rpcUrl, networkName } = useNetwork();
 
   async function verify() {
     const raw = input.trim();
@@ -44,9 +45,9 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
       const txHash = raw.startsWith("0x") ? raw : `0x${hex64}`;
 
       if (isTxHash) {
-        const tx = await getPolygonTxPayload(txHash, AMOY_RPC);
+        const tx = await getPolygonTxPayload(txHash, rpcUrl);
         if (!tx) {
-          setError("Transaction not found");
+          setError(`Transaction not found on ${networkName}`);
           setLoading(false);
           return;
         }
@@ -54,7 +55,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
         const ZERO_64 = "0".repeat(64);
         const chainGenesis =
           decoded.genesisHash === ZERO_64 ? hex64.toLowerCase() : decoded.genesisHash.toLowerCase();
-        const single = await verifySingleTx(txHash, chainGenesis, AMOY_RPC, ARWEAVE_GATEWAY);
+        const single = await verifySingleTx(txHash, chainGenesis, rpcUrl, ARWEAVE_GATEWAY);
         if (single.error || !single.blobValid) {
           setResult({
             genesisHash: chainGenesis,
@@ -81,7 +82,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
           });
         }
       } else {
-        const res = await verifyChainFromTxList(hex64, [], AMOY_RPC, ARWEAVE_GATEWAY);
+        const res = await verifyChainFromTxList(hex64, [], rpcUrl, ARWEAVE_GATEWAY);
         setResult(res);
       }
     } catch (e) {
@@ -132,7 +133,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
           Verify chain
         </CardTitle>
         <CardDescription>
-          Enter a Polygon (Amoy) transaction hash or genesis hash to verify. Or load the example chain (HypotheticalPainting, Polygon mainnet).
+          Enter a transaction hash or genesis hash to verify on {networkName}. Or load the example chain (HypotheticalPainting, Polygon mainnet).
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

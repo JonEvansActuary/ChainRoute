@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { WalletConnect } from "@/components/WalletConnect";
+import { Header } from "@/components/Header";
 import { SupportUploader, type SupportWithFile } from "@/components/SupportUploader";
 import { EventBuilder, type EventForm } from "@/components/EventBuilder";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { getAnchorTxData, AMOY_RPC } from "@/lib/chainroute/polygon-anchor";
+import { getAnchorTxData } from "@/lib/chainroute/polygon-anchor";
 import {
   getPolygonTxPayload,
   decodePayloadFromHex,
@@ -16,6 +16,12 @@ import {
 import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address";
 import { useAccount, useWalletClient } from "wagmi";
 import { Loader2, ArrowRight, UserPlus, CheckCircle2, AlertCircle } from "lucide-react";
+import { useNetwork } from "@/components/NetworkContext";
+import { useToast } from "@/components/ToastContext";
+import { useTransactionFlow } from "@/hooks/useTransactionFlow";
+import { TxStatusBadge } from "@/components/TxStatusBadge";
+import { CopyButton } from "@/components/CopyButton";
+import type { Hash } from "viem";
 
 const ZERO_64 = "0".repeat(64);
 
@@ -35,6 +41,9 @@ export default function ContinuePage() {
 
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
+  const { rpcUrl, networkName, explorerUrl } = useNetwork();
+  const { toast } = useToast();
+  const anchorTx = useTransactionFlow();
 
   useEffect(() => {
     if (address && nextSigner && !nextDelegate) setNextDelegate(address);
@@ -62,9 +71,9 @@ export default function ContinuePage() {
     setPrevTxHash(null);
     setNextSigner(null);
     try {
-      const tx = await getPolygonTxPayload(txHash, AMOY_RPC);
+      const tx = await getPolygonTxPayload(txHash, rpcUrl);
       if (!tx) {
-        setLookupError("Transaction not found. Check the hash and network (Amoy).");
+        setLookupError(`Transaction not found on ${networkName}. Check the hash and network.`);
         return;
       }
       const decoded = decodePayloadFromHex(tx.data);
@@ -92,6 +101,7 @@ export default function ContinuePage() {
     }
     setAnchorLoading(true);
     setAnchorError(null);
+    anchorTx.setPending();
     try {
       const res = await fetch("/api/arweave/post-blob", {
         method: "POST",
@@ -128,9 +138,18 @@ export default function ContinuePage() {
         value: BigInt(0),
         gas: BigInt(100000),
       });
+
+      const receipt = await anchorTx.waitForConfirmation(hash as Hash);
+      if (!receipt) {
+        setAnchorError("Transaction failed or reverted");
+        return;
+      }
+
+      toast("Anchor confirmed on chain!", "success");
       setAnchorDone(hash);
     } catch (e) {
       setAnchorError((e as Error).message);
+      anchorTx.setStatus("failed");
     } finally {
       setAnchorLoading(false);
     }
@@ -138,25 +157,7 @@ export default function ContinuePage() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border px-4 py-3">
-        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-2">
-          <Link href="/" className="text-lg font-bold text-chain-neon sm:text-xl">
-            ChainForge AI
-          </Link>
-          <nav className="flex flex-wrap items-center gap-2 sm:gap-4">
-            <Link href="/continue" className="text-sm font-medium text-chain-neon">
-              Continue chain
-            </Link>
-            <Link
-              href="/verify"
-              className="text-sm text-muted-foreground hover:text-chain-neon"
-            >
-              Verify
-            </Link>
-            <WalletConnect />
-          </nav>
-        </div>
-      </header>
+      <Header activePage="continue" />
 
       <main className="mx-auto max-w-2xl px-4 py-8">
         <h1 className="mb-2 text-2xl font-bold">Continue a provenance chain</h1>
@@ -205,12 +206,18 @@ export default function ContinuePage() {
               <CardDescription>Current state of the chain.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-1">
-              <p className="font-mono text-xs text-muted-foreground break-all">
-                Genesis: {chainGenesis.slice(0, 16)}…{chainGenesis.slice(-8)}
-              </p>
-              <p className="font-mono text-xs text-muted-foreground break-all">
-                Last tx: {prevTxHash.slice(0, 16)}…{prevTxHash.slice(-8)}
-              </p>
+              <div className="flex items-center gap-2">
+                <p className="font-mono text-xs text-muted-foreground break-all">
+                  Genesis: {chainGenesis.slice(0, 16)}…{chainGenesis.slice(-8)}
+                </p>
+                <CopyButton text={chainGenesis} />
+              </div>
+              <div className="flex items-center gap-2">
+                <p className="font-mono text-xs text-muted-foreground break-all">
+                  Last tx: {prevTxHash.slice(0, 16)}…{prevTxHash.slice(-8)}
+                </p>
+                <CopyButton text={prevTxHash} />
+              </div>
               <p className="mt-2 text-sm">
                 <span className="text-muted-foreground">Next signer (delegate): </span>
                 <span className="font-mono text-chain-neon">{nextSigner.slice(0, 10)}…{nextSigner.slice(-8)}</span>
@@ -281,6 +288,7 @@ export default function ContinuePage() {
                 </CardContent>
               </Card>
               {anchorError && <p className="text-sm text-destructive">{anchorError}</p>}
+              <TxStatusBadge status={anchorTx.status} txHash={anchorTx.txHash} />
               <Button
                 variant="chain"
                 className="w-full"
@@ -303,13 +311,23 @@ export default function ContinuePage() {
         {anchorDone && chainGenesis && (
           <Card className="border-chain-neon/50 chain-glow">
             <CardHeader>
-              <CardTitle>Anchor sent</CardTitle>
+              <CardTitle>Anchor confirmed</CardTitle>
               <CardDescription>
-                You continued the chain. The next signer can use this page with the same genesis or your new tx hash.
+                You continued the chain on {networkName}. The next signer can use this page with the same genesis or your new tx hash.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <p className="font-mono text-xs text-chain-neon break-all">Tx: {anchorDone}</p>
+              <div className="flex items-center gap-2">
+                <a
+                  href={`${explorerUrl}/tx/${anchorDone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-mono text-xs text-chain-neon break-all hover:underline"
+                >
+                  Tx: {anchorDone}
+                </a>
+                <CopyButton text={anchorDone} />
+              </div>
               <Link href={`/chain/${chainGenesis}?txes=${encodeURIComponent(anchorDone)}`}>
                 <Button variant="chain">View chain</Button>
               </Link>

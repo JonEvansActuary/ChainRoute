@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Header } from "@/components/Header";
 import { WalletConnect } from "@/components/WalletConnect";
 import { GenesisWizard } from "@/components/GenesisWizard";
 import { SupportUploader, type SupportWithFile } from "@/components/SupportUploader";
@@ -14,6 +15,12 @@ import { Input } from "@/components/ui/input";
 import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address";
 import { Loader2, QrCode, ArrowRight, UserPlus } from "lucide-react";
 import { QRCodeModal } from "@/components/QRCodeModal";
+import { TxStatusBadge } from "@/components/TxStatusBadge";
+import { CopyButton } from "@/components/CopyButton";
+import { useNetwork } from "@/components/NetworkContext";
+import { useToast } from "@/components/ToastContext";
+import { useTransactionFlow } from "@/hooks/useTransactionFlow";
+import type { Hash } from "viem";
 
 const ZERO_64 = "0".repeat(64);
 
@@ -32,6 +39,14 @@ export default function HomePage() {
 
   const { address } = useAccount();
   const { data: walletClient } = useWalletClient();
+  const { explorerUrl, networkName } = useNetwork();
+  const { toast } = useToast();
+  const anchorTx = useTransactionFlow();
+
+  // Auto-advance to step 2 when wallet connects
+  useEffect(() => {
+    if (address && step === 1) setStep(2);
+  }, [address, step]);
 
   useEffect(() => {
     if (address && !nextDelegate) setNextDelegate(address);
@@ -45,6 +60,7 @@ export default function HomePage() {
     const h = txHash.startsWith("0x") ? txHash.slice(2).toLowerCase() : txHash.toLowerCase();
     setGenesisHash(h);
     setPrevTxHash(h);
+    toast("Genesis created!", "success");
     setStep(3);
   };
 
@@ -57,6 +73,7 @@ export default function HomePage() {
     }
     setAnchorLoading(true);
     setAnchorError(null);
+    anchorTx.setPending();
     try {
       const res = await fetch("/api/arweave/post-blob", {
         method: "POST",
@@ -94,13 +111,24 @@ export default function HomePage() {
         value: BigInt(0),
         gas: BigInt(100000),
       });
-      const newPrev = (hash.startsWith("0x") ? hash.slice(2) : hash).toLowerCase();
-      setPrevTxHash(newPrev);
+
       setLastArweaveId(arweaveId);
       setLastTxHash(hash);
+
+      // Wait for on-chain confirmation
+      const receipt = await anchorTx.waitForConfirmation(hash as Hash);
+      if (!receipt) {
+        setAnchorError("Transaction failed or reverted");
+        return;
+      }
+
+      const newPrev = (hash.startsWith("0x") ? hash.slice(2) : hash).toLowerCase();
+      setPrevTxHash(newPrev);
+      toast("Anchor confirmed on chain!", "success");
       setStep(5);
     } catch (e) {
       setAnchorError((e as Error).message);
+      anchorTx.setStatus("failed");
     } finally {
       setAnchorLoading(false);
     }
@@ -113,28 +141,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
-      <header className="border-b border-border bg-card/50 px-4 py-3">
-        <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-2">
-          <Link href="/" className="text-lg font-bold text-chain-neon sm:text-xl">
-            ChainForge AI
-          </Link>
-          <nav className="flex flex-wrap items-center gap-2 sm:gap-4">
-            <Link
-              href="/continue"
-              className="text-sm text-muted-foreground hover:text-chain-neon"
-            >
-              Continue chain
-            </Link>
-            <Link
-              href="/verify"
-              className="text-sm text-muted-foreground hover:text-chain-neon"
-            >
-              Verify
-            </Link>
-            <WalletConnect />
-          </nav>
-        </div>
-      </header>
+      <Header activePage="home" />
 
       <main className="mx-auto max-w-2xl px-4 py-8">
         <div className="mb-8 text-center">
@@ -172,9 +179,12 @@ export default function HomePage() {
               ) : (
                 <Card className="border-chain-neon/30">
                   <CardContent className="pt-6">
-                    <p className="font-mono text-sm text-chain-neon break-all">
-                      Genesis: {genesisHash.slice(0, 16)}…{genesisHash.slice(-8)}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      <p className="font-mono text-sm text-chain-neon break-all">
+                        Genesis: {genesisHash.slice(0, 16)}…{genesisHash.slice(-8)}
+                      </p>
+                      <CopyButton text={genesisHash} />
+                    </div>
                     <Button
                       variant="outline"
                       size="sm"
@@ -255,6 +265,7 @@ export default function HomePage() {
               {anchorError && (
                 <p className="mt-2 text-sm text-destructive">{anchorError}</p>
               )}
+              <TxStatusBadge status={anchorTx.status} txHash={anchorTx.txHash} />
               <Button
                 variant="chain"
                 className="mt-4 w-full"
@@ -273,19 +284,35 @@ export default function HomePage() {
           {step === 5 && lastTxHash && genesisHash && (
             <Card className="border-chain-neon/50 chain-glow">
               <CardHeader>
-                <CardTitle>Anchor sent</CardTitle>
+                <CardTitle>Anchor confirmed</CardTitle>
                 <CardDescription>
-                  Your provenance event is anchored on Polygon (Amoy).
+                  Your provenance event is anchored on {networkName}.
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <p className="font-mono text-xs text-chain-neon break-all">
-                  Tx: {lastTxHash}
-                </p>
+                <div className="flex items-center gap-2">
+                  <a
+                    href={`${explorerUrl}/tx/${lastTxHash}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-mono text-xs text-chain-neon break-all hover:underline"
+                  >
+                    Tx: {lastTxHash}
+                  </a>
+                  <CopyButton text={lastTxHash} />
+                </div>
                 {lastArweaveId && (
-                  <p className="font-mono text-xs text-muted-foreground break-all">
-                    Arweave: {lastArweaveId}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={`https://arweave.net/${lastArweaveId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-mono text-xs text-muted-foreground break-all hover:text-chain-neon"
+                    >
+                      Arweave: {lastArweaveId}
+                    </a>
+                    <CopyButton text={lastArweaveId} />
+                  </div>
                 )}
                 <div className="flex gap-2">
                   <Link href={lastTxHash ? `/chain/${genesisHash}?txes=${encodeURIComponent(lastTxHash)}` : `/chain/${genesisHash}`}>
