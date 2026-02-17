@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Header } from "@/components/Header";
-import { SupportUploader, type SupportWithFile } from "@/components/SupportUploader";
-import { EventBuilder, type EventForm } from "@/components/EventBuilder";
+import { DelegateInput } from "@/components/DelegateInput";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,7 +14,7 @@ import {
 } from "@/lib/chainroute/verifier";
 import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address";
 import { useAccount, useWalletClient } from "wagmi";
-import { Loader2, ArrowRight, UserPlus, CheckCircle2, AlertCircle } from "lucide-react";
+import { Loader2, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { useNetwork } from "@/components/NetworkContext";
 import { useToast } from "@/components/ToastContext";
 import { useTransactionFlow } from "@/hooks/useTransactionFlow";
@@ -32,9 +31,8 @@ export default function ContinuePage() {
   const [chainGenesis, setChainGenesis] = useState<string | null>(null);
   const [prevTxHash, setPrevTxHash] = useState<string | null>(null);
   const [nextSigner, setNextSigner] = useState<string | null>(null);
-  const [supports, setSupports] = useState<SupportWithFile[]>([]);
-  const [eventForm, setEventForm] = useState<EventForm | null>(null);
   const [nextDelegate, setNextDelegate] = useState("");
+  const [arweaveId, setArweaveId] = useState("");
   const [anchorLoading, setAnchorLoading] = useState(false);
   const [anchorError, setAnchorError] = useState<string | null>(null);
   const [anchorDone, setAnchorDone] = useState<string | null>(null);
@@ -48,10 +46,6 @@ export default function ContinuePage() {
   useEffect(() => {
     if (address && nextSigner && !nextDelegate) setNextDelegate(address);
   }, [address, nextSigner]);
-
-  const supportItems = supports
-    .filter((s) => s.id)
-    .map((s) => ({ id: s.id, label: s.label || s.id.slice(0, 8) }));
 
   const isMeNextSigner =
     address &&
@@ -92,51 +86,33 @@ export default function ContinuePage() {
     }
   }
 
-  async function postBlobAndAnchor() {
-    if (!chainGenesis || !prevTxHash || !address || !eventForm || !walletClient) return;
+  async function sendAnchor() {
+    if (!chainGenesis || !prevTxHash || !address || !walletClient) return;
     const delegateAddr = nextDelegate.trim() ? normalizeAddress(nextDelegate) : address;
     if (!isValidDelegateAddress(delegateAddr)) {
       setAnchorError("Next signer address must be 0x + 40 hex characters");
+      return;
+    }
+    const arId = arweaveId.trim();
+    if (arId && arId.length !== 43) {
+      setAnchorError("Arweave ID must be exactly 43 characters");
       return;
     }
     setAnchorLoading(true);
     setAnchorError(null);
     anchorTx.setPending();
     try {
-      const res = await fetch("/api/arweave/post-blob", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          genesisHash: chainGenesis,
-          event: {
-            eventType: eventForm.eventType,
-            timestamp: new Date().toISOString().replace(/\.\d{3}Z$/, "Z"),
-            summary: eventForm.summary,
-          },
-          supports: supportItems,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        const msg = data.error || "Failed to post blob";
-        if (res.status === 503) {
-          throw new Error("Arweave keys not configured. You can still use Verify with existing chains.");
-        }
-        throw new Error(msg);
-      }
-      const arweaveId = data.arweaveId as string;
-      const params = {
+      const txData = getAnchorTxData({
         genesisHash: chainGenesis,
         previousPolygonHash: prevTxHash,
-        arweaveBlobTxId: arweaveId,
+        arweaveBlobTxId: arId || "",
         delegate: delegateAddr,
-      };
-      const txData = getAnchorTxData(params);
+      });
       const hash = await walletClient.sendTransaction({
         to: address,
         data: txData,
-        value: BigInt(0),
-        gas: BigInt(100000),
+        value: 0n,
+        gas: 100000n,
       });
 
       const receipt = await anchorTx.waitForConfirmation(hash as Hash);
@@ -208,19 +184,19 @@ export default function ContinuePage() {
             <CardContent className="space-y-1">
               <div className="flex items-center gap-2">
                 <p className="font-mono text-xs text-muted-foreground break-all">
-                  Genesis: {chainGenesis.slice(0, 16)}…{chainGenesis.slice(-8)}
+                  Genesis: {chainGenesis.slice(0, 16)}...{chainGenesis.slice(-8)}
                 </p>
                 <CopyButton text={chainGenesis} />
               </div>
               <div className="flex items-center gap-2">
                 <p className="font-mono text-xs text-muted-foreground break-all">
-                  Last tx: {prevTxHash.slice(0, 16)}…{prevTxHash.slice(-8)}
+                  Last tx: {prevTxHash.slice(0, 16)}...{prevTxHash.slice(-8)}
                 </p>
                 <CopyButton text={prevTxHash} />
               </div>
               <p className="mt-2 text-sm">
                 <span className="text-muted-foreground">Next signer (delegate): </span>
-                <span className="font-mono text-chain-neon">{nextSigner.slice(0, 10)}…{nextSigner.slice(-8)}</span>
+                <span className="font-mono text-chain-neon">{nextSigner.slice(0, 10)}...{nextSigner.slice(-8)}</span>
               </p>
             </CardContent>
           </Card>
@@ -244,62 +220,42 @@ export default function ContinuePage() {
           <>
             <div className="mb-4 flex items-center gap-2 text-chain-neon">
               <CheckCircle2 className="h-5 w-5" />
-              <span className="font-medium">You&apos;re the next signer. Add the next event and anchor.</span>
+              <span className="font-medium">You&apos;re the next signer. Add the next anchor.</span>
             </div>
 
-            <div className="space-y-6">
-              <SupportUploader
-                genesisHash={chainGenesis}
-                supports={supports}
-                onSupportsChange={setSupports}
+            <div className="space-y-4">
+              <DelegateInput
+                value={nextDelegate}
+                onChange={setNextDelegate}
+                address={address}
+                label="Next signer after you"
+                description="Who can sign the anchor after this one. Leave blank to keep yourself."
               />
-              <EventBuilder
-                supportLabels={supports.map((s) => s.label || s.id?.slice(0, 8) || "").filter(Boolean)}
-                onEventChange={setEventForm}
-                initialEvent={eventForm}
-              />
-              <Card className="border-chain-neon/30">
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-base">
-                    <UserPlus className="h-4 w-4" />
-                    Next signer after you
-                  </CardTitle>
-                  <CardDescription>
-                    Who can sign the anchor after this one. Leave blank to keep yourself.
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder={address ?? "0x..."}
-                      value={nextDelegate}
-                      onChange={(e) => setNextDelegate(e.target.value)}
-                      className="font-mono text-sm"
-                    />
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="sm"
-                      onClick={() => address && setNextDelegate(address)}
-                    >
-                      Me
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-muted-foreground">
+                  Arweave Blob ID (optional, 43 characters)
+                </label>
+                <Input
+                  placeholder="Paste an existing Arweave transaction ID"
+                  value={arweaveId}
+                  onChange={(e) => setArweaveId(e.target.value)}
+                  maxLength={43}
+                  className="font-mono text-sm"
+                />
+              </div>
               {anchorError && <p className="text-sm text-destructive">{anchorError}</p>}
               <TxStatusBadge status={anchorTx.status} txHash={anchorTx.txHash} />
               <Button
                 variant="chain"
                 className="w-full"
-                onClick={postBlobAndAnchor}
-                disabled={!eventForm || anchorLoading}
+                onClick={sendAnchor}
+                disabled={anchorLoading}
               >
                 {anchorLoading ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
                   <>
-                    Post blob & sign anchor
+                    Sign Anchor
                     <ArrowRight className="h-4 w-4" />
                   </>
                 )}

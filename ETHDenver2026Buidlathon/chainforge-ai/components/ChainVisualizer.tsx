@@ -68,6 +68,8 @@ function buildNodesAndEdges(
         id: `e-${i}`,
         source: chainNodes[i - 1].id,
         target: id,
+        animated: true,
+        style: { stroke: "#00ff9d", strokeWidth: 2 },
       });
     }
     y++;
@@ -111,6 +113,11 @@ export function ChainVisualizer({ genesisHash, nodes, className = "", explorerBa
         )}
         {data.blob?.eventType && (
           <p className="mt-1 text-xs text-muted-foreground">{data.blob.eventType}</p>
+        )}
+        {data.decoded?.delegate && (
+          <p className="mt-1 text-xs text-amber-400">
+            Next signer: {data.decoded.delegate.slice(0, 6)}...{data.decoded.delegate.slice(-4)}
+          </p>
         )}
       </div>
     ),

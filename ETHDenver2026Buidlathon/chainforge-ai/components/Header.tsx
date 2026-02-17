@@ -5,7 +5,7 @@ import { WalletConnect } from "./WalletConnect";
 import { NetworkSwitcher } from "./NetworkSwitcher";
 import { NetworkGuard } from "./NetworkGuard";
 
-type ActivePage = "home" | "verify" | "continue" | "chain";
+type ActivePage = "home" | "create" | "verify" | "continue" | "chain";
 
 export function Header({ activePage }: { activePage?: ActivePage }) {
   return (
@@ -17,6 +17,16 @@ export function Header({ activePage }: { activePage?: ActivePage }) {
           </Link>
           <nav className="flex flex-wrap items-center gap-2 sm:gap-4">
             <Link
+              href="/create"
+              className={`text-sm ${
+                activePage === "create"
+                  ? "font-medium text-chain-neon"
+                  : "text-muted-foreground hover:text-chain-neon"
+              }`}
+            >
+              Create
+            </Link>
+            <Link
               href="/continue"
               className={`text-sm ${
                 activePage === "continue"
@@ -24,7 +34,7 @@ export function Header({ activePage }: { activePage?: ActivePage }) {
                   : "text-muted-foreground hover:text-chain-neon"
               }`}
             >
-              Continue chain
+              Continue
             </Link>
             <Link
               href="/verify"
