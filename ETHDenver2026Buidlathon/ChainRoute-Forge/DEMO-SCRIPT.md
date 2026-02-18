@@ -1,5 +1,14 @@
 # ChainRoute-Forge – 2-Minute Demo Script (ETHDenver 2026 Buidlathon)
 
+## Pre-demo checklist (5–10 min before your slot)
+
+- **Browser:** Chrome or Edge (Ledger WebHID works best).
+- **Smoke test:** Open the app → Verify → **Load Example Chain**; confirm it loads (fix network/RPC if not).
+- **Wallet:** Connected on Polygon Amoy (80002); get MATIC from [faucet.polygon.technology](https://faucet.polygon.technology) if needed.
+- **Ledger (if using):** Device connected, Ethereum app open, **Blind signing** enabled.
+
+---
+
 ## One-line scope (for submission & pitch)
 
 **MVP:** Create genesis (wallet or Ledger cold sign), one event with supports and AI, anchor on Polygon, verify any tx, QR code, NFT metadata export, and preloaded example chain.  
@@ -51,6 +60,8 @@
 - **No Arweave key:** *“Upload and blob post need server keys. You can still create genesis and use Verify with existing chains.”*
 - **No AI key:** *“AI is optional; labels and event can be filled manually.”*
 - **Ledger:** *“Use Chrome/Edge with WebHID; enable Blind signing or Contract data in the Ethereum app.”*
+- **Wrong network / no MATIC:** *"Switch to Polygon Amoy (80002); get MATIC from faucet.polygon.technology."*
+- **Timeout or RPC slow:** *"Let me show the example chain—no wallet needed."* → Verify → **Load Example Chain**; show QR and NFT export.
 - **Chain view only shows genesis:** *“Paste the latest tx hash on Verify to see the full chain and blob.”*
 
 ---

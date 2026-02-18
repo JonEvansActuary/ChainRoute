@@ -110,3 +110,7 @@
 This acceleration plan **embodies the ChainRoute protocol**: Immutable decisions, verifiable paths, permanent impact. Implement the top 3 today—you'll dominate. Deploy link + video ready by tomorrow? Let's lock the win.  
 
 **Next Step**: Start Ledger integration—ping if you hit a payload edge case. Questions? Fire away.
+
+---
+
+**Implementation status (Feb 2026):** All four recommendations (Ledger cold signing, NFT metadata export, Load Example Chain + QR, Loom + one-pager) are implemented. See [SUBMISSION-CHECKLIST.md](./SUBMISSION-CHECKLIST.md) for the code checklist and submission steps.

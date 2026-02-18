@@ -50,4 +50,4 @@ Without Arweave keys, support upload and blob post show a clear message; you can
 
 ## Deploy
 
-Vercel-ready. Run `npm run build` to verify production build. Set env vars in the Vercel dashboard. Use Polygon Amoy (Chain ID 80002) for testnet. Share the live URL in your Buidlathon submission.
+Vercel-ready. Run `npm run build` to verify production build. Set env vars in the Vercel dashboard (same as local: RPC, Arweave read, AI, Arweave keys). Use Polygon Amoy (Chain ID 80002) for testnet. Before the event, smoke-test the live URL (e.g. open Verify → **Load Example Chain**). Share the live URL in your Buidlathon submission.
