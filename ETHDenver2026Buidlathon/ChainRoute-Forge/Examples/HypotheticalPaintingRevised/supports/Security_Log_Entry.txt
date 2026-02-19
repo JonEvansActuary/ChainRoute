@@ -1,0 +1,52 @@
+SECURITY LOG - MANHATTAN FINE ART AUCTION HOUSE
+Vault / Secure Viewing Room Access & Handling Log
+Location: 123 Rockefeller Plaza, Manhattan, New York
+GPS: 40.758896 N, -73.978692 W
+Artwork Internal ID: LOT-2026-03 (Picasso attributed, Untitled Portrait)
+Date Range Covered: February 25, 2026
+
+[START OF LOG - February 25, 2026]
+
+14:12:45 - Door unlock requested by John Hale (Curator, Badge #JH-047)
+          - Biometric scan: Fingerprint + PIN confirmed
+          - Door opened: Secure Viewing Room A-3
+          - Purpose: Receipt of incoming high-value consignment from Paris transport
+
+14:15:02 - Entry: John Hale (Curator) + 2 security personnel (Badge #S-112, S-089)
+          - Accompanied by armored courier (Elite Transport Services, ID #ETS-674)
+          - Crate condition: Seals intact, no visible tampering
+          - Tilt/shock indicators: Green (no extremes during transit)
+
+14:18:30 - Crate placed on padded examination table
+          - Photography initiated (DropOff_Photo_Manhattan.jpg captured)
+          - CCTV cameras 3, 4, 7 active and recording
+
+14:22:10 - Crate opening commenced
+          - Outer plywood removed; inner foam and acid-free wrapping intact
+          - No damage noted to packaging or artwork frame
+
+14:27:45 - Artwork removed from crate by gloved personnel (Hale + S-112)
+          - Visual check: No new abrasions, dents, or loose elements
+          - Placed on easel under controlled LED lighting (5000K, no UV)
+
+14:35:20 - Condition inspection begins (see Condition_Report_NY.pdf)
+          - UV examination completed: No anomalies beyond documented provenance
+          - Raking light: Stable surface, no tenting or cupping
+
+14:48:10 - Artwork approved for storage preview
+          - Returned to climate-controlled secure cabinet #VC-12
+          - Cabinet locked: Biometric + keycard (Hale + S-089)
+
+14:50:55 - Drop-off acknowledgment receipt signed (Receipt_AuctionHouse.pdf)
+          - Copies scanned and emailed to consignor representative
+
+15:02:30 - All personnel exited viewing room
+          - Door secured: Electronic lock engaged, alarm armed
+          - Final CCTV sweep: Room clear, artwork secured
+
+[END OF LOG ENTRY - February 25, 2026 15:05:00]
+
+Logged by: Security Supervisor Maria Torres (Badge #S-089)
+Verified by: John Hale (Curator)
+Digital timestamp: 2026-02-25T15:05:12Z
+Hash (for chain-of-custody): SHA-256: e4b7c9f2a1d8e3f... (truncated)

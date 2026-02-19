@@ -1,0 +1,21 @@
+{
+  "genesis": "REPLACE_WITH_GENESIS_HASH_64_HEX",
+  "eventType": "transfer",
+  "timestamp": "2026-03-01T20:00:00Z",
+  "summary": {
+    "location": "Manhattan auction house",
+    "gps": "40.758896 N, -73.978692 W",
+    "eventType": "Live auction with online bids",
+    "finalSale": "$12 million to anonymous buyer",
+    "date": "2026-03-01",
+    "transaction": "Wire transfer confirmed",
+    "witnesses": "150 attendees, notarized",
+    "description": "Stage 4: Live bidding event – sale – hypothetical."
+  },
+  "supports": [
+    { "id": "REPLACE_ARWEAVE_ID_BIDDING_PHOTO", "label": "Bidding_Event_Photo" },
+    { "id": "REPLACE_ARWEAVE_ID_SALE_TRANSCRIPT", "label": "Sale_Transcript" },
+    { "id": "REPLACE_ARWEAVE_ID_TX_RECEIPT_12M", "label": "Transaction_Receipt_12M" },
+    { "id": "REPLACE_ARWEAVE_ID_BUYER_AGREEMENT", "label": "Buyer_Agreement_Redacted" }
+  ]
+}

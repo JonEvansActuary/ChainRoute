@@ -1,0 +1,21 @@
+{
+  "genesis": "REPLACE_WITH_GENESIS_HASH_64_HEX",
+  "eventType": "transfer",
+  "timestamp": "2026-02-25T14:00:00Z",
+  "summary": {
+    "location": "Auction house in Manhattan, New York",
+    "gps": "40.758896 N, -73.978692 W",
+    "setup": "Placed in secure viewing room",
+    "inspection": "Final condition check, no damage",
+    "date": "2026-02-25",
+    "staff": "Handled by curator John Hale",
+    "valueEstimate": "$8-12 million",
+    "description": "Stage 3: Auction drop-off – hypothetical."
+  },
+  "supports": [
+    { "id": "REPLACE_ARWEAVE_ID_DROPOFF_PHOTO", "label": "DropOff_Photo_Manhattan" },
+    { "id": "REPLACE_ARWEAVE_ID_CONDITION_REPORT", "label": "Condition_Report_NY" },
+    { "id": "REPLACE_ARWEAVE_ID_RECEIPT_AUCTION", "label": "Receipt_AuctionHouse" },
+    { "id": "REPLACE_ARWEAVE_ID_SECURITY_LOG", "label": "Security_Log_Entry" }
+  ]
+}

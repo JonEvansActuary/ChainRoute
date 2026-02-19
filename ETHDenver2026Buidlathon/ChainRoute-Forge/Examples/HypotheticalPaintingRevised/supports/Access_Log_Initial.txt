@@ -1,0 +1,58 @@
+ACCESS & SECURITY LOG – INITIAL PERIOD
+London Private Vault Services – Restricted Compartment #VC-LON-047
+Location: Central London
+GPS: 51.517500 N, -0.109722 W
+Artwork Internal ID: LOT-2026-03 (Picasso attributed, Untitled Portrait – Blue Period style)
+Access Level: Ultra-Restricted (Biometric + PIN + Dual-Key + Supervisor Approval)
+Monitoring: 24/7 CCTV, motion/vibration sensors, environmental alarms
+
+[INITIAL LOG PERIOD: March 6, 2026 – June 30, 2026]
+
+2026-03-06 09:15:22 GMT - First post-intake access
+          - Authorized: Vault Supervisor Thomas Reid (Badge #VR-019)
+          - Biometric: Fingerprint + facial recognition + PIN 7842
+          - Action: Final placement verification + RFID tag scan confirmation
+          - Duration: 4 min 18 sec
+          - Notes: Compartment locked immediately after exit; alarm armed
+
+2026-03-06 14:30:45 GMT - Scheduled environmental check
+          - Authorized: Senior Technician Emma Clarke (Badge #TC-032)
+          - Biometric: Fingerprint + PIN 3195 + Supervisor override (Reid)
+          - Action: Sensor calibration verification; temp 20.0°C, RH 50.1%
+          - Duration: 7 min 02 sec
+          - Notes: All readings nominal; no adjustments needed
+
+2026-04-05 10:00:00 GMT - Monthly routine inspection
+          - Authorized: Thomas Reid (VR-019) + Security Officer Laura Bennett (S-204)
+          - Biometric: Dual fingerprint + PINs 7842 / 5621
+          - Action: Visual check through viewing panel; no anomalies
+          - Duration: 12 min 45 sec
+          - Notes: Artwork stable; no signs of settling or environmental stress
+
+2026-05-03 11:20:10 GMT - Quarterly provenance audit access
+          - Authorized: Vault Supervisor Thomas Reid (VR-019)
+          - Biometric: Fingerprint + facial + PIN 7842
+          - Action: Digital photo capture for annual report (cross-ref Storage_Photo_Vault.jpg)
+          - Duration: 5 min 33 sec
+          - Notes: Compartment reopened only for non-contact verification
+
+2026-06-07 09:45:55 GMT - Annual maintenance preview access
+          - Authorized: Thomas Reid (VR-019) + External Conservator Dr. Alistair Grant (Guest Badge #EXT-2026-06, escorted)
+          - Biometric: Dual approval + guest PIN override
+          - Action: Non-invasive condition spot-check (UV flashlight through glass)
+          - Duration: 18 min 12 sec
+          - Notes: Pigments and canvas stable; no conservation required
+
+[SUMMARY – INITIAL PERIOD March–June 2026]
+- Total accesses: 5 (all scheduled/authorized)
+- Unauthorized attempts: 0
+- Alarm activations: 0
+- Environmental deviations: 0
+- CCTV retention: All footage archived 90 days minimum
+- Next scheduled access: September 6, 2026 (quarterly check)
+
+Logged by: Vault Supervisor Thomas Reid (Badge #VR-019)
+Digital timestamp: 2026-06-30T23:59:59Z
+Chain-of-custody hash (SHA-256): f8d4a1c9e2b7... (truncated; full hash in vault server)
+
+This log establishes the secure, minimal-access storage record post-handover. Combined with Vault_Entry_Log.txt, Climate_Control_Report.pdf, and Storage_Photo_Vault.jpg, it confirms ongoing provenance integrity.

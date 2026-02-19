@@ -1,0 +1,21 @@
+{
+  "genesis": "REPLACE_WITH_GENESIS_HASH_64_HEX",
+  "eventType": "transfer",
+  "timestamp": "2026-03-05T16:00:00Z",
+  "summary": {
+    "to": "Private vault in London",
+    "gps": "51.517500 N, -0.109722 W",
+    "method": "Armored transport via private jet",
+    "transfer": "Signed docs, buyer representative",
+    "date": "2026-03-05",
+    "insurance": "Continued $12 million post-sale",
+    "finalCheck": "Condition verified intact",
+    "description": "Stage 5: Secure handover to vault – hypothetical."
+  },
+  "supports": [
+    { "id": "REPLACE_ARWEAVE_ID_HANDOVER_PHOTO", "label": "Handover_Photo_London" },
+    { "id": "REPLACE_ARWEAVE_ID_TRANSFER_DOCS", "label": "Transfer_Documents" },
+    { "id": "REPLACE_ARWEAVE_ID_JET_MANIFEST", "label": "Jet_Manifest" },
+    { "id": "REPLACE_ARWEAVE_ID_VAULT_ENTRY_LOG", "label": "Vault_Entry_Log" }
+  ]
+}

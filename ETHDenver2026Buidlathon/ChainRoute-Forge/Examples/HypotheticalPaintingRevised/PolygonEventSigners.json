@@ -1,0 +1,65 @@
+[
+  {
+    "event": "Genesis",
+    "signerName": "Sébastien Moreau",
+    "signerRole": "Director, Fondation Hypothétique (artist's estate). Authorized to create the provenance chain on behalf of the estate.",
+    "polygonAddress": "0x637c48475bc7c9af5c2001faf41feb529364d112",
+    "telephone": "+33 1 42 96 00 00",
+    "email": "s.moreau@fondationhypothetique.fr",
+    "physicalAddress": "12 Place des Vosges, 75004 Paris, France"
+  },
+  {
+    "event": "1 — Authentication",
+    "signerName": "Dr. Elena Vasquez",
+    "signerRole": "Chief Authenticator, ArtSecure Paris. Signs the certification event attesting to the work's authenticity and condition.",
+    "polygonAddress": "0x8db69f820004eb12a01c7ede5e269e5561202512",
+    "telephone": "+33 1 53 01 92 00",
+    "email": "e.vasquez@artsecure-paris.fr",
+    "physicalAddress": "7 Rue de la Paix, 75002 Paris, France"
+  },
+  {
+    "event": "2 — Secure Transport",
+    "signerName": "Marcus Webb",
+    "signerRole": "Head of Security, Palladium Art Logistics. Signs for the secure transfer from Paris to New York.",
+    "polygonAddress": "0xab6cb77a629b56f5d9efd131404ebf692d4a7371",
+    "telephone": "+44 20 7946 0958",
+    "email": "m.webb@palladiumartlogistics.co.uk",
+    "physicalAddress": "45 Berkeley Square, Mayfair, London W1J 5AT, United Kingdom"
+  },
+  {
+    "event": "3 — Auction Drop-Off",
+    "signerName": "Victoria Chen",
+    "signerRole": "Registrar, Christie's New York. Signs for receipt of the work at the auction house and condition documentation.",
+    "polygonAddress": "0xbf411ced6f35c8125ba6b146615276b43ebaaa91",
+    "telephone": "+1 212 636 2000",
+    "email": "v.chen@christies.com",
+    "physicalAddress": "20 Rockefeller Plaza, New York, NY 10020, USA"
+  },
+  {
+    "event": "4 — Live Bidding",
+    "signerName": "James Okonkwo",
+    "signerRole": "Buyer's legal counsel. Signs the sale event on behalf of the winning bidder, taking custody of the chain for the new owner.",
+    "polygonAddress": "0x23439a839f0b6710e0dee4c4a9788b06d0e72a8a",
+    "telephone": "+44 20 7409 3000",
+    "email": "j.okonkwo@harcourt-chambers.co.uk",
+    "physicalAddress": "3 Gray's Inn Square, London WC1R 5AH, United Kingdom"
+  },
+  {
+    "event": "5 — Secure Handover",
+    "signerName": "Marcus Webb",
+    "signerRole": "Head of Security, Palladium Art Logistics. Signs again for the handover leg from New York to the buyer's vault in London.",
+    "polygonAddress": "0xa54df49497fff3e331ed4c5fe6e6d64be01fe606",
+    "telephone": "+44 20 7946 0958",
+    "email": "m.webb@palladiumartlogistics.co.uk",
+    "physicalAddress": "45 Berkeley Square, Mayfair, London W1J 5AT, United Kingdom"
+  },
+  {
+    "event": "6 — Long-Term Storage",
+    "signerName": "Dame Eleanor Ashford",
+    "signerRole": "Director, Sterling Vaults London. Signs the final certification as the painting enters long-term secured storage for the owner.",
+    "polygonAddress": "0x83abb8781f4535ca1820bd2fa9fb95059c0c02cf",
+    "telephone": "+44 20 7730 8811",
+    "email": "e.ashford@sterlingvaults.co.uk",
+    "physicalAddress": "1 Threadneedle Street, London EC2R 8AQ, United Kingdom"
+  }
+]
