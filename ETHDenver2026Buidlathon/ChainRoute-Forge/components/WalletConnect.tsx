@@ -22,7 +22,9 @@ export function WalletConnect({ compact = false }: { compact?: boolean }) {
   const { disconnect } = useDisconnect();
   const { reconnect } = useReconnect();
   const { switchChainAsync } = useSwitchChain();
-  const { networkName, networkId, chainId: appChainId } = useNetwork();
+  const net = useNetwork();
+  const { networkName, networkId } = net;
+  const appChainId = net.chainId as 80002 | 137;
 
   // Try to reconnect on mount
   useEffect(() => {
