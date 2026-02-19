@@ -11,7 +11,7 @@ import {
   decodePayloadFromHex,
 } from "@/lib/chainroute/verifier";
 import type { VerifyResult } from "@/lib/chainroute/verifier";
-import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
+import { ARWEAVE_GATEWAY, NETWORKS } from "@/lib/chainroute/constants";
 import { importChain } from "@/lib/chainroute/my-chains-store";
 import { useNetwork } from "./NetworkContext";
 import {
@@ -258,7 +258,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
               <ChainVisualizer
                 genesisHash={result.genesisHash}
                 nodes={chainNodes}
-                explorerBaseUrl={usedDemoChain ? "https://polygonscan.com" : undefined}
+                explorerBaseUrl={usedDemoChain ? NETWORKS.polygon.explorerUrl : undefined}
               />
             )}
           </div>

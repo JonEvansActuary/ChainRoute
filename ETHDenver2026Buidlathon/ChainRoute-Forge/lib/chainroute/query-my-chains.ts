@@ -12,6 +12,17 @@ const POLYGONSCAN_API: Record<NetworkId, string> = {
   polygon: "https://api.polygonscan.com/api",
 };
 
+const POLYGONSCAN_API_KEY: Record<NetworkId, string | undefined> = {
+  amoy:
+    typeof process !== "undefined"
+      ? process.env.NEXT_PUBLIC_POLYGONSCAN_AMOY_API_KEY?.trim()
+      : undefined,
+  polygon:
+    typeof process !== "undefined"
+      ? process.env.NEXT_PUBLIC_POLYGONSCAN_MAINNET_API_KEY?.trim()
+      : undefined,
+};
+
 /** Expected tx input length: "0x" + 127 bytes * 2 hex chars = 256 */
 const EXPECTED_INPUT_LEN = 2 + PAYLOAD_LEN * 2; // 256
 
@@ -38,9 +49,11 @@ export async function queryMyChains(
   networkId: NetworkId
 ): Promise<MyChain[]> {
   const apiBase = POLYGONSCAN_API[networkId];
+  const apiKey = POLYGONSCAN_API_KEY[networkId];
   const target = ANCHOR_TARGET.toLowerCase();
 
-  const url = `${apiBase}?module=account&action=txlist&address=${address}&sort=asc&startblock=0&endblock=99999999`;
+  let url = `${apiBase}?module=account&action=txlist&address=${address}&sort=asc&startblock=0&endblock=99999999`;
+  if (apiKey) url += `&apikey=${encodeURIComponent(apiKey)}`;
   const res = await fetch(url);
   const json = await res.json();
 

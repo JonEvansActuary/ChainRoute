@@ -4,7 +4,7 @@ import type { SupportItem } from "@/lib/chainroute/types";
 
 /**
  * POST: body = { genesisHash, event: { eventType, timestamp?, summary }, supports: SupportItem[] }
- * Posts provenance blob to Arweave (server-side with ARWEAVE_KEY_PATH or ARWEAVE_JWK).
+ * Posts provenance blob to Arweave (server-side with ARWEAVE_KEY_PATH).
  * Returns { arweaveId }.
  */
 export async function POST(req: NextRequest) {
@@ -23,15 +23,14 @@ export async function POST(req: NextRequest) {
     }
     const blob = buildAndValidateBlob(genesisHash, event, supports);
     const keyPath = process.env.ARWEAVE_KEY_PATH;
-    const jwk = process.env.ARWEAVE_JWK;
-    if (!keyPath && !jwk) {
+    if (!keyPath) {
       return NextResponse.json(
-        { error: "Server: Set ARWEAVE_KEY_PATH or ARWEAVE_JWK to post to Arweave" },
+        { error: "Server: Set ARWEAVE_KEY_PATH to post to Arweave" },
         { status: 503 }
       );
     }
     const Arweave = (await import("arweave")).default;
-    const key = jwk ? JSON.parse(jwk) : await import("fs").then((fs) => JSON.parse(fs.readFileSync(keyPath!, "utf8")));
+    const key = await import("fs").then((fs) => JSON.parse(fs.readFileSync(keyPath, "utf8")));
     const arweave = Arweave.init({ host: "arweave.net", port: 443, protocol: "https" });
     const tx = await arweave.createTransaction({
       data: new TextEncoder().encode(JSON.stringify(blob)),

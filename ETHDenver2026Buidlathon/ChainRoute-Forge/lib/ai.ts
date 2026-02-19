@@ -1,6 +1,6 @@
 /**
  * AI helpers for provenance: image/PDF captioning and event summary generation.
- * Uses OpenAI-compatible API (OpenAI or Grok); set OPENAI_API_KEY or GROK_API_KEY in env.
+ * Uses Grok API; set GROK_API_KEY in env.
  */
 
 export interface CaptionResult {
@@ -22,23 +22,20 @@ const EVENT_SYSTEM =
   "You are an expert art provenance assistant. Given a list of support item labels and a short user description, return ONLY a valid JSON object (no markdown) with: eventType (string, e.g. creation, transfer, certification, exhibition), summary (object with relevant keys like from, to, description, location), and optional narrative (short string).";
 
 /**
- * Call OpenAI-compatible chat API. Prefers OPENAI_API_KEY; fallback GROK_API_KEY with Grok endpoint.
+ * Call Grok chat API for captions and event suggestions.
  */
 async function chat(
   system: string,
   userContent: string | Array<{ type: "text"; text: string } | { type: "image_url"; image_url: { url: string } }>
 ): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY || process.env.GROK_API_KEY;
+  const apiKey = process.env.GROK_API_KEY;
   if (!apiKey) {
-    throw new Error("Set OPENAI_API_KEY or GROK_API_KEY for AI features");
+    throw new Error("Set GROK_API_KEY for AI features");
   }
-  const isGrok = !!process.env.GROK_API_KEY && !process.env.OPENAI_API_KEY;
-  const url = isGrok
-    ? "https://api.x.ai/v1/chat/completions"
-    : "https://api.openai.com/v1/chat/completions";
+  const url = "https://api.x.ai/v1/chat/completions";
 
   const body = {
-    model: isGrok ? "grok-2-vision-1212" : "gpt-4o-mini",
+    model: "grok-2-vision-1212",
     messages: [
       { role: "system", content: system },
       { role: "user", content: userContent },

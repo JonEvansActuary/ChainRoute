@@ -7,6 +7,12 @@
 export const AMOY_RPC =
   (typeof process !== "undefined" && process.env.NEXT_PUBLIC_AMOY_RPC?.trim()) ||
   "https://rpc-amoy.polygon.technology";
+
+export const POLYGON_MAINNET_RPC =
+  (typeof process !== "undefined" &&
+    process.env.NEXT_PUBLIC_POLYGON_MAINNET_RPC?.trim()) ||
+  "https://polygon-rpc.com";
+
 export const CHAIN_ID = 80002;
 
 export const ARWEAVE_GATEWAY =
@@ -34,7 +40,7 @@ export const NETWORKS: Record<
   },
   polygon: {
     chainId: 137,
-    rpcUrl: "https://polygon-rpc.com",
+    rpcUrl: POLYGON_MAINNET_RPC,
     name: "Polygon Mainnet",
     explorerUrl: "https://polygonscan.com",
   },

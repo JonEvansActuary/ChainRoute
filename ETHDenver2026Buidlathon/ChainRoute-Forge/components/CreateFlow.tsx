@@ -13,7 +13,7 @@ import { useNetwork } from "@/components/NetworkContext";
 import { useToast } from "@/components/ToastContext";
 import { useTransactionFlow } from "@/hooks/useTransactionFlow";
 import { getAnchorTxData } from "@/lib/chainroute/polygon-anchor";
-import { ANCHOR_TARGET } from "@/lib/chainroute/constants";
+import { ANCHOR_TARGET, ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
 import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address";
 import { sendRawTransaction } from "@/lib/send-raw-tx";
 import { addEvent } from "@/lib/chainroute/my-chains-store";
@@ -476,7 +476,7 @@ export function CreateFlow() {
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-muted-foreground">Arweave blob:</span>
                   <a
-                    href={`https://arweave.net/${arweaveId}`}
+                    href={`${ARWEAVE_GATEWAY.replace(/\/$/, "")}/${arweaveId}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="font-mono text-xs text-purple-400 hover:underline"

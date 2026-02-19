@@ -16,14 +16,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing file" }, { status: 400 });
     }
     const keyPath = process.env.ARWEAVE_KEY_PATH;
-    const jwk = process.env.ARWEAVE_JWK;
-    if (!keyPath && !jwk) {
+    if (!keyPath) {
       return NextResponse.json(
-        { error: "Server: Set ARWEAVE_KEY_PATH or ARWEAVE_JWK" },
+        { error: "Server: Set ARWEAVE_KEY_PATH" },
         { status: 503 }
       );
     }
-    const key = jwk ? JSON.parse(jwk) : await import("fs").then((fs) => JSON.parse(fs.readFileSync(keyPath!, "utf8")));
+    const key = await import("fs").then((fs) => JSON.parse(fs.readFileSync(keyPath, "utf8")));
     const Arweave = (await import("arweave")).default;
     const arweave = Arweave.init({ host: "arweave.net", port: 443, protocol: "https" });
     const buf = Buffer.from(await file.arrayBuffer());
