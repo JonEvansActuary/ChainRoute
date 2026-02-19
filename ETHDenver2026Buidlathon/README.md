@@ -11,6 +11,7 @@ This folder contains the ChainRoute-Forge project and planning docs for the Buid
 | **ChainRoute-Forge/** | Next.js app: create, delegate, and verify ChainRoute provenance chains (Polygon + Arweave, AI-assisted). |
 | [ProjectPlan.md](./ProjectPlan.md) | Build plan, tech stack, structure, and Cursor instructions. |
 | [TODO.md](./TODO.md) | Must-do schedule (Camp BUIDL Feb 15–17, event Feb 18–21, MST). |
+| [SUBMISSION-CHECKLIST.md](./SUBMISSION-CHECKLIST.md) | Code checklist, submission steps, and pre-event smoke-test. |
 | [FOLDER-STRUCTURE-REVIEW.md](./FOLDER-STRUCTURE-REVIEW.md) | Layout review and consistency notes. |
 | [BUIDLATHON-EVALUATION.md](./BUIDLATHON-EVALUATION.md) | Honest assessment and fit for ETHDenver 2026. |
 | [SUBMISSION-CHECKLIST.md](./SUBMISSION-CHECKLIST.md) | What’s implemented + Loom, PDF, QR cards, Devfolio steps. |
