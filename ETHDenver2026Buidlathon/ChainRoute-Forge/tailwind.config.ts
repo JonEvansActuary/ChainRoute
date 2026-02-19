@@ -21,9 +21,9 @@ export default {
         accent: { DEFAULT: "hsl(var(--accent))", foreground: "hsl(var(--accent-foreground))" },
         card: { DEFAULT: "hsl(var(--card))", foreground: "hsl(var(--card-foreground))" },
         chain: {
-          neon: "#00ff9d",
-          glow: "#00ff9d40",
-          dark: "#0a0f0d",
+          neon: "#10b981",
+          glow: "#10b98140",
+          dark: "#064e3b",
         },
       },
       borderRadius: { lg: "var(--radius)", md: "calc(var(--radius) - 2px)", sm: "calc(var(--radius) - 4px)" },

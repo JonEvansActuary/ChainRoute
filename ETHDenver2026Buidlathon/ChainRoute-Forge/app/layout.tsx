@@ -3,9 +3,9 @@ import { Providers } from "@/components/providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ChainRoute-Forge",
+  title: "ChainRoute",
   description:
-    "Forge unbreakable provenance chains in minutes. AI co-pilots the story; ChainRoute anchors it forever on Polygon + Arweave.",
+    "Anchor provenance chains on Polygon in 127 bytes. Permanent data on Arweave. No smart contracts. No tokens. Just data.",
 };
 
 export const viewport: Viewport = {
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen bg-background font-sans antialiased">
         <Providers>{children}</Providers>
       </body>
