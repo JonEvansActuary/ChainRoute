@@ -86,8 +86,9 @@ export async function getPolygonTxPayload(
   );
   const json = await res.json();
   const tx = json?.result;
-  if (!tx?.data || tx.data === "0x") return null;
-  return { txHash, data: tx.data };
+  const txData = tx?.input ?? tx?.data;
+  if (!txData || txData === "0x") return null;
+  return { txHash, data: txData };
 }
 
 /**

@@ -4,7 +4,7 @@
  */
 
 import { getAnchorTxData, type AnchorParams } from "./polygon-anchor";
-import { AMOY_RPC, CHAIN_ID } from "./constants";
+import { AMOY_RPC, CHAIN_ID, ANCHOR_TARGET } from "./constants";
 
 export const LEDGER_PATH = "44'/60'/0'/0/0";
 const GAS_LIMIT = 100_000;
@@ -100,7 +100,7 @@ export async function signAnchorTxWithLedger(
         maxPriorityFeePerGas,
         maxFeePerGas,
         gasLimit: BigInt(GAS_LIMIT),
-        to: fromAddress as `0x${string}`,
+        to: ANCHOR_TARGET,
         value: 0n,
         data: dataHex as `0x${string}`,
         accessList: [],

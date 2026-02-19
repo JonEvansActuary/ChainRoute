@@ -1,5 +1,5 @@
 /**
- * Shared ChainRoute / ChainRoute-Forge config (single source of truth).
+ * Shared ChainRoute config (single source of truth).
  * Set NEXT_PUBLIC_AMOY_RPC (and optionally NEXT_PUBLIC_POLYGON_MAINNET_RPC) for provider RPC endpoints to improve reliability and reduce rate limits.
  * Set NEXT_PUBLIC_ARWEAVE_GATEWAY and/or NEXT_PUBLIC_ARWEAVE_GRAPHQL for Arweave read endpoints (gateway + GraphQL) to improve reliability.
  */
@@ -16,6 +16,9 @@ export const ARWEAVE_GATEWAY =
 export const ARWEAVE_GRAPHQL =
   (typeof process !== "undefined" && process.env.NEXT_PUBLIC_ARWEAVE_GRAPHQL?.trim()) ||
   "https://arweave.net/graphql";
+
+/** Burn address used as the `to` target for anchor txs (avoids MetaMask internal-account restriction). */
+export const ANCHOR_TARGET = "0x000000000000000000000000000000000000dEaD" as const;
 
 export type NetworkId = "amoy" | "polygon";
 

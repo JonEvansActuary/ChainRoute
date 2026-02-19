@@ -8,12 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { getAnchorTxData } from "@/lib/chainroute/polygon-anchor";
+import { ANCHOR_TARGET } from "@/lib/chainroute/constants";
 import {
   getPolygonTxPayload,
   decodePayloadFromHex,
 } from "@/lib/chainroute/verifier";
 import { isValidDelegateAddress, normalizeAddress } from "@/lib/validate-address";
-import { useAccount, useWalletClient } from "wagmi";
+import { sendRawTransaction } from "@/lib/send-raw-tx";
+import { addEvent } from "@/lib/chainroute/my-chains-store";
+import { useAccount } from "wagmi";
 import { Loader2, ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 import { useNetwork } from "@/components/NetworkContext";
 import { useToast } from "@/components/ToastContext";
@@ -38,7 +41,6 @@ export default function ContinuePage() {
   const [anchorDone, setAnchorDone] = useState<string | null>(null);
 
   const { address } = useAccount();
-  const { data: walletClient } = useWalletClient();
   const { rpcUrl, networkName, explorerUrl } = useNetwork();
   const { toast } = useToast();
   const anchorTx = useTransactionFlow();
@@ -87,7 +89,7 @@ export default function ContinuePage() {
   }
 
   async function sendAnchor() {
-    if (!chainGenesis || !prevTxHash || !address || !walletClient) return;
+    if (!chainGenesis || !prevTxHash || !address) return;
     const delegateAddr = nextDelegate.trim() ? normalizeAddress(nextDelegate) : address;
     if (!isValidDelegateAddress(delegateAddr)) {
       setAnchorError("Next signer address must be 0x + 40 hex characters");
@@ -108,11 +110,10 @@ export default function ContinuePage() {
         arweaveBlobTxId: arId || "",
         delegate: delegateAddr,
       });
-      const hash = await walletClient.sendTransaction({
-        to: address,
+      const hash = await sendRawTransaction({
+        from: address,
+        to: ANCHOR_TARGET,
         data: txData,
-        value: 0n,
-        gas: 100000n,
       });
 
       const receipt = await anchorTx.waitForConfirmation(hash as Hash);
@@ -122,6 +123,7 @@ export default function ContinuePage() {
       }
 
       toast("Anchor confirmed on chain!", "success");
+      if (chainGenesis) addEvent(chainGenesis, hash, delegateAddr);
       setAnchorDone(hash);
     } catch (e) {
       setAnchorError((e as Error).message);

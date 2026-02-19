@@ -5,7 +5,7 @@
 import { type Hash } from "viem";
 import { polygonAmoy } from "viem/chains";
 import { buildPayloadHex } from "./build-payload";
-import { AMOY_RPC, CHAIN_ID } from "./constants";
+import { AMOY_RPC, CHAIN_ID, ANCHOR_TARGET } from "./constants";
 
 export interface AnchorParams {
   genesisHash: string;
@@ -33,17 +33,18 @@ export function getAnchorTxData(params: AnchorParams): `0x${string}` {
  */
 export async function postPolygonAnchor(
   params: AnchorParams,
-  walletClient: { getAddresses: () => Promise<readonly `0x${string}`[]>; sendTransaction: (tx: { to: `0x${string}`; data: `0x${string}`; value?: bigint; gas?: bigint }) => Promise<Hash> }
+  walletClient: { getAddresses: () => Promise<readonly `0x${string}`[]>; sendTransaction: (tx: { to: `0x${string}`; data: `0x${string}`; value?: bigint; gas?: bigint; chain?: null }) => Promise<Hash> }
 ): Promise<Hash> {
   const [address] = await walletClient.getAddresses();
   if (!address) throw new Error("No wallet address");
 
   const data = getAnchorTxData(params);
   const hash = await walletClient.sendTransaction({
-    to: address,
+    to: ANCHOR_TARGET,
     data,
     value: 0n,
-    gas: 100000n,
+    gas: 100_000n,
+    chain: null,
   });
   return hash;
 }
