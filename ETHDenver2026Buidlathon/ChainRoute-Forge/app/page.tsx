@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Header } from "@/components/Header";
 import { PayloadDiagram } from "@/components/PayloadDiagram";
-import { DEMO_CHAIN_GENESIS_TX } from "@/lib/demo-chain";
+
 
 export default function HomePage() {
   return (
@@ -95,7 +95,7 @@ export default function HomePage() {
           <p className="mb-3 text-sm text-muted-foreground">
             See a real chain verified on Polygon Mainnet:
           </p>
-          <Link href={`/verify?input=${encodeURIComponent(DEMO_CHAIN_GENESIS_TX)}`}>
+          <Link href="/verify?loadExample=painting">
             <span className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-5 py-2.5 text-sm font-medium text-foreground shadow transition-colors hover:bg-accent hover:text-accent-foreground cursor-pointer">
               Verify the HypotheticalPainting example
             </span>

@@ -25,11 +25,12 @@ const DEMO_CHAIN_CACHE_KEY = "chainroute-demo-chain-result";
 import { ChainVisualizer } from "./ChainVisualizer";
 import { QRCodeModal } from "./QRCodeModal";
 
-export function Verifier({ initialInput }: { initialInput?: string }) {
+export function Verifier({ initialInput, loadExample }: { initialInput?: string; loadExample?: boolean }) {
   const [input, setInput] = useState(initialInput ?? "");
   useEffect(() => {
     if (initialInput != null) setInput(initialInput);
   }, [initialInput]);
+  const [shouldLoadExample] = useState(loadExample ?? false);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -164,6 +165,11 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
         // keep showing cached result
       });
   }
+
+  useEffect(() => {
+    if (shouldLoadExample) loadExampleChain();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shouldLoadExample]);
 
   const chainNodes = result
     ? [
