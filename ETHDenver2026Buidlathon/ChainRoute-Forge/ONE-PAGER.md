@@ -1,4 +1,4 @@
-# ChainForge AI — One-Pager (ETHDenver 2026 Buidlathon)
+# ChainRoute-Forge — One-Pager (ETHDenver 2026 Buidlathon)
 
 **Tagline:** *Forge unbreakable provenance chains in minutes. AI co-pilots the story; ChainRoute anchors it forever on Polygon + Arweave.*
 
@@ -10,7 +10,7 @@ Creators and custodians need **tamper-evident, verifiable provenance** for physi
 
 ## Solution
 
-**ChainForge AI** is a web app that builds **ChainRoute protocol** provenance chains:
+**ChainRoute-Forge** is a web app that builds **ChainRoute protocol** provenance chains:
 
 - **Genesis** → root anchor on Polygon (Amoy); optional **Ledger cold signing**.
 - **Events** → type + summary + support files; supports and blobs on **Arweave** with ChainRoute-Genesis tags.
@@ -21,7 +21,7 @@ Creators and custodians need **tamper-evident, verifiable provenance** for physi
 
 ## Live link
 
-**[Deploy URL]** — e.g. `https://chainforge-ai.vercel.app`
+**[Deploy URL]** — e.g. `https://chainroute-forge.vercel.app`
 
 ## Screenshot
 
@@ -40,6 +40,6 @@ Next.js, wagmi, viem, Arweave, ChainRoute lib (build-payload, polygon-anchor, ve
 
 ---
 
-*ChainForge AI — Immutable decisions, verifiable paths, permanent impact.*
+*ChainRoute-Forge — Immutable decisions, verifiable paths, permanent impact.*
 
 **Before submission:** Replace `[Deploy URL]` above with your live Vercel (or other) URL and add a screenshot in the Screenshot section.

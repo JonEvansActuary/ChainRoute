@@ -1,9 +1,19 @@
-# ChainForge AI – 2-Minute Demo Script (ETHDenver 2026 Buidlathon)
+# ChainRoute-Forge – 2-Minute Demo Script (ETHDenver 2026 Buidlathon)
 
 ## One-line scope (for submission & pitch)
 
 **MVP:** Create genesis (wallet or Ledger cold sign), one event with supports and AI, anchor on Polygon, verify any tx, QR code, NFT metadata export, and preloaded example chain.  
 **Protocol:** ChainRoute v0.1 — 127-byte payloads, Arweave blobs with ChainRoute-Genesis tags, Polygon Amoy anchors, client-side verification.
+
+---
+
+## Pre-demo checklist (5–10 min before)
+
+1. **Browser:** Use **Chrome or Edge** (Ledger WebHID and app work best). Avoid Safari for Ledger.
+2. **Smoke test:** Open the live app → go to **Verify** → click **Load Example Chain** once. If it loads, RPC and Arweave are reachable; the result is cached for instant repeat demos.
+3. **Wallet:** Ensure your wallet is on **Polygon Amoy** (Chain ID **80002**). Switch network in MetaMask/wallet if needed.
+4. **MATIC on Amoy:** You need a little MATIC to sign genesis and anchor txs. Faucet: **https://faucet.polygon.technology** (select Polygon Amoy).
+5. **Ledger (if using):** Connect the device once and enable **Blind signing** (or Contract data) in the Ethereum app so you’re not fumbling during the demo.
 
 ---
 
@@ -13,7 +23,7 @@
    *“Scan this—it’s a real provenance chain.”* (Link goes to Verify with example or your chain.)
 
 2. **Connect wallet** (Polygon Amoy) or **Ledger.**  
-   *“ChainForge uses Polygon for cheap anchors and Arweave for permanent data—no smart contracts. You can also sign genesis cold with Ledger.”*
+   *“ChainRoute-Forge uses Polygon for cheap anchors and Arweave for permanent data—no smart contracts. You can also sign genesis cold with Ledger.”*
 
 3. **Create genesis** (one click, or Ledger mode).  
    Toggle **Ledger** → **Use Ledger** (connect device, enable Blind signing in Ethereum app) → **Create genesis (cold sign on Ledger).**  
@@ -50,8 +60,10 @@
 
 - **No Arweave key:** *“Upload and blob post need server keys. You can still create genesis and use Verify with existing chains.”*
 - **No AI key:** *“AI is optional; labels and event can be filled manually.”*
-- **Ledger:** *“Use Chrome/Edge with WebHID; enable Blind signing or Contract data in the Ethereum app.”*
+- **Ledger:** *“Use Chrome or Edge with WebHID; enable Blind signing or Contract data in the Ethereum app.”*
+- **Wrong network / no MATIC:** *“Switch to Polygon Amoy (Chain ID 80002) and get test MATIC from faucet.polygon.technology.”*
 - **Chain view only shows genesis:** *“Paste the latest tx hash on Verify to see the full chain and blob.”*
+- **Slow or timeout:** *“Network might be slow here—let me show the example chain instead.”* Click **Load Example Chain** (cached load is instant if you ran the pre-demo check).
 
 ---
 

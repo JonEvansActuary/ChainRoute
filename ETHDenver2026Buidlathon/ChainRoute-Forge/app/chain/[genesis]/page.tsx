@@ -15,7 +15,8 @@ import {
   fetchArweaveBlob,
 } from "@/lib/chainroute/verifier";
 import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
-import { Loader2, Info, Download } from "lucide-react";
+import { Loader2, Info, Download, QrCode } from "lucide-react";
+import { QRCodeModal } from "@/components/QRCodeModal";
 
 type NodeItem = {
   txHash: string;
@@ -35,6 +36,8 @@ export default function ChainPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { rpcUrl } = useNetwork();
+  const [qrOpen, setQrOpen] = useState(false);
+  const [qrVerifyUrl, setQrVerifyUrl] = useState("");
 
   useEffect(() => {
     if (!genesis || genesis.length !== 64) {
@@ -154,6 +157,18 @@ export default function ChainPage() {
             <Download className="h-4 w-4" />
             Export NFT metadata
           </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              const g = genesis.startsWith("0x") ? genesis : `0x${genesis}`;
+              setQrVerifyUrl(typeof window !== "undefined" ? `${window.location.origin}/verify?input=${encodeURIComponent(g)}` : "");
+              setQrOpen(true);
+            }}
+          >
+            <QrCode className="h-4 w-4" />
+            QR code
+          </Button>
         </div>
         {nodes.length === 1 && (
           <div className="mb-4 flex items-start gap-2 rounded-lg border border-chain-neon/30 bg-chain-neon/5 p-3 text-sm text-muted-foreground">
@@ -182,6 +197,12 @@ export default function ChainPage() {
           </CardContent>
         </Card>
       </main>
+      <QRCodeModal
+        open={qrOpen}
+        onClose={() => setQrOpen(false)}
+        verifyUrl={qrVerifyUrl}
+        title="Scan to verify this chain"
+      />
     </div>
   );
 }

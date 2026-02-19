@@ -16,6 +16,7 @@ import "reactflow/dist/style.css";
 import type { DecodedPayload } from "@/lib/chainroute/verifier";
 import type { ProvenanceBlob } from "@/lib/chainroute/types";
 import { useNetwork } from "./NetworkContext";
+import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
 
 export interface ChainNodeData {
   label: string;
@@ -103,7 +104,7 @@ export function ChainVisualizer({ genesisHash, nodes, className = "", explorerBa
         )}
         {data.arweaveId && (
           <a
-            href={`https://arweave.net/${data.arweaveId}`}
+            href={`${ARWEAVE_GATEWAY.replace(/\/$/, "")}/${data.arweaveId}`}
             target="_blank"
             rel="noopener noreferrer"
             className="mt-1 block truncate text-xs text-muted-foreground hover:text-chain-neon"

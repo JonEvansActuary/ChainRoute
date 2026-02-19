@@ -18,8 +18,11 @@ import {
   DEMO_CHAIN_EVENT_TXES,
   DEMO_CHAIN_MAINNET_RPC,
 } from "@/lib/demo-chain";
-import { CheckCircle2, XCircle, Loader2, Search, BookOpen } from "lucide-react";
+import { CheckCircle2, XCircle, Loader2, Search, BookOpen, QrCode } from "lucide-react";
+
+const DEMO_CHAIN_CACHE_KEY = "chainroute-forge-demo-chain-result";
 import { ChainVisualizer } from "./ChainVisualizer";
+import { QRCodeModal } from "./QRCodeModal";
 
 export function Verifier({ initialInput }: { initialInput?: string }) {
   const [input, setInput] = useState(initialInput ?? "");
@@ -31,6 +34,8 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
   const [error, setError] = useState<string | null>(null);
   const [usedDemoChain, setUsedDemoChain] = useState(false);
   const { rpcUrl, networkName } = useNetwork();
+  const [qrOpen, setQrOpen] = useState(false);
+  const [qrVerifyUrl, setQrVerifyUrl] = useState("");
 
   async function verify() {
     const raw = input.trim();
@@ -93,11 +98,27 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
   }
 
   async function loadExampleChain() {
-    setLoading(true);
-    setError(null);
-    setResult(null);
     setUsedDemoChain(true);
     setInput(DEMO_CHAIN_EVENT_TXES[DEMO_CHAIN_EVENT_TXES.length - 1] ?? DEMO_CHAIN_GENESIS_TX);
+    setError(null);
+
+    if (typeof sessionStorage !== "undefined") {
+      try {
+        const cached = sessionStorage.getItem(DEMO_CHAIN_CACHE_KEY);
+        if (cached) {
+          const parsed = JSON.parse(cached) as VerifyResult;
+          setResult(parsed);
+          setLoading(false);
+          void revalidateDemoChainInBackground();
+          return;
+        }
+      } catch {
+        // ignore stale/invalid cache
+      }
+    }
+
+    setLoading(true);
+    setResult(null);
     try {
       const res = await verifyChainFromTxList(
         DEMO_CHAIN_GENESIS_TX,
@@ -106,11 +127,40 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
         ARWEAVE_GATEWAY
       );
       setResult(res);
+      if (typeof sessionStorage !== "undefined" && res.valid) {
+        try {
+          sessionStorage.setItem(DEMO_CHAIN_CACHE_KEY, JSON.stringify(res));
+        } catch {
+          // ignore quota etc.
+        }
+      }
     } catch (e) {
       setError((e as Error).message);
     } finally {
       setLoading(false);
     }
+  }
+
+  function revalidateDemoChainInBackground() {
+    verifyChainFromTxList(
+      DEMO_CHAIN_GENESIS_TX,
+      DEMO_CHAIN_EVENT_TXES,
+      DEMO_CHAIN_MAINNET_RPC,
+      ARWEAVE_GATEWAY
+    )
+      .then((res) => {
+        if (res.valid && typeof sessionStorage !== "undefined") {
+          try {
+            sessionStorage.setItem(DEMO_CHAIN_CACHE_KEY, JSON.stringify(res));
+            setResult(res);
+          } catch {
+            // ignore
+          }
+        }
+      })
+      .catch(() => {
+        // keep showing cached result
+      });
   }
 
   const chainNodes = result
@@ -163,7 +213,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
         {error && <p className="text-sm text-destructive">{error}</p>}
         {result && (
           <div className="space-y-3">
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2">
               {result.valid ? (
                 <CheckCircle2 className="h-5 w-5 text-chain-neon" />
               ) : (
@@ -172,6 +222,23 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
               <span className={result.valid ? "text-chain-neon" : "text-destructive"}>
                 {result.valid ? "Chain valid" : "Verification failed"}
               </span>
+              {result.valid && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const raw = input.trim();
+                    const hex = raw.startsWith("0x") ? raw : `0x${raw}`;
+                    setQrVerifyUrl(typeof window !== "undefined" ? `${window.location.origin}/verify?input=${encodeURIComponent(hex)}` : "");
+                    setQrOpen(true);
+                  }}
+                  className="ml-auto flex items-center gap-1"
+                >
+                  <QrCode className="h-4 w-4" />
+                  Show QR
+                </Button>
+              )}
             </div>
             {result.polygon.errors.length > 0 && (
               <ul className="text-sm text-destructive">
@@ -195,6 +262,12 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
           </div>
         )}
       </CardContent>
+      <QRCodeModal
+        open={qrOpen}
+        onClose={() => setQrOpen(false)}
+        verifyUrl={qrVerifyUrl}
+        title="Scan to verify"
+      />
     </Card>
   );
 }

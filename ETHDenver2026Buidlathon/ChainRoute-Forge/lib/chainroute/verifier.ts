@@ -1,16 +1,44 @@
 /**
  * Client-side ChainRoute verification: fetch Polygon tx, decode payload, fetch Arweave blobs.
+ * Uses timeouts and one retry for reliability in demos.
  */
 
 import { decodePayload, type DecodedPayload } from "./build-payload";
 import { validateBlob } from "./validate-blob";
 import type { ProvenanceBlob } from "./types";
-import { ARWEAVE_GATEWAY } from "./constants";
+import { ARWEAVE_GATEWAY, ARWEAVE_GRAPHQL } from "./constants";
 
 export type { DecodedPayload };
 
 const DEFAULT_ARWEAVE_GATEWAY = ARWEAVE_GATEWAY;
-const ARWEAVE_GRAPHQL = "https://arweave.net/graphql";
+
+const FETCH_TIMEOUT_MS = 18000;
+const RETRY_DELAY_MS = 1500;
+
+async function fetchWithTimeoutAndRetry(
+  url: string,
+  init: RequestInit,
+  timeoutMs: number = FETCH_TIMEOUT_MS
+): Promise<Response> {
+  const doFetch = async (): Promise<Response> => {
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeoutMs);
+    try {
+      const res = await fetch(url, { ...init, signal: controller.signal });
+      clearTimeout(id);
+      return res;
+    } catch (e) {
+      clearTimeout(id);
+      throw e;
+    }
+  };
+  try {
+    return await doFetch();
+  } catch {
+    await new Promise((r) => setTimeout(r, RETRY_DELAY_MS));
+    return await doFetch();
+  }
+}
 
 export interface VerifiedAnchor {
   step: string;
@@ -43,16 +71,19 @@ export async function getPolygonTxPayload(
   txHash: string,
   rpcUrl: string
 ): Promise<{ txHash: string; data: string } | null> {
-  const res = await fetch(rpcUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      jsonrpc: "2.0",
-      id: 1,
-      method: "eth_getTransactionByHash",
-      params: [txHash],
-    }),
-  });
+  const res = await fetchWithTimeoutAndRetry(
+    rpcUrl,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        jsonrpc: "2.0",
+        id: 1,
+        method: "eth_getTransactionByHash",
+        params: [txHash],
+      }),
+    }
+  );
   const json = await res.json();
   const tx = json?.result;
   if (!tx?.data || tx.data === "0x") return null;
@@ -74,7 +105,7 @@ export async function fetchArweaveBlob(
   gateway = DEFAULT_ARWEAVE_GATEWAY
 ): Promise<ProvenanceBlob> {
   const url = `${gateway.replace(/\/$/, "")}/${blobId}`;
-  const res = await fetch(url);
+  const res = await fetchWithTimeoutAndRetry(url, {});
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const blob = (await res.json()) as ProvenanceBlob;
   return blob;
@@ -102,7 +133,7 @@ export async function getArweaveTxTags(
       }
     }
   `;
-  const res = await fetch(graphqlUrl, {
+  const res = await fetchWithTimeoutAndRetry(graphqlUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ query }),
