@@ -49,6 +49,14 @@ Without Arweave keys, support upload and blob post show a clear message; you can
 6. View chain at `/chain/[genesis]` → **Export NFT metadata** (ERC-721–style JSON)
 7. **Verify** at `/verify` — paste tx hash or click **Load Example Chain** (HypotheticalPainting, Polygon mainnet); QR code for physical items
 8. **Continue**: Use `/continue` to add events to an existing chain (paste genesis or tx hash)
+9. **My Chains**: Click your wallet address in the header to see chains you've created or verified — with quick links to verify or continue each one
+
+## Architecture notes
+
+- **Anchor target**: Anchor transactions are sent to a dedicated burn address (`0x...dEaD`) rather than self-transactions, avoiding MetaMask's "internal accounts cannot include data" restriction. The verifier only reads the `data` payload and does not check the `to` field.
+- **My Chains storage**: Chain history is tracked in localStorage (saved on genesis creation, event anchoring, and successful verification). No external indexer or API key required.
+- **Dark/light theme**: Toggled via class-based Tailwind dark mode with localStorage persistence.
+- **Network selector**: Switch between Polygon Amoy (testnet) and Polygon mainnet from the header.
 
 ## Deploy
 

@@ -12,6 +12,7 @@ import {
 } from "@/lib/chainroute/verifier";
 import type { VerifyResult } from "@/lib/chainroute/verifier";
 import { ARWEAVE_GATEWAY } from "@/lib/chainroute/constants";
+import { importChain } from "@/lib/chainroute/my-chains-store";
 import { useNetwork } from "./NetworkContext";
 import {
   DEMO_CHAIN_GENESIS_TX,
@@ -20,7 +21,7 @@ import {
 } from "@/lib/demo-chain";
 import { CheckCircle2, XCircle, Loader2, Search, BookOpen, QrCode } from "lucide-react";
 
-const DEMO_CHAIN_CACHE_KEY = "chainroute-forge-demo-chain-result";
+const DEMO_CHAIN_CACHE_KEY = "chainroute-demo-chain-result";
 import { ChainVisualizer } from "./ChainVisualizer";
 import { QRCodeModal } from "./QRCodeModal";
 
@@ -73,6 +74,7 @@ export function Verifier({ initialInput }: { initialInput?: string }) {
             valid: false,
           });
         } else {
+          importChain(chainGenesis, txHash, single.decoded?.delegate ?? "");
           setResult({
             genesisHash: chainGenesis,
             polygon: {

@@ -70,7 +70,7 @@ function buildNodesAndEdges(
         source: chainNodes[i - 1].id,
         target: id,
         animated: true,
-        style: { stroke: "#00ff9d", strokeWidth: 2 },
+        style: { stroke: "#10b981", strokeWidth: 2 },
       });
     }
     y++;
@@ -90,7 +90,7 @@ export function ChainVisualizer({ genesisHash, nodes, className = "", explorerBa
 
   const nodeTypes: NodeTypes = {
     default: ({ data }) => (
-      <div className="min-w-[200px]">
+      <div className="min-w-[200px] text-center">
         <div className="font-semibold text-chain-neon">{data.label}</div>
         {data.txHash && (
           <a
@@ -137,7 +137,7 @@ export function ChainVisualizer({ genesisHash, nodes, className = "", explorerBa
       >
         <Background />
         <Controls />
-        <MiniMap nodeColor="#00ff9d" maskColor="hsl(160 20% 6% / 0.8)" />
+        <MiniMap nodeColor="#10b981" maskColor="hsl(160 14% 9% / 0.8)" />
       </ReactFlow>
     </div>
   );
