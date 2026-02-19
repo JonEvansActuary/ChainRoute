@@ -56,27 +56,27 @@ Replace `<GENESIS_HASH>` with the 64-hex genesis hash from Step 1 (no `0x`).
 ARWEAVE_KEY="keys/arweave-keyfile-DNRLpCNPz-Gx6Pt80x-4vdx4oXMHQmlIXW9L04FhRkc.json"
 
 node docs/code/post-support-to-arweave.js \
-  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/UV_Analysis_Picasso_Hypothetical.png \
+  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/event1/UV_Analysis_Picasso_Hypothetical.png \
   --genesis <GENESIS_HASH> --key "$ARWEAVE_KEY"
 # → Capture as ID_UV
 
 node docs/code/post-support-to-arweave.js \
-  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/Spectral_Analysis_Report_v1.pdf \
+  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/event1/Spectral_Analysis_Report_v1.pdf \
   --genesis <GENESIS_HASH> --key "$ARWEAVE_KEY"
 # → Capture as ID_SPECTRAL
 
 node docs/code/post-support-to-arweave.js \
-  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/Notary_Seal_Paris.png \
+  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/event1/Notary_Seal_Paris.png \
   --genesis <GENESIS_HASH> --key "$ARWEAVE_KEY"
 # → Capture as ID_NOTARY
 
 node docs/code/post-support-to-arweave.js \
-  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/ArtSecure_Cert_12345.pdf \
+  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/event1/ArtSecure_Cert_12345.pdf \
   --genesis <GENESIS_HASH> --key "$ARWEAVE_KEY"
 # → Capture as ID_ARTSECURE
 
 node docs/code/post-support-to-arweave.js \
-  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/Fictional_Picasso.png \
+  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/supports/event1/Fictional_Picasso.png \
   --genesis <GENESIS_HASH> --key "$ARWEAVE_KEY"
 # → Capture as ID_FICTIONAL_PICASSO
 ```

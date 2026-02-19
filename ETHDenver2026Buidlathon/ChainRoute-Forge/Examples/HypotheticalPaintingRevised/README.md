@@ -8,12 +8,12 @@ Hypothetical provenance sequence for a **rare fine art painting** (valued ~$8–
 
 | Stage | Outline (HypPaintOutline.txt) | Main provenance event | Supporting files |
 |-------|-------------------------------|------------------------|------------------|
-| 1 | Authentication | [1-authentication.json](./1-authentication.json) (certification) | [supports/](./supports/): UV_Analysis_Picasso_Hypothetical.png, Spectral_Analysis_Report_v1.pdf, Notary_Seal_Paris.png, ArtSecure_Cert_12345.pdf, Fictional_Picasso.png |
-| 2 | Secure Transport | [2-secure-transport.json](./2-secure-transport.json) (transfer) | Crate_Photo_Paris.png, Flight_Manifest_AF034.pdf, Insurance_Policy_8M.pdf, Customs_Clearance_JFK.png |
-| 3 | Auction Drop-Off | [3-auction-dropoff.json](./3-auction-dropoff.json) (transfer) | DropOff_Photo_Manhattan.png, Condition_Report_NY.pdf, Receipt_AuctionHouse.pdf, Security_Log_Entry.txt |
-| 4 | Live Bidding Event | [4-live-bidding.json](./4-live-bidding.json) (transfer) | Bidding_Event_Photo.png, Sale_Transcript.pdf, Transaction_Receipt_12M.pdf, Buyer_Agreement_Redacted.pdf |
-| 5 | Secure Handover | [5-secure-handover.json](./5-secure-handover.json) (transfer) | Handover_Photo_London.png, Transfer_Documents.pdf, Jet_Manifest.pdf, Vault_Entry_Log.txt |
-| 6 | Long-Term Storage | [6-long-term-storage.json](./6-long-term-storage.json) (certification) | Storage_Photo_Vault.png, Climate_Control_Report.pdf, Access_Log_Initial.txt, Insurance_Update_PostSale.pdf |
+| 1 | Authentication | [1-authentication.json](./1-authentication.json) (certification) | [supports/event1/](./supports/event1/): UV_Analysis_Picasso_Hypothetical.png, Spectral_Analysis_Report_v1.pdf, Notary_Seal_Paris.png, ArtSecure_Cert_12345.pdf, Fictional_Picasso.png |
+| 2 | Secure Transport | [2-secure-transport.json](./2-secure-transport.json) (transfer) | [supports/event2/](./supports/event2/): Crate_Photo_Paris.png, Flight_Manifest_AF034.pdf, Insurance_Policy_8M.pdf, Customs_Clearance_JFK.png |
+| 3 | Auction Drop-Off | [3-auction-dropoff.json](./3-auction-dropoff.json) (transfer) | [supports/event3/](./supports/event3/): DropOff_Photo_Manhattan.png, Condition_Report_NY.pdf, Receipt_AuctionHouse.pdf, Security_Log_Entry.txt |
+| 4 | Live Bidding Event | [4-live-bidding.json](./4-live-bidding.json) (transfer) | [supports/event4/](./supports/event4/): Bidding_Event_Photo.png, Sale_Transcript.pdf, Transaction_Receipt_12M.pdf, Buyer_Agreement_Redacted.pdf |
+| 5 | Secure Handover | [5-secure-handover.json](./5-secure-handover.json) (transfer) | [supports/event5/](./supports/event5/): Handover_Photo_London.png, Transfer_Documents.pdf, Jet_Manifest.pdf, Vault_Entry_Log.txt |
+| 6 | Long-Term Storage | [6-long-term-storage.json](./6-long-term-storage.json) (certification) | [supports/event6/](./supports/event6/): Storage_Photo_Vault.png, Climate_Control_Report.pdf, Access_Log_Initial.txt, Insurance_Update_PostSale.pdf |
 
 ## Event JSON (placeholders)
 
@@ -26,13 +26,13 @@ Event types: **certification** (stages 1 and 6), **transfer** (stages 2–5). Ti
 
 ## Supporting files
 
-All supporting files live in [supports/](./supports/). They are **minimal placeholders** (tiny images, minimal PDFs, short .txt) so the structure and filenames match the outline; replace with real content if you need realistic artifacts.
+Supporting files are organized in [supports/](./supports/) with one subfolder per provenance event: **event1/** through **event6/**. They are **minimal placeholders** (tiny images, minimal PDFs, short .txt) so the structure and filenames match the outline; replace with real content if you need realistic artifacts.
 
-**In this folder:** The repo currently includes three text placeholders in `supports/`: `Security_Log_Entry.txt`, `Vault_Entry_Log.txt`, and `Access_Log_Initial.txt`. All other support filenames (e.g. UV_Analysis_Picasso_Hypothetical.png, Fictional_Picasso.png, Crate_Photo_Paris.png, and the PDFs listed in the table above) are referenced by name in the event JSON and run flows—add or create those files in `supports/` when running the sequence, or use your own assets and update the labels in the event/supports JSON as needed.
+**In this folder:** Each of `supports/event1/` through `supports/event6/` contains that stage’s supporting files (images, PDFs, .txt). Add or replace files in the appropriate `supports/eventN/` folder when running the sequence; event JSON and supports JSON reference them by label.
 
 ## Polygon anchor payloads (127-byte tx data)
 
-Each Arweave provenance step is anchored on Polygon with a 127-byte payload built from a JSON file. Layout matches [protocol.md §3.1](../../protocol.md#31-polygon-transaction-payload): 32 + 32 + 43 + 20 = 127 bytes.
+Each Arweave provenance step is anchored on Polygon with a 127-byte payload built from a JSON file. Layout matches [protocol.md §3.1](../../../../protocol.md#31-polygon-transaction-payload): 32 + 32 + 43 + 20 = 127 bytes.
 
 | Offset  | Field (in JSON)       | Size (bytes) | In payload JSON |
 |---------|------------------------|--------------|------------------|
@@ -67,9 +67,9 @@ Run all commands from the **ChainRoute repo root**. This example lives at `ETHDe
 
 1. Post **genesis** Polygon tx using [genesis-payload.json](./genesis-payload.json); set **GENESIS_HASH** (64 hex).
 2. For each stage in order (1 → 6):
-   - Upload that stage’s supporting files from `supports/` to Arweave (with `--genesis GENESIS_HASH`); record each 43-char Arweave tx ID.
+   - Upload that stage’s supporting files from `supports/eventN/` (event1–event6) to Arweave (with `--genesis GENESIS_HASH`); record each 43-char Arweave tx ID.
    - In that stage’s event JSON, set `genesis` to GENESIS_HASH and each `supports[].id` to the corresponding Arweave ID.
    - Post the provenance blob (e.g. `post-provenance-blob-to-arweave.js`); record the 43-char Arweave blob ID.
    - In the matching `*-payload.json`, set `genesisHash`, `previousPolygonHash` (previous step’s Polygon tx hash), `arweaveId` (this event’s blob ID), and `delegate`; then build and post the Polygon anchor with `build-polygon-payload.js`.
 
-See [docs/code](../code/) for posting scripts and commands. To verify a posted chain (Polygon payloads and Arweave blobs), use [verify-chain.js](../code/verify-chain.js) with [chain-manifest.json](./chain-manifest.json); to verify support-file genesis tags, use [verify-support-tags.js](../code/verify-support-tags.js). See [transaction-ids.md](./transaction-ids.md) for the verification section.
+Scripts live in **docs/code** at the ChainRoute repo root. From this example folder that is [../../../../docs/code](../../../../docs/code). To verify a posted chain (Polygon payloads and Arweave blobs), use **verify-chain.js** with this folder’s [chain-manifest.json](./chain-manifest.json); to verify support-file genesis tags, use **verify-support-tags.js**. See [transaction-ids.md](./transaction-ids.md) for the exact commands (run from repo root).
