@@ -19,7 +19,7 @@ function getWalletProvider(): EIP1193Provider | null {
 
 export function useTransactionFlow() {
   const { chainId: walletChainId, connector } = useAccount();
-  const publicClient = usePublicClient({ chainId: walletChainId ?? undefined });
+  const publicClient = usePublicClient({ chainId: walletChainId as 80002 | 137 | undefined });
   const [status, setStatus] = useState<TxStatus>("idle");
   const [txHash, setTxHash] = useState<Hash | null>(null);
   const [error, setError] = useState<string | null>(null);
