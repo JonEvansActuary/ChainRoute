@@ -6,14 +6,18 @@
   <title>Hypothetical Painting — ChainRoute Provenance Example</title>
   <style>
     :root {
-      --bg: #1a1a2e;
-      --card: #16213e;
-      --accent: #e94560;
-      --text: #eaeaea;
-      --muted: #a0a0a0;
+      --bg: #f2f5fa;
+      --bg-subtle: #e6ebf4;
+      --card: #fafcff;
+      --card-border: #d4dce8;
+      --accent: #2d6a6a;
+      --accent-light: #e2eff0;
+      --text: #1e2a36;
+      --text-soft: #4a5568;
+      --muted: #64748b;
     }
     * { box-sizing: border-box; }
-    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Georgia', 'Times New Roman', serif; background: var(--bg); color: var(--text); }
     .deck {
       height: 100%;
       overflow-x: hidden;
@@ -23,42 +27,141 @@
     }
     .slide {
       min-height: 100vh;
-      padding: 3rem 4rem;
+      padding: 2.5rem 3.5rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       scroll-snap-align: start;
       position: relative;
     }
-    .slide h1 { font-size: 2.25rem; margin: 0 0 1rem; font-weight: 700; color: #fff; }
-    .slide h2 { font-size: 1.5rem; margin: 0 0 0.75rem; font-weight: 600; color: var(--accent); }
-    .slide p { font-size: 1.125rem; line-height: 1.6; margin: 0 0 0.5rem; color: var(--text); }
-    .slide .muted { color: var(--muted); font-size: 0.95rem; }
-    .slide ul { margin: 0.5rem 0 1rem; padding-left: 1.5rem; }
-    .slide li { margin-bottom: 0.35rem; line-height: 1.5; }
+    .slide h1 { font-size: 2.25rem; margin: 0 0 1rem; font-weight: 700; color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; }
+    .slide h2 { font-size: 1.45rem; margin: 0 0 0.75rem; font-weight: 600; color: var(--accent); font-family: 'Segoe UI', system-ui, sans-serif; }
+    .slide h3 { font-size: 1.1rem; margin: 0.75rem 0 0.35rem; font-weight: 600; color: var(--text-soft); }
+    .slide p { font-size: 1.05rem; line-height: 1.65; margin: 0 0 0.5rem; color: var(--text); }
+    .slide .muted { color: var(--muted); font-size: 0.9rem; }
+    .slide ul { margin: 0.5rem 0 1rem; padding-left: 1.4rem; }
+    .slide li { margin-bottom: 0.3rem; line-height: 1.5; }
     .disclaimer {
-      background: rgba(233, 69, 96, 0.15);
+      background: var(--accent-light);
       border: 1px solid var(--accent);
-      border-radius: 8px;
+      border-radius: 10px;
       padding: 1.25rem 1.5rem;
       margin: 1rem 0;
       font-size: 1rem;
+      color: var(--text);
     }
-    .stage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 1rem; }
-    .stage-grid img { max-width: 100%; max-height: 220px; width: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
-    .stage-grid .caption { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+    .key-details {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin: 0.75rem 0;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+    .key-details strong { color: var(--accent); }
+    .log-excerpt {
+      background: var(--bg-subtle);
+      border-left: 4px solid var(--accent);
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+      font-family: 'Consolas', 'Monaco', monospace;
+      color: var(--text-soft);
+      max-height: 8em;
+      overflow-y: auto;
+    }
+    .stage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 0.75rem; }
+    .stage-grid img { max-width: 100%; max-height: 380px; min-height: 200px; width: auto; object-fit: contain; border-radius: 8px; border: 1px solid var(--card-border); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .slide.stage-1 .stage-grid img { max-height: 200px; min-height: 120px; }
+    .stage-grid .caption { font-size: 0.82rem; color: var(--muted); margin-top: 0.4rem; }
+    .support-files { font-size: 0.88rem; color: var(--text-soft); margin-top: 0.5rem; }
+    .support-files code { background: var(--bg-subtle); padding: 0.1em 0.35em; border-radius: 4px; }
     .signer-list { font-size: 0.95rem; }
     .signer-list strong { color: var(--accent); }
+    .signer-role { font-size: 0.88rem; color: var(--muted); margin-left: 0.5rem; }
     .nav-hint { position: fixed; bottom: 1rem; right: 1.5rem; font-size: 0.8rem; color: var(--muted); }
     .title-slide { text-align: center; }
     .title-slide h1 { font-size: 2.75rem; }
-    .title-slide .sub { font-size: 1.25rem; color: var(--muted); margin-top: 0.5rem; }
-    .chain-viz { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; flex-wrap: wrap; }
-    .chain-viz span { background: var(--card); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; }
-    .chain-viz .arrow { color: var(--accent); font-size: 1.25rem; }
+    .title-slide .sub { font-size: 1.2rem; color: var(--text-soft); margin-top: 0.5rem; }
+    .chain-viz { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 1.25rem 0; flex-wrap: wrap; }
+    .chain-viz span { background: var(--card); border: 1px solid var(--card-border); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; }
+    .chain-viz .arrow { color: var(--accent); font-size: 1.2rem; }
+    .payload-table { font-size: 0.9rem; border-collapse: collapse; width: 100%; margin: 0.75rem 0; }
+    .payload-table th, .payload-table td { border: 1px solid var(--card-border); padding: 0.4rem 0.75rem; text-align: left; background: var(--card); }
+    .payload-table th { background: var(--accent-light); color: var(--accent); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
+    .slide-continued .continued-title { font-size: 1rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .slide-continued .continued-img { max-width: 85%; max-height: 65vh; width: auto; height: auto; object-fit: contain; border-radius: 8px; border: 1px solid var(--card-border); box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin: 0 auto; display: block; }
+    .support-doc-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 8px; padding: 1.25rem; margin-top: 0.5rem; max-height: 60vh; overflow-y: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.8rem; line-height: 1.5; color: var(--text-soft); white-space: pre-wrap; }
+    .receipt-mockup { background: var(--card); border: 2px solid var(--card-border); border-radius: 8px; padding: 2rem; max-width: 420px; margin: 0 auto; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .receipt-mockup .receipt-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; text-align: center; }
+    .receipt-mockup .receipt-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.95rem; }
+    .receipt-mockup .receipt-amount { font-size: 1.5rem; font-weight: 700; color: var(--text); margin: 1rem 0; text-align: center; }
     @media (max-width: 768px) {
       .slide { padding: 2rem 1.5rem; }
-      .stage-grid { grid-template-columns: 1fr; }
+      .stage-grid, .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* Print: one slide per page, keep colors, hide nav, keep side-by-side layout */
+    @media print {
+      @page { size: landscape; margin: 0.4in; }
+      html, body { overflow: visible; height: auto; background: var(--bg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .deck { overflow: visible; height: auto; scroll-snap-type: none; }
+      .slide {
+        min-height: 0;
+        height: 100vh;
+        max-height: 100vh;
+        page-break-after: always;
+        page-break-inside: avoid;
+        padding: 2rem 2.5rem;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .slide:last-of-type { page-break-after: auto; }
+      .nav-hint { display: none !important; }
+      body, .disclaimer, .key-details, .log-excerpt, .chain-viz span, .support-doc-box, .receipt-mockup,
+      .payload-table th, .payload-table td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .support-doc-box { max-height: none; overflow: visible; }
+      .slide-continued .continued-img { max-height: 75vh; }
+      /* Keep two-column layout in print so images stay beside text */
+      .stage-grid, .two-col { grid-template-columns: 1fr 1fr !important; }
+      .stage-grid img {
+        min-height: 260px;
+        max-height: 58vh;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .slide.stage-1 .stage-grid img { min-height: 140px; max-height: 220px; }
+      /* Larger font sizes for print readability, especially where there is spare room */
+      .slide h1 { font-size: 2.5rem; }
+      .slide h2 { font-size: 1.65rem; }
+      .slide h3 { font-size: 1.25rem; }
+      .slide p { font-size: 1.2rem; line-height: 1.6; }
+      .slide .muted { font-size: 1.08rem; }
+      .slide ul { font-size: 1.15rem; }
+      .slide li { font-size: 1.1rem; margin-bottom: 0.4rem; }
+      .disclaimer { font-size: 1.15rem; padding: 1.35rem 1.75rem; }
+      .key-details { font-size: 1.08rem; padding: 1.2rem 1.4rem; }
+      .log-excerpt { font-size: 1rem; padding: 1rem 1.2rem; }
+      .stage-grid .caption { font-size: 1rem; }
+      .support-files { font-size: 1.05rem; }
+      .support-files code { font-size: 1rem; }
+      .signer-list { font-size: 1.12rem; }
+      .signer-role { font-size: 1.05rem; }
+      .title-slide h1 { font-size: 3rem; }
+      .title-slide .sub { font-size: 1.35rem; }
+      .title-slide .muted { font-size: 1.15rem; }
+      .chain-viz span { font-size: 1.05rem; padding: 0.6rem 1.1rem; }
+      .chain-viz .arrow { font-size: 1.35rem; }
+      .payload-table { font-size: 1.05rem; }
+      .payload-table th, .payload-table td { padding: 0.5rem 0.85rem; }
+      .slide-continued .continued-title { font-size: 1.2rem; }
+      .support-doc-box { font-size: 0.95rem; line-height: 1.55; padding: 1.35rem; }
+      .receipt-mockup { padding: 2.25rem; }
+      .receipt-mockup .receipt-title { font-size: 1.35rem; margin-bottom: 1.15rem; }
+      .receipt-mockup .receipt-amount { font-size: 1.75rem; margin: 1.15rem 0; }
+      .receipt-mockup .receipt-row { font-size: 1.1rem; margin-bottom: 0.6rem; }
     }
   </style>
 </head>
@@ -95,7 +198,7 @@
     <!-- 4. The journey -->
     <section class="slide">
       <h2>The journey (6 stages)</h2>
-      <p>Paris → New York → London</p>
+      <p><strong>Paris → New York → London</strong></p>
       <ul>
         <li><strong>1. Authentication</strong> — Paris: expert certification</li>
         <li><strong>2. Secure transport</strong> — Paris to New York</li>
@@ -111,24 +214,38 @@
     <section class="slide">
       <h2>Before the journey: Genesis</h2>
       <p>The <strong>estate</strong> (Fondation Hypothétique) creates the chain with a single Polygon transaction: no Arweave blob yet, just “this chain exists.” That transaction’s hash becomes the <strong>genesis hash</strong>—the root every later event will reference.</p>
-      <p class="muted">Signer (fictional): Sébastien Moreau, Director, Fondation Hypothétique.</p>
+      <div class="key-details">
+        <strong>Signer (fictional):</strong> Sébastien Moreau — Director, Fondation Hypothétique (artist’s estate). Authorized to create the provenance chain on behalf of the estate.
+      </div>
     </section>
 
     <!-- 6. Stage 1 - Authentication -->
-    <section class="slide">
+    <section class="slide stage-1">
       <h2>Stage 1: Authentication (Paris)</h2>
       <div class="stage-grid">
         <div>
           <p>Galerie Lumière, Rue de Rivoli. Expert certification: authentic pigments, no modern dyes. Digital certificate issued.</p>
-          <p class="muted">Supporting files: UV analysis, spectral report, notary seal, ArtSecure certificate, Fictional_Picasso.png.</p>
-          <p class="caption">Fictional supporting images (placeholders)</p>
+          <div class="key-details">
+            <strong>Date:</strong> Feb 14, 2026 · <strong>GPS:</strong> 48.860294 N, 2.338629 E<br>
+            <strong>Expert:</strong> Dr. Elise Moreau · <strong>Provenance:</strong> Last owned by Swiss collector in 1982<br>
+            <strong>Transaction:</strong> Digital certificate issued for €50,000
+          </div>
+          <p class="support-files"><strong>Supporting files:</strong> <code>UV_Analysis_Picasso_Hypothetical.png</code>, <code>Spectral_Analysis_Report_v1.pdf</code>, <code>Notary_Seal_Paris.png</code>, <code>ArtSecure_Cert_12345.pdf</code>, <code>Fictional_Picasso.png</code></p>
+          <p class="muted">Signer (fictional): Dr. Elena Vasquez — Chief Authenticator, ArtSecure Paris.</p>
         </div>
         <div>
           <img src="supports/event1/UV_Analysis_Picasso_Hypothetical.png" alt="UV analysis (placeholder)">
           <img src="supports/event1/Fictional_Picasso.png" alt="Fictional Picasso (placeholder)">
+          <p class="caption">Fictional supporting images (placeholders)</p>
         </div>
       </div>
-      <p class="muted">Signer (fictional): Dr. Elena Vasquez, ArtSecure Paris.</p>
+    </section>
+
+    <!-- 6b. Stage 1 continued - Notary seal -->
+    <section class="slide slide-continued">
+      <h2>Stage 1: Authentication (Paris) — supporting file</h2>
+      <p class="continued-title">Notary_Seal_Paris.png</p>
+      <img class="continued-img" src="supports/event1/Notary_Seal_Paris.png" alt="Notary seal (placeholder)">
     </section>
 
     <!-- 7. Stage 2 - Transport -->
@@ -141,10 +258,22 @@
         </div>
         <div>
           <p>Secure crate via Air France AF034. $8M insurance, customs cleared at JFK. Tracking and manifests recorded.</p>
-          <p class="muted">Supporting files: crate photo, flight manifest, insurance, customs clearance.</p>
-          <p class="muted">Signer (fictional): Marcus Webb, Palladium Art Logistics.</p>
+          <div class="key-details">
+            <strong>Date:</strong> Feb 20, 2026 · <strong>Method:</strong> Air France AF034<br>
+            <strong>Insurance:</strong> $8M · <strong>Tracking:</strong> TRK-789012 · <strong>Customs:</strong> $10,000 cleared at JFK<br>
+            <strong>Departure:</strong> 48.860294 N, 2.338629 E → <strong>Arrival:</strong> 40.641766 N, -73.780968 W
+          </div>
+          <p class="support-files"><strong>Supporting files:</strong> <code>Crate_Photo_Paris.png</code>, <code>Flight_Manifest_AF034.pdf</code>, <code>Insurance_Policy_8M.pdf</code>, <code>Customs_Clearance_JFK.png</code></p>
+          <p class="muted">Signer (fictional): Marcus Webb — Head of Security, Palladium Art Logistics.</p>
         </div>
       </div>
+    </section>
+
+    <!-- 7b. Stage 2 continued - Customs clearance -->
+    <section class="slide slide-continued">
+      <h2>Stage 2: Secure transport — supporting file</h2>
+      <p class="continued-title">Customs_Clearance_JFK.png</p>
+      <img class="continued-img" src="supports/event2/Customs_Clearance_JFK.png" alt="Customs clearance (placeholder)">
     </section>
 
     <!-- 8. Stage 3 - Auction drop-off -->
@@ -153,14 +282,48 @@
       <div class="stage-grid">
         <div>
           <p>Arrival at auction house. Condition check, secure viewing room. Value estimate $8–12M.</p>
-          <p class="muted">Supporting files: drop-off photo, condition report, receipt, security log.</p>
-          <p class="muted">Signer (fictional): Victoria Chen, Christie's New York.</p>
+          <div class="key-details">
+            <strong>Date:</strong> Feb 25, 2026 · <strong>GPS:</strong> 40.758896 N, -73.978692 W<br>
+            <strong>Location:</strong> 123 Rockefeller Plaza · <strong>Staff:</strong> Curator John Hale · <strong>Value estimate:</strong> $8–12M
+          </div>
+          <p class="support-files"><strong>Supporting files:</strong> <code>DropOff_Photo_Manhattan.png</code>, <code>Condition_Report_NY.pdf</code>, <code>Receipt_AuctionHouse.pdf</code>, <code>Security_Log_Entry.txt</code></p>
+          <div class="log-excerpt">14:12:45 - Door unlock by John Hale (Curator). 14:18:30 - Crate placed, photography initiated. 14:27:45 - Artwork removed, visual check: no new damage. 14:48:10 - Approved for storage preview, cabinet #VC-12.</div>
+          <p class="muted">Signer (fictional): Victoria Chen — Registrar, Christie's New York.</p>
         </div>
         <div>
           <img src="supports/event3/DropOff_Photo_Manhattan.png" alt="Drop-off (placeholder)">
           <p class="caption">Drop-off (fictional)</p>
         </div>
       </div>
+    </section>
+
+    <!-- 8b. Stage 3 continued - Security log -->
+    <section class="slide slide-continued">
+      <h2>Stage 3: Auction drop-off — supporting file</h2>
+      <p class="continued-title">Security_Log_Entry.txt</p>
+      <div class="support-doc-box">SECURITY LOG - MANHATTAN FINE ART AUCTION HOUSE
+Vault / Secure Viewing Room Access &amp; Handling Log
+Location: 123 Rockefeller Plaza, Manhattan, New York
+GPS: 40.758896 N, -73.978692 W
+Artwork Internal ID: LOT-2026-03 (Picasso attributed, Untitled Portrait)
+Date Range Covered: February 25, 2026
+
+[START OF LOG - February 25, 2026]
+
+14:12:45 - Door unlock requested by John Hale (Curator, Badge #JH-047)
+          - Biometric scan: Fingerprint + PIN confirmed
+          - Door opened: Secure Viewing Room A-3
+
+14:15:02 - Entry: John Hale (Curator) + 2 security personnel
+          - Crate condition: Seals intact, no visible tampering
+          - Tilt/shock indicators: Green (no extremes during transit)
+
+14:27:45 - Artwork removed from crate by gloved personnel
+          - Visual check: No new abrasions, dents, or loose elements
+          - Placed on easel under controlled LED lighting (5000K, no UV)
+
+14:48:10 - Artwork approved for storage preview
+          - Returned to climate-controlled secure cabinet #VC-12</div>
     </section>
 
     <!-- 9. Stage 4 - Live bidding -->
@@ -173,9 +336,28 @@
         </div>
         <div>
           <p>Live auction with online bids. <strong>Final sale: $12 million</strong> to anonymous buyer. Wire transfer confirmed, 150 attendees, notarized.</p>
-          <p class="muted">Supporting files: event photo, sale transcript, transaction receipt, buyer agreement.</p>
-          <p class="muted">Signer (fictional): James Okonkwo, buyer’s legal counsel.</p>
+          <div class="key-details">
+            <strong>Date:</strong> Mar 1, 2026 · <strong>GPS:</strong> 40.758896 N, -73.978692 W<br>
+            <strong>Event:</strong> Live auction with online bids · <strong>Transaction:</strong> Wire transfer confirmed · <strong>Witnesses:</strong> 150 attendees, notarized
+          </div>
+          <p class="support-files"><strong>Supporting files:</strong> <code>Bidding_Event_Photo.png</code>, <code>Sale_Transcript.pdf</code>, <code>Transaction_Receipt_12M.pdf</code>, <code>Buyer_Agreement_Redacted.pdf</code></p>
+          <p class="muted">Signer (fictional): James Okonkwo — Buyer’s legal counsel; signs on behalf of the winning bidder.</p>
         </div>
+      </div>
+    </section>
+
+    <!-- 9b. Stage 4 continued - Transaction receipt -->
+    <section class="slide slide-continued">
+      <h2>Stage 4: Live bidding — supporting file</h2>
+      <p class="continued-title">Transaction_Receipt_12M.pdf (summary)</p>
+      <div class="receipt-mockup">
+        <div class="receipt-title">TRANSACTION RECEIPT</div>
+        <div class="receipt-amount">$12,000,000 USD</div>
+        <div class="receipt-row"><span>Date</span><span>March 1, 2026</span></div>
+        <div class="receipt-row"><span>Method</span><span>Wire transfer confirmed</span></div>
+        <div class="receipt-row"><span>Lot</span><span>LOT-2026-03</span></div>
+        <div class="receipt-row"><span>Event</span><span>Live auction, 150 attendees</span></div>
+        <div class="receipt-row"><span>Status</span><span>Notarized</span></div>
       </div>
     </section>
 
@@ -185,14 +367,47 @@
       <div class="stage-grid">
         <div>
           <p>Armored transport, private jet. Signed handover to buyer’s vault. Condition verified. Insurance continued at $12M.</p>
-          <p class="muted">Supporting files: handover photo, transfer docs, jet manifest, vault entry log.</p>
-          <p class="muted">Signer (fictional): Marcus Webb, Palladium Art Logistics.</p>
+          <div class="key-details">
+            <strong>Date:</strong> Mar 5, 2026 · <strong>GPS:</strong> 51.517500 N, -0.109722 W<br>
+            <strong>Method:</strong> Armored transport via private jet · <strong>Insurance:</strong> $12M post-sale · Condition verified intact
+          </div>
+          <p class="support-files"><strong>Supporting files:</strong> <code>Handover_Photo_London.png</code>, <code>Transfer_Documents.pdf</code>, <code>Jet_Manifest.pdf</code>, <code>Vault_Entry_Log.txt</code></p>
+          <div class="log-excerpt">20:57:40 - Handover ceremony; Transfer_Documents.pdf signed (Transferor, Transferee, Witness, Notary). 21:12:50 - Artwork in compartment #VC-LON-047; 20.0°C / 50% RH.</div>
+          <p class="muted">Signer (fictional): Marcus Webb — Palladium Art Logistics (handover leg).</p>
         </div>
         <div>
           <img src="supports/event5/Handover_Photo_London.png" alt="Handover (placeholder)">
           <p class="caption">Handover (fictional)</p>
         </div>
       </div>
+    </section>
+
+    <!-- 10b. Stage 5 continued - Vault entry log -->
+    <section class="slide slide-continued">
+      <h2>Stage 5: Secure handover — supporting file</h2>
+      <p class="continued-title">Vault_Entry_Log.txt</p>
+      <div class="support-doc-box">VAULT ENTRY &amp; STORAGE INTAKE LOG
+London Private Vault Services – Climate-Controlled High-Security Facility
+Location: Central London (Secure Compartment #VC-LON-047)
+GPS: 51.517500 N, -0.109722 W
+Insured Value: USD $12,000,000 (post-sale)
+
+[START OF INTAKE LOG – March 5, 2026]
+
+20:45:12 GMT - Armored transport arrival confirmed (ref: Jet_Manifest.pdf)
+          - Vehicle: Elite Air Cargo armored van from Farnborough Airport
+          - Crate seals: #S-0478 / #S-0479 verified intact
+
+20:57:40 - Handover ceremony completed (ref: Handover_Photo_London.jpg)
+          - Transfer_Documents.pdf signed by:
+            - Rebecca Lang (Transferor)
+            - [REDACTED – Buyer Representative] (Transferee)
+            - Thomas Reid (Witness/Vault Supervisor)
+          - Physical possession officially transferred to vault
+
+21:12:50 - Artwork placed in dedicated secure compartment #VC-LON-047
+          - Environmental system: Setpoint 20.0°C / 50% RH
+          - Temperature: 20.1°C | Humidity: 49.8% RH</div>
     </section>
 
     <!-- 11. Stage 6 - Storage -->
@@ -205,10 +420,44 @@
         </div>
         <div>
           <p>Climate-controlled vault: 20°C, 50% humidity, 24/7 monitoring. Restricted access, biometric logs. Insured at $12M.</p>
-          <p class="muted">Supporting files: vault photo, climate report, access log, insurance update.</p>
-          <p class="muted">Signer (fictional): Dame Eleanor Ashford, Sterling Vaults London.</p>
+          <div class="key-details">
+            <strong>Location:</strong> Central London, compartment #VC-LON-047 · <strong>GPS:</strong> 51.517500 N, -0.109722 W<br>
+            <strong>Conditions:</strong> 20°C, 50% RH · <strong>Access:</strong> Biometric + PIN + dual-key · <strong>Maintenance:</strong> Annual inspections
+          </div>
+          <p class="support-files"><strong>Supporting files:</strong> <code>Storage_Photo_Vault.png</code>, <code>Climate_Control_Report.pdf</code>, <code>Access_Log_Initial.txt</code>, <code>Insurance_Update_PostSale.pdf</code></p>
+          <div class="log-excerpt">Initial period: 5 authorized accesses (placement, environmental check, monthly inspection, provenance audit, conservator spot-check). Unauthorized attempts: 0. Environmental deviations: 0.</div>
+          <p class="muted">Signer (fictional): Dame Eleanor Ashford — Director, Sterling Vaults London.</p>
         </div>
       </div>
+    </section>
+
+    <!-- 11b. Stage 6 continued - Access log -->
+    <section class="slide slide-continued">
+      <h2>Stage 6: Long-term storage — supporting file</h2>
+      <p class="continued-title">Access_Log_Initial.txt</p>
+      <div class="support-doc-box">ACCESS &amp; SECURITY LOG – INITIAL PERIOD
+London Private Vault Services – Restricted Compartment #VC-LON-047
+GPS: 51.517500 N, -0.109722 W
+Access Level: Ultra-Restricted (Biometric + PIN + Dual-Key)
+Monitoring: 24/7 CCTV, motion/vibration sensors
+
+[INITIAL LOG PERIOD: March 6, 2026 – June 30, 2026]
+
+2026-03-06 09:15:22 GMT - First post-intake access
+          - Authorized: Vault Supervisor Thomas Reid (Badge #VR-019)
+          - Action: Final placement verification + RFID tag scan
+
+2026-03-06 14:30:45 GMT - Scheduled environmental check
+          - Temp 20.0°C, RH 50.1% | All readings nominal
+
+2026-04-05 10:00:00 GMT - Monthly routine inspection
+          - Visual check through viewing panel; no anomalies
+          - Artwork stable; no signs of settling or environmental stress
+
+2026-05-03 11:20:10 GMT - Quarterly provenance audit access
+          - Digital photo capture for annual report
+
+[SUMMARY] Total accesses: 5 (all authorized) | Unauthorized: 0 | Environmental deviations: 0</div>
     </section>
 
     <!-- 12. How it's anchored -->
@@ -225,27 +474,40 @@
       <p class="muted">Verifiers can start from any Polygon tx or Arweave file, extract the genesis hash, and walk the chain.</p>
     </section>
 
-    <!-- 13. Who signed (fictional) -->
+    <!-- 13. Payload structure -->
     <section class="slide">
-      <h2>Who signed? (all fictional)</h2>
-      <p class="muted">Each Polygon transaction is signed by a “delegate.” In this example we assign fictional signers:</p>
-      <ul class="signer-list">
-        <li><strong>Genesis</strong> — Sébastien Moreau (estate)</li>
-        <li><strong>Event 1</strong> — Dr. Elena Vasquez (ArtSecure Paris)</li>
-        <li><strong>Event 2 & 5</strong> — Marcus Webb (Palladium Art Logistics)</li>
-        <li><strong>Event 3</strong> — Victoria Chen (Christie's New York)</li>
-        <li><strong>Event 4</strong> — James Okonkwo (buyer’s counsel)</li>
-        <li><strong>Event 6</strong> — Dame Eleanor Ashford (Sterling Vaults London)</li>
-      </ul>
-      <p class="muted">Signer identities may be kept private or shared only with regulators/auditors; the chain itself is public.</p>
+      <h2>Polygon payload (127 bytes)</h2>
+      <p>Each step is anchored with a 127-byte payload. Layout:</p>
+      <table class="payload-table">
+        <tr><th>Offset</th><th>Field</th><th>Size</th><th>Notes</th></tr>
+        <tr><td>0–31</td><td>genesisHash</td><td>32</td><td>64 hex chars</td></tr>
+        <tr><td>32–63</td><td>previousPolygonHash</td><td>32</td><td>64 hex (zeros for genesis & event 1)</td></tr>
+        <tr><td>64–106</td><td>arweaveId</td><td>43</td><td>43-char Arweave tx ID (or zeros for genesis)</td></tr>
+        <tr><td>107–126</td><td>delegate</td><td>20</td><td>0x + 40 hex (Ethereum-style address)</td></tr>
+      </table>
+      <p class="muted">Payload JSONs in this folder: <code>genesis-payload.json</code>, <code>1-authentication-payload.json</code> … <code>6-long-term-storage-payload.json</code>. Build with <code>build-polygon-payload.js</code>; verify with <code>verify-chain.js</code> and <code>chain-manifest.json</code>.</p>
     </section>
 
-    <!-- 14. End -->
+    <!-- 14. Who signed (fictional) -->
+    <section class="slide">
+      <h2>Who signed? (all fictional)</h2>
+      <p class="muted">Each Polygon transaction is signed by a “delegate.” In this example:</p>
+      <ul class="signer-list">
+        <li><strong>Genesis</strong> — Sébastien Moreau <span class="signer-role">Director, Fondation Hypothétique</span></li>
+        <li><strong>Event 1</strong> — Dr. Elena Vasquez <span class="signer-role">Chief Authenticator, ArtSecure Paris</span></li>
+        <li><strong>Event 2 & 5</strong> — Marcus Webb <span class="signer-role">Head of Security, Palladium Art Logistics</span></li>
+        <li><strong>Event 3</strong> — Victoria Chen <span class="signer-role">Registrar, Christie's New York</span></li>
+        <li><strong>Event 4</strong> — James Okonkwo <span class="signer-role">Buyer’s legal counsel</span></li>
+        <li><strong>Event 6</strong> — Dame Eleanor Ashford <span class="signer-role">Director, Sterling Vaults London</span></li>
+      </ul>
+      <p class="muted">Signer identities may be kept private or shared only with regulators/auditors; the chain itself is public. Full signer details (role, address, contact) are in <code>PolygonEventSigners.json</code>.</p>
+    </section>
+
+    <!-- 15. End -->
     <section class="slide title-slide">
       <h1>Thank you</h1>
       <p class="sub">Hypothetical Painting — fictional example for ChainRoute</p>
-      <p style="margin-top: 2rem;">Protocol: <a href="../../../../protocol.md" style="color: var(--accent);">protocol.md</a> · Examples: <a href="." style="color: var(--accent);">HypotheticalPaintingRevised</a></p>
-      <p class="muted" style="margin-top: 1rem;">All names, entities, and events in this deck are fictitious.</p>
+      <p class="muted" style="margin-top: 2rem;">All names, entities, and events in this deck are fictitious.</p>
     </section>
   </div>
   <div class="nav-hint">Scroll or swipe to advance</div>

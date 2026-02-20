@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hypothetical Painting — ChainRoute Provenance Example</title>
+  <style>
+    :root {
+      --bg: #1a1a2e;
+      --card: #16213e;
+      --accent: #e94560;
+      --text: #eaeaea;
+      --muted: #a0a0a0;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    .deck {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .slide {
+      min-height: 100vh;
+      padding: 3rem 4rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      scroll-snap-align: start;
+      position: relative;
+    }
+    .slide h1 { font-size: 2.25rem; margin: 0 0 1rem; font-weight: 700; color: #fff; }
+    .slide h2 { font-size: 1.5rem; margin: 0 0 0.75rem; font-weight: 600; color: var(--accent); }
+    .slide p { font-size: 1.125rem; line-height: 1.6; margin: 0 0 0.5rem; color: var(--text); }
+    .slide .muted { color: var(--muted); font-size: 0.95rem; }
+    .slide ul { margin: 0.5rem 0 1rem; padding-left: 1.5rem; }
+    .slide li { margin-bottom: 0.35rem; line-height: 1.5; }
+    .disclaimer {
+      background: rgba(233, 69, 96, 0.15);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+      font-size: 1rem;
+    }
+    .stage-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; margin-top: 1rem; }
+    .stage-grid img { max-width: 100%; max-height: 220px; width: auto; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+    .stage-grid .caption { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+    .signer-list { font-size: 0.95rem; }
+    .signer-list strong { color: var(--accent); }
+    .nav-hint { position: fixed; bottom: 1rem; right: 1.5rem; font-size: 0.8rem; color: var(--muted); }
+    .title-slide { text-align: center; }
+    .title-slide h1 { font-size: 2.75rem; }
+    .title-slide .sub { font-size: 1.25rem; color: var(--muted); margin-top: 0.5rem; }
+    .chain-viz { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 1.5rem 0; flex-wrap: wrap; }
+    .chain-viz span { background: var(--card); padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; }
+    .chain-viz .arrow { color: var(--accent); font-size: 1.25rem; }
+    @media (max-width: 768px) {
+      .slide { padding: 2rem 1.5rem; }
+      .stage-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <!-- 1. Title -->
+    <section class="slide title-slide">
+      <h1>Hypothetical Painting</h1>
+      <p class="sub">A ChainRoute provenance example</p>
+      <p class="muted" style="margin-top: 2rem;">How a high-value art piece gets a tamper-proof journey from authentication to long-term storage</p>
+    </section>
+
+    <!-- 2. Disclaimer -->
+    <section class="slide">
+      <h2>Important</h2>
+      <div class="disclaimer">
+        <strong>This is a fictional example.</strong> The painting, people, organizations, locations, and documents in this presentation are made up for protocol demonstration only. They do not represent any real artwork, transaction, or entity. ChainRoute is a real protocol; this story is not.
+      </div>
+      <p>We use a “hypothetical Picasso” worth ~$8–12 million to show how each step in a provenance chain can be anchored and verified.</p>
+    </section>
+
+    <!-- 3. What is ChainRoute? -->
+    <section class="slide">
+      <h2>What is ChainRoute?</h2>
+      <p>ChainRoute is a <strong>lightweight provenance protocol</strong> that:</p>
+      <ul>
+        <li>Stores event data permanently on <strong>Arweave</strong></li>
+        <li>Anchors each step with a tiny transaction on <strong>Polygon</strong></li>
+        <li>Uses a single “genesis” transaction to tie the whole chain together</li>
+      </ul>
+      <p class="muted">No smart contracts, no custom tokens—just 127-byte Polygon payloads and verifiable links to Arweave.</p>
+    </section>
+
+    <!-- 4. The journey -->
+    <section class="slide">
+      <h2>The journey (6 stages)</h2>
+      <p>Paris → New York → London</p>
+      <ul>
+        <li><strong>1. Authentication</strong> — Paris: expert certification</li>
+        <li><strong>2. Secure transport</strong> — Paris to New York</li>
+        <li><strong>3. Auction drop-off</strong> — Manhattan auction house</li>
+        <li><strong>4. Live bidding</strong> — Sale at $12 million</li>
+        <li><strong>5. Secure handover</strong> — To buyer’s vault in London</li>
+        <li><strong>6. Long-term storage</strong> — Climate-controlled vault</li>
+      </ul>
+      <p class="muted">Each stage produces a provenance “event” plus supporting files (photos, reports, receipts). All are recorded in the chain.</p>
+    </section>
+
+    <!-- 5. Genesis -->
+    <section class="slide">
+      <h2>Before the journey: Genesis</h2>
+      <p>The <strong>estate</strong> (Fondation Hypothétique) creates the chain with a single Polygon transaction: no Arweave blob yet, just “this chain exists.” That transaction’s hash becomes the <strong>genesis hash</strong>—the root every later event will reference.</p>
+      <p class="muted">Signer (fictional): Sébastien Moreau, Director, Fondation Hypothétique.</p>
+    </section>
+
+    <!-- 6. Stage 1 - Authentication -->
+    <section class="slide">
+      <h2>Stage 1: Authentication (Paris)</h2>
+      <div class="stage-grid">
+        <div>
+          <p>Galerie Lumière, Rue de Rivoli. Expert certification: authentic pigments, no modern dyes. Digital certificate issued.</p>
+          <p class="muted">Supporting files: UV analysis, spectral report, notary seal, ArtSecure certificate, Fictional_Picasso.png.</p>
+          <p class="caption">Fictional supporting images (placeholders)</p>
+        </div>
+        <div>
+          <img src="supports/event1/UV_Analysis_Picasso_Hypothetical.png" alt="UV analysis (placeholder)">
+          <img src="supports/event1/Fictional_Picasso.png" alt="Fictional Picasso (placeholder)">
+        </div>
+      </div>
+      <p class="muted">Signer (fictional): Dr. Elena Vasquez, ArtSecure Paris.</p>
+    </section>
+
+    <!-- 7. Stage 2 - Transport -->
+    <section class="slide">
+      <h2>Stage 2: Secure transport (Paris → New York)</h2>
+      <div class="stage-grid">
+        <div>
+          <img src="supports/event2/Crate_Photo_Paris.png" alt="Crate (placeholder)">
+          <p class="caption">Pre-shipment crate (fictional)</p>
+        </div>
+        <div>
+          <p>Secure crate via Air France AF034. $8M insurance, customs cleared at JFK. Tracking and manifests recorded.</p>
+          <p class="muted">Supporting files: crate photo, flight manifest, insurance, customs clearance.</p>
+          <p class="muted">Signer (fictional): Marcus Webb, Palladium Art Logistics.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Stage 3 - Auction drop-off -->
+    <section class="slide">
+      <h2>Stage 3: Auction drop-off (Manhattan)</h2>
+      <div class="stage-grid">
+        <div>
+          <p>Arrival at auction house. Condition check, secure viewing room. Value estimate $8–12M.</p>
+          <p class="muted">Supporting files: drop-off photo, condition report, receipt, security log.</p>
+          <p class="muted">Signer (fictional): Victoria Chen, Christie's New York.</p>
+        </div>
+        <div>
+          <img src="supports/event3/DropOff_Photo_Manhattan.png" alt="Drop-off (placeholder)">
+          <p class="caption">Drop-off (fictional)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Stage 4 - Live bidding -->
+    <section class="slide">
+      <h2>Stage 4: Live bidding (sale)</h2>
+      <div class="stage-grid">
+        <div>
+          <img src="supports/event4/Bidding_Event_Photo.png" alt="Bidding (placeholder)">
+          <p class="caption">Auction (fictional)</p>
+        </div>
+        <div>
+          <p>Live auction with online bids. <strong>Final sale: $12 million</strong> to anonymous buyer. Wire transfer confirmed, 150 attendees, notarized.</p>
+          <p class="muted">Supporting files: event photo, sale transcript, transaction receipt, buyer agreement.</p>
+          <p class="muted">Signer (fictional): James Okonkwo, buyer’s legal counsel.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Stage 5 - Handover -->
+    <section class="slide">
+      <h2>Stage 5: Secure handover (to London)</h2>
+      <div class="stage-grid">
+        <div>
+          <p>Armored transport, private jet. Signed handover to buyer’s vault. Condition verified. Insurance continued at $12M.</p>
+          <p class="muted">Supporting files: handover photo, transfer docs, jet manifest, vault entry log.</p>
+          <p class="muted">Signer (fictional): Marcus Webb, Palladium Art Logistics.</p>
+        </div>
+        <div>
+          <img src="supports/event5/Handover_Photo_London.png" alt="Handover (placeholder)">
+          <p class="caption">Handover (fictional)</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. Stage 6 - Storage -->
+    <section class="slide">
+      <h2>Stage 6: Long-term storage (London vault)</h2>
+      <div class="stage-grid">
+        <div>
+          <img src="supports/event6/Storage_Photo_Vault.png" alt="Vault (placeholder)">
+          <p class="caption">Vault (fictional)</p>
+        </div>
+        <div>
+          <p>Climate-controlled vault: 20°C, 50% humidity, 24/7 monitoring. Restricted access, biometric logs. Insured at $12M.</p>
+          <p class="muted">Supporting files: vault photo, climate report, access log, insurance update.</p>
+          <p class="muted">Signer (fictional): Dame Eleanor Ashford, Sterling Vaults London.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 12. How it's anchored -->
+    <section class="slide">
+      <h2>How it’s anchored</h2>
+      <p>Each stage has:</p>
+      <ul>
+        <li><strong>Arweave</strong> — Event summary + list of support file IDs (permanent storage)</li>
+        <li><strong>Polygon</strong> — One small transaction (127 bytes) linking genesis hash, previous step, this event’s Arweave ID, and the next “delegate” signer</li>
+      </ul>
+      <div class="chain-viz">
+        <span>Genesis</span><span class="arrow">→</span><span>Event 1</span><span class="arrow">→</span><span>Event 2</span><span class="arrow">→</span><span>…</span><span class="arrow">→</span><span>Event 6</span>
+      </div>
+      <p class="muted">Verifiers can start from any Polygon tx or Arweave file, extract the genesis hash, and walk the chain.</p>
+    </section>
+
+    <!-- 13. Who signed (fictional) -->
+    <section class="slide">
+      <h2>Who signed? (all fictional)</h2>
+      <p class="muted">Each Polygon transaction is signed by a “delegate.” In this example we assign fictional signers:</p>
+      <ul class="signer-list">
+        <li><strong>Genesis</strong> — Sébastien Moreau (estate)</li>
+        <li><strong>Event 1</strong> — Dr. Elena Vasquez (ArtSecure Paris)</li>
+        <li><strong>Event 2 & 5</strong> — Marcus Webb (Palladium Art Logistics)</li>
+        <li><strong>Event 3</strong> — Victoria Chen (Christie's New York)</li>
+        <li><strong>Event 4</strong> — James Okonkwo (buyer’s counsel)</li>
+        <li><strong>Event 6</strong> — Dame Eleanor Ashford (Sterling Vaults London)</li>
+      </ul>
+      <p class="muted">Signer identities may be kept private or shared only with regulators/auditors; the chain itself is public.</p>
+    </section>
+
+    <!-- 14. End -->
+    <section class="slide title-slide">
+      <h1>Thank you</h1>
+      <p class="sub">Hypothetical Painting — fictional example for ChainRoute</p>
+      <p style="margin-top: 2rem;">Protocol: <a href="../../../../protocol.md" style="color: var(--accent);">protocol.md</a> · Examples: <a href="." style="color: var(--accent);">HypotheticalPaintingRevised</a></p>
+      <p class="muted" style="margin-top: 1rem;">All names, entities, and events in this deck are fictitious.</p>
+    </section>
+  </div>
+  <div class="nav-hint">Scroll or swipe to advance</div>
+</body>
+</html>

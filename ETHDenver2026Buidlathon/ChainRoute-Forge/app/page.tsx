@@ -12,7 +12,7 @@ export default function HomePage() {
         {/* Hero */}
         <section className="mb-12 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            Chain<span className="text-chain-neon">Route</span>
+            Chain<span className="text-chain-neon">Route</span>-Forge
           </h1>
           <p className="mt-3 text-lg text-muted-foreground">
             Anchor provenance chains on Polygon in 127 bytes.
