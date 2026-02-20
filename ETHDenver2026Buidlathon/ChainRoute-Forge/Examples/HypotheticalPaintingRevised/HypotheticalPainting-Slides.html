@@ -20,19 +20,19 @@
     html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; font-family: 'Georgia', 'Times New Roman', serif; background: var(--bg); color: var(--text); }
     .deck {
       height: 100%;
-      overflow-x: hidden;
-      overflow-y: auto;
-      scroll-snap-type: y mandatory;
-      scroll-behavior: smooth;
+      position: relative;
     }
     .slide {
-      min-height: 100vh;
+      position: absolute;
+      inset: 0;
       padding: 2.5rem 3.5rem;
-      display: flex;
+      display: none;
       flex-direction: column;
       justify-content: center;
-      scroll-snap-align: start;
-      position: relative;
+      overflow-y: auto;
+    }
+    .slide.active {
+      display: flex;
     }
     .slide h1 { font-size: 2.25rem; margin: 0 0 1rem; font-weight: 700; color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; }
     .slide h2 { font-size: 1.45rem; margin: 0 0 0.75rem; font-weight: 600; color: var(--accent); font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -80,7 +80,10 @@
     .signer-list { font-size: 0.95rem; }
     .signer-list strong { color: var(--accent); }
     .signer-role { font-size: 0.88rem; color: var(--muted); margin-left: 0.5rem; }
-    .nav-hint { position: fixed; bottom: 1rem; right: 1.5rem; font-size: 0.8rem; color: var(--muted); }
+    .nav { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; align-items: center; background: var(--bg-subtle); padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid var(--card-border); z-index: 10; }
+    .nav button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-size: 1.2rem; }
+    .nav button:hover { background: var(--accent-light); }
+    .nav .indicator { font-size: 0.85rem; color: var(--text-soft); min-width: 5ch; }
     .title-slide { text-align: center; }
     .title-slide h1 { font-size: 2.75rem; }
     .title-slide .sub { font-size: 1.2rem; color: var(--text-soft); margin-top: 0.5rem; }
@@ -100,7 +103,7 @@
 <body>
   <div class="deck">
     <!-- 1. Title -->
-    <section class="slide title-slide">
+    <section class="slide title-slide active">
       <h1>Hypothetical Painting</h1>
       <p class="sub">A ChainRoute provenance example</p>
       <p class="muted" style="margin-top: 2rem;">How a high-value art piece gets a tamper-proof journey from authentication to long-term storage</p>
@@ -324,10 +327,42 @@
     <section class="slide title-slide">
       <h1>Thank you</h1>
       <p class="sub">Hypothetical Painting — fictional example for ChainRoute</p>
-      <p style="margin-top: 2rem;">Protocol: <a href="../../../../protocol.md" style="color: var(--accent);">protocol.md</a> · Example: <a href="." style="color: var(--accent);">HypotheticalPaintingRevised</a> · Outline: <code>HypPaintOutline.txt</code> · README: <code>README.md</code></p>
+      
       <p class="muted" style="margin-top: 1rem;">All names, entities, and events in this deck are fictitious.</p>
     </section>
   </div>
-  <div class="nav-hint">Scroll or swipe to advance</div>
+  <nav class="nav" aria-label="Slide navigation">
+    <button type="button" id="prev" aria-label="Previous">←</button>
+    <span class="indicator" id="indicator">1 / 15</span>
+    <button type="button" id="next" aria-label="Next">→</button>
+  </nav>
+
+  <script>
+    (function () {
+      const slides = document.querySelectorAll(".slide");
+      const total = slides.length;
+      let current = 0;
+
+      function show(i) {
+        current = (i + total) % total;
+        slides.forEach((s, k) => s.classList.toggle("active", k === current));
+        document.getElementById("indicator").textContent = (current + 1) + " / " + total;
+      }
+
+      document.getElementById("prev").addEventListener("click", () => show(current - 1));
+      document.getElementById("next").addEventListener("click", () => show(current + 1));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") show(current - 1);
+        if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); show(current + 1); }
+      });
+      document.querySelector(".deck").addEventListener("click", (e) => {
+        if (e.target.closest("a, button, nav")) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        if (e.clientX > rect.left + rect.width / 2) show(current + 1);
+        else show(current - 1);
+      });
+      show(0);
+    })();
+  </script>
 </body>
 </html>
