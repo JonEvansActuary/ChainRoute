@@ -91,77 +91,9 @@
     .payload-table th, .payload-table td { border: 1px solid var(--card-border); padding: 0.4rem 0.75rem; text-align: left; background: var(--card); }
     .payload-table th { background: var(--accent-light); color: var(--accent); }
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
-    .slide-continued .continued-title { font-size: 1rem; color: var(--muted); margin-bottom: 0.75rem; }
-    .slide-continued .continued-img { max-width: 85%; max-height: 65vh; width: auto; height: auto; object-fit: contain; border-radius: 8px; border: 1px solid var(--card-border); box-shadow: 0 4px 16px rgba(0,0,0,0.08); margin: 0 auto; display: block; }
-    .support-doc-box { background: var(--card); border: 1px solid var(--card-border); border-radius: 8px; padding: 1.25rem; margin-top: 0.5rem; max-height: 60vh; overflow-y: auto; font-family: 'Consolas', 'Monaco', monospace; font-size: 0.8rem; line-height: 1.5; color: var(--text-soft); white-space: pre-wrap; }
-    .receipt-mockup { background: var(--card); border: 2px solid var(--card-border); border-radius: 8px; padding: 2rem; max-width: 420px; margin: 0 auto; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
-    .receipt-mockup .receipt-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; text-align: center; }
-    .receipt-mockup .receipt-row { display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.95rem; }
-    .receipt-mockup .receipt-amount { font-size: 1.5rem; font-weight: 700; color: var(--text); margin: 1rem 0; text-align: center; }
     @media (max-width: 768px) {
       .slide { padding: 2rem 1.5rem; }
       .stage-grid, .two-col { grid-template-columns: 1fr; }
-    }
-
-    /* Print: one slide per page, keep colors, hide nav, keep side-by-side layout */
-    @media print {
-      @page { size: landscape; margin: 0.4in; }
-      html, body { overflow: visible; height: auto; background: var(--bg); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .deck { overflow: visible; height: auto; scroll-snap-type: none; }
-      .slide {
-        min-height: 0;
-        height: 100vh;
-        max-height: 100vh;
-        page-break-after: always;
-        page-break-inside: avoid;
-        padding: 2rem 2.5rem;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .slide:last-of-type { page-break-after: auto; }
-      .nav-hint { display: none !important; }
-      body, .disclaimer, .key-details, .log-excerpt, .chain-viz span, .support-doc-box, .receipt-mockup,
-      .payload-table th, .payload-table td { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .support-doc-box { max-height: none; overflow: visible; }
-      .slide-continued .continued-img { max-height: 75vh; }
-      /* Keep two-column layout in print so images stay beside text */
-      .stage-grid, .two-col { grid-template-columns: 1fr 1fr !important; }
-      .stage-grid img {
-        min-height: 260px;
-        max-height: 58vh;
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-      .slide.stage-1 .stage-grid img { min-height: 140px; max-height: 220px; }
-      /* Larger font sizes for print readability, especially where there is spare room */
-      .slide h1 { font-size: 2.5rem; }
-      .slide h2 { font-size: 1.65rem; }
-      .slide h3 { font-size: 1.25rem; }
-      .slide p { font-size: 1.2rem; line-height: 1.6; }
-      .slide .muted { font-size: 1.08rem; }
-      .slide ul { font-size: 1.15rem; }
-      .slide li { font-size: 1.1rem; margin-bottom: 0.4rem; }
-      .disclaimer { font-size: 1.15rem; padding: 1.35rem 1.75rem; }
-      .key-details { font-size: 1.08rem; padding: 1.2rem 1.4rem; }
-      .log-excerpt { font-size: 1rem; padding: 1rem 1.2rem; }
-      .stage-grid .caption { font-size: 1rem; }
-      .support-files { font-size: 1.05rem; }
-      .support-files code { font-size: 1rem; }
-      .signer-list { font-size: 1.12rem; }
-      .signer-role { font-size: 1.05rem; }
-      .title-slide h1 { font-size: 3rem; }
-      .title-slide .sub { font-size: 1.35rem; }
-      .title-slide .muted { font-size: 1.15rem; }
-      .chain-viz span { font-size: 1.05rem; padding: 0.6rem 1.1rem; }
-      .chain-viz .arrow { font-size: 1.35rem; }
-      .payload-table { font-size: 1.05rem; }
-      .payload-table th, .payload-table td { padding: 0.5rem 0.85rem; }
-      .slide-continued .continued-title { font-size: 1.2rem; }
-      .support-doc-box { font-size: 0.95rem; line-height: 1.55; padding: 1.35rem; }
-      .receipt-mockup { padding: 2.25rem; }
-      .receipt-mockup .receipt-title { font-size: 1.35rem; margin-bottom: 1.15rem; }
-      .receipt-mockup .receipt-amount { font-size: 1.75rem; margin: 1.15rem 0; }
-      .receipt-mockup .receipt-row { font-size: 1.1rem; margin-bottom: 0.6rem; }
     }
   </style>
 </head>
@@ -241,13 +173,6 @@
       </div>
     </section>
 
-    <!-- 6b. Stage 1 continued - Notary seal -->
-    <section class="slide slide-continued">
-      <h2>Stage 1: Authentication (Paris) — supporting file</h2>
-      <p class="continued-title">Notary_Seal_Paris.png</p>
-      <img class="continued-img" src="supports/event1/Notary_Seal_Paris.png" alt="Notary seal (placeholder)">
-    </section>
-
     <!-- 7. Stage 2 - Transport -->
     <section class="slide">
       <h2>Stage 2: Secure transport (Paris → New York)</h2>
@@ -267,13 +192,6 @@
           <p class="muted">Signer (fictional): Marcus Webb — Head of Security, Palladium Art Logistics.</p>
         </div>
       </div>
-    </section>
-
-    <!-- 7b. Stage 2 continued - Customs clearance -->
-    <section class="slide slide-continued">
-      <h2>Stage 2: Secure transport — supporting file</h2>
-      <p class="continued-title">Customs_Clearance_JFK.png</p>
-      <img class="continued-img" src="supports/event2/Customs_Clearance_JFK.png" alt="Customs clearance (placeholder)">
     </section>
 
     <!-- 8. Stage 3 - Auction drop-off -->
@@ -297,35 +215,6 @@
       </div>
     </section>
 
-    <!-- 8b. Stage 3 continued - Security log -->
-    <section class="slide slide-continued">
-      <h2>Stage 3: Auction drop-off — supporting file</h2>
-      <p class="continued-title">Security_Log_Entry.txt</p>
-      <div class="support-doc-box">SECURITY LOG - MANHATTAN FINE ART AUCTION HOUSE
-Vault / Secure Viewing Room Access &amp; Handling Log
-Location: 123 Rockefeller Plaza, Manhattan, New York
-GPS: 40.758896 N, -73.978692 W
-Artwork Internal ID: LOT-2026-03 (Picasso attributed, Untitled Portrait)
-Date Range Covered: February 25, 2026
-
-[START OF LOG - February 25, 2026]
-
-14:12:45 - Door unlock requested by John Hale (Curator, Badge #JH-047)
-          - Biometric scan: Fingerprint + PIN confirmed
-          - Door opened: Secure Viewing Room A-3
-
-14:15:02 - Entry: John Hale (Curator) + 2 security personnel
-          - Crate condition: Seals intact, no visible tampering
-          - Tilt/shock indicators: Green (no extremes during transit)
-
-14:27:45 - Artwork removed from crate by gloved personnel
-          - Visual check: No new abrasions, dents, or loose elements
-          - Placed on easel under controlled LED lighting (5000K, no UV)
-
-14:48:10 - Artwork approved for storage preview
-          - Returned to climate-controlled secure cabinet #VC-12</div>
-    </section>
-
     <!-- 9. Stage 4 - Live bidding -->
     <section class="slide">
       <h2>Stage 4: Live bidding (sale)</h2>
@@ -343,21 +232,6 @@ Date Range Covered: February 25, 2026
           <p class="support-files"><strong>Supporting files:</strong> <code>Bidding_Event_Photo.png</code>, <code>Sale_Transcript.pdf</code>, <code>Transaction_Receipt_12M.pdf</code>, <code>Buyer_Agreement_Redacted.pdf</code></p>
           <p class="muted">Signer (fictional): James Okonkwo — Buyer’s legal counsel; signs on behalf of the winning bidder.</p>
         </div>
-      </div>
-    </section>
-
-    <!-- 9b. Stage 4 continued - Transaction receipt -->
-    <section class="slide slide-continued">
-      <h2>Stage 4: Live bidding — supporting file</h2>
-      <p class="continued-title">Transaction_Receipt_12M.pdf (summary)</p>
-      <div class="receipt-mockup">
-        <div class="receipt-title">TRANSACTION RECEIPT</div>
-        <div class="receipt-amount">$12,000,000 USD</div>
-        <div class="receipt-row"><span>Date</span><span>March 1, 2026</span></div>
-        <div class="receipt-row"><span>Method</span><span>Wire transfer confirmed</span></div>
-        <div class="receipt-row"><span>Lot</span><span>LOT-2026-03</span></div>
-        <div class="receipt-row"><span>Event</span><span>Live auction, 150 attendees</span></div>
-        <div class="receipt-row"><span>Status</span><span>Notarized</span></div>
       </div>
     </section>
 
@@ -382,34 +256,6 @@ Date Range Covered: February 25, 2026
       </div>
     </section>
 
-    <!-- 10b. Stage 5 continued - Vault entry log -->
-    <section class="slide slide-continued">
-      <h2>Stage 5: Secure handover — supporting file</h2>
-      <p class="continued-title">Vault_Entry_Log.txt</p>
-      <div class="support-doc-box">VAULT ENTRY &amp; STORAGE INTAKE LOG
-London Private Vault Services – Climate-Controlled High-Security Facility
-Location: Central London (Secure Compartment #VC-LON-047)
-GPS: 51.517500 N, -0.109722 W
-Insured Value: USD $12,000,000 (post-sale)
-
-[START OF INTAKE LOG – March 5, 2026]
-
-20:45:12 GMT - Armored transport arrival confirmed (ref: Jet_Manifest.pdf)
-          - Vehicle: Elite Air Cargo armored van from Farnborough Airport
-          - Crate seals: #S-0478 / #S-0479 verified intact
-
-20:57:40 - Handover ceremony completed (ref: Handover_Photo_London.jpg)
-          - Transfer_Documents.pdf signed by:
-            - Rebecca Lang (Transferor)
-            - [REDACTED – Buyer Representative] (Transferee)
-            - Thomas Reid (Witness/Vault Supervisor)
-          - Physical possession officially transferred to vault
-
-21:12:50 - Artwork placed in dedicated secure compartment #VC-LON-047
-          - Environmental system: Setpoint 20.0°C / 50% RH
-          - Temperature: 20.1°C | Humidity: 49.8% RH</div>
-    </section>
-
     <!-- 11. Stage 6 - Storage -->
     <section class="slide">
       <h2>Stage 6: Long-term storage (London vault)</h2>
@@ -429,35 +275,6 @@ Insured Value: USD $12,000,000 (post-sale)
           <p class="muted">Signer (fictional): Dame Eleanor Ashford — Director, Sterling Vaults London.</p>
         </div>
       </div>
-    </section>
-
-    <!-- 11b. Stage 6 continued - Access log -->
-    <section class="slide slide-continued">
-      <h2>Stage 6: Long-term storage — supporting file</h2>
-      <p class="continued-title">Access_Log_Initial.txt</p>
-      <div class="support-doc-box">ACCESS &amp; SECURITY LOG – INITIAL PERIOD
-London Private Vault Services – Restricted Compartment #VC-LON-047
-GPS: 51.517500 N, -0.109722 W
-Access Level: Ultra-Restricted (Biometric + PIN + Dual-Key)
-Monitoring: 24/7 CCTV, motion/vibration sensors
-
-[INITIAL LOG PERIOD: March 6, 2026 – June 30, 2026]
-
-2026-03-06 09:15:22 GMT - First post-intake access
-          - Authorized: Vault Supervisor Thomas Reid (Badge #VR-019)
-          - Action: Final placement verification + RFID tag scan
-
-2026-03-06 14:30:45 GMT - Scheduled environmental check
-          - Temp 20.0°C, RH 50.1% | All readings nominal
-
-2026-04-05 10:00:00 GMT - Monthly routine inspection
-          - Visual check through viewing panel; no anomalies
-          - Artwork stable; no signs of settling or environmental stress
-
-2026-05-03 11:20:10 GMT - Quarterly provenance audit access
-          - Digital photo capture for annual report
-
-[SUMMARY] Total accesses: 5 (all authorized) | Unauthorized: 0 | Environmental deviations: 0</div>
     </section>
 
     <!-- 12. How it's anchored -->
@@ -507,7 +324,8 @@ Monitoring: 24/7 CCTV, motion/vibration sensors
     <section class="slide title-slide">
       <h1>Thank you</h1>
       <p class="sub">Hypothetical Painting — fictional example for ChainRoute</p>
-      <p class="muted" style="margin-top: 2rem;">All names, entities, and events in this deck are fictitious.</p>
+      <p style="margin-top: 2rem;">Protocol: <a href="../../../../protocol.md" style="color: var(--accent);">protocol.md</a> · Example: <a href="." style="color: var(--accent);">HypotheticalPaintingRevised</a> · Outline: <code>HypPaintOutline.txt</code> · README: <code>README.md</code></p>
+      <p class="muted" style="margin-top: 1rem;">All names, entities, and events in this deck are fictitious.</p>
     </section>
   </div>
   <div class="nav-hint">Scroll or swipe to advance</div>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChainRoute-Forge – Provenance for the real world</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface2: #eef1f6;
+      --accent: #256b6b;
+      --accent-soft: rgba(37, 107, 107, 0.12);
+      --text: #1a2332;
+      --text-soft: #5a6578;
+      --border: #d4dce8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; overflow: hidden; font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); }
+    .deck { height: 100%; position: relative; }
+    .slide { position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center; align-items: center; padding: 2.25rem 3.25rem; text-align: center; overflow-y: auto; }
+    .slide.active { display: flex; }
+    .slide h1 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(2rem, 5vw, 3.25rem); font-weight: 700; margin-bottom: 0.4rem; color: var(--accent); letter-spacing: -0.02em; }
+    .slide h2 { font-family: 'Fraunces', Georgia, serif; font-size: clamp(1.25rem, 3vw, 1.75rem); font-weight: 600; margin-bottom: 0.6rem; color: var(--text); }
+    .slide .tagline { font-size: clamp(0.9rem, 1.9vw, 1.1rem); color: var(--text-soft); max-width: 42ch; line-height: 1.48; }
+    .slide ul { list-style: none; text-align: left; max-width: 540px; margin: 0.25rem 0; }
+    .slide li { font-size: 1rem; margin: 0.4rem 0; padding-left: 1.75rem; position: relative; line-height: 1.4; color: var(--text-soft); }
+    .slide li::before { content: ""; position: absolute; left: 0; top: 0.4em; width: 8px; height: 8px; background: var(--accent); border-radius: 2px; }
+    .nav { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); display: flex; gap: 0.5rem; align-items: center; background: var(--surface2); padding: 0.5rem 1rem; border-radius: 999px; border: 1px solid var(--border); z-index: 10; }
+    .nav button { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--accent); background: transparent; color: var(--accent); cursor: pointer; font-size: 1.2rem; }
+    .nav button:hover { background: var(--accent-soft); }
+    .nav .indicator { font-size: 0.85rem; color: var(--text-soft); min-width: 5ch; }
+    .cta { margin-top: 1.5rem; padding: 0.9rem 2rem; background: var(--accent); color: #fff; font-weight: 700; font-size: 1.05rem; border-radius: 0.5rem; border: none; cursor: pointer; text-decoration: none; display: inline-block; }
+    .cta:hover { filter: brightness(1.08); }
+
+    .slide .hero-img { width: 100%; max-width: 900px; max-height: 50vh; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); margin: 1rem 0; box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    .slide .hero-img.smaller { max-height: 42vh; }
+    .slide .img-credit { font-size: 0.75rem; color: var(--text-soft); opacity: 0.8; margin-top: 0.35rem; }
+    .app-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.75rem; max-width: 700px; margin: 1rem 0; }
+    .app-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; text-align: center; }
+    .app-card .icon { font-size: 1.75rem; margin-bottom: 0.3rem; }
+    .app-card .name { font-weight: 700; color: var(--accent); font-size: 0.9rem; }
+
+    .slide .tech-img { max-width: 88%; max-height: 50vh; object-fit: contain; border-radius: 10px; border: 1px solid var(--border); margin: 0.5rem 0; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .slide.slide-dense .tagline { font-size: clamp(0.85rem, 1.75vw, 1rem); }
+    .slide.slide-dense li { font-size: 0.95rem; margin: 0.35rem 0; }
+    .slide .title-row { display: flex; align-items: center; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+    .slide .title-row img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; border: 2px solid var(--border); }
+    .slide.title-slide .title-row img { width: 220px; height: 220px; border-width: 3px; }
+  </style>
+</head>
+<body>
+  <div class="deck">
+    <!-- 1. Title -->
+    <section class="slide title-slide active" data-slide="1">
+      <div class="title-row">
+        <img src="ImagesForPresentation/ChaineRoute-ForgeAvatar.jpg" alt="" />
+        <h1>ChainRoute-Forge</h1>
+      </div>
+      <p class="tagline" style="margin-top: 0.5rem;">Provenance for the real world. Beyond art—industry, resources, compliance, and trust.</p>
+      <p style="margin-top: 1.25rem; font-size: 0.95rem; color: var(--text-soft);">ChainRoute is the protocol; ChainRoute-Forge is the web app to implement it.</p>
+      <p style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-soft);">ETHDenver 2026 Buidlathon</p>
+    </section>
+
+    <!-- 2. Why provenance matters -->
+    <section class="slide slide-dense" data-slide="2">
+      <h2>Why provenance matters</h2>
+      <p class="tagline" style="margin-bottom: 0.6rem;">It's not just art and collectibles. Every sector needs a verifiable story.</p>
+      <ul>
+        <li><strong style="color: var(--text);">Industry & manufacturing</strong> — Where did this part come from? Which batch, which plant?</li>
+        <li><strong style="color: var(--text);">Natural resources & extraction</strong> — Origin of minerals, timber, oil; ethical and environmental proof.</li>
+        <li><strong style="color: var(--text);">High-end goods</strong> — Luxury cars, watches, fashion: authenticity and ownership history.</li>
+        <li><strong style="color: var(--text);">Regulatory & contracts</strong> — Proving compliance, chain of custody, and meeting contractual obligations.</li>
+        <li><strong style="color: var(--text);">Pharma, food, RWA</strong> — Supply chain integrity, safety, and audit trails.</li>
+      </ul>
+    </section>
+
+    <!-- 3. Industry & manufacturing -->
+    <section class="slide" data-slide="3">
+      <h2>Industry & manufacturing</h2>
+      <p class="tagline">Provenance answers: Which batch? Which plant? Which process?</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Inside_the_factory.jpg" alt="Inside a factory" class="hero-img smaller" />
+      <p class="img-credit">Injection moulding machines. Source: Wikimedia Commons (CC BY-SA 4.0).</p>
+      <p class="tagline" style="margin-top: 1rem;">Traceability for parts, materials, and quality—for recalls, warranties, and B2B trust.</p>
+    </section>
+
+    <!-- 4. Natural resources & extraction -->
+    <section class="slide" data-slide="4">
+      <h2>Natural resources & extraction</h2>
+      <p class="tagline">Origin, ethics, and environmental proof.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Greetwell_quarry_-_geograph.org.uk_-_1061641.jpg" alt="Quarry" class="hero-img smaller" />
+      <p class="img-credit">Greetwell quarry. Source: Geograph / Richard Croft (CC BY-SA 2.0).</p>
+      <p class="tagline" style="margin-top: 1rem;">Minerals, timber, oil & gas: verifiable chain from source to buyer for sustainability and regulation.</p>
+    </section>
+
+    <!-- 5. High-end goods -->
+    <section class="slide" data-slide="5">
+      <h2>High-end goods: cars & watches</h2>
+      <p class="tagline">Authenticity and ownership history matter to buyers and insurers.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/36/1938_Rolls_Royce_Phantom_III_%286315832260%29.jpg" alt="1938 Rolls-Royce Phantom III" class="hero-img smaller" />
+      <p class="img-credit">1938 Rolls-Royce Phantom III, Beaulieu. Source: Hugh Llewelyn / Wikimedia Commons (CC BY-SA 2.0).</p>
+      <p class="tagline" style="margin-top: 1rem;">Luxury cars, watches, and collectibles: one immutable chain from creation to current owner.</p>
+    </section>
+
+    <!-- 6. Compliance & contractual obligations -->
+    <section class="slide" data-slide="6">
+      <h2>Regulatory compliance & contractual obligations</h2>
+      <p class="tagline">Provenance helps satisfy regulators and contract terms.</p>
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9b/Seal-%26-signature.jpg" alt="Seal and signature on document" class="hero-img smaller" />
+      <p class="img-credit">Seal and signature on document (1901). Source: Wikimedia Commons (Public Domain).</p>
+      <p class="tagline" style="margin-top: 1rem;">Chain of custody, audit trails, and proof of origin for compliance and dispute resolution.</p>
+    </section>
+
+    <!-- 7. Diverse applications -->
+    <section class="slide slide-dense" data-slide="7">
+      <h2>Diverse applications</h2>
+      <p class="tagline" style="margin-bottom: 0.5rem;">The ChainRoute protocol—one protocol, many sectors. ChainRoute-Forge is the web app to use it.</p>
+      <div class="app-grid">
+        <div class="app-card"><div class="icon">🏭</div><div class="name">Manufacturing</div></div>
+        <div class="app-card"><div class="icon">⛏️</div><div class="name">Mining & resources</div></div>
+        <div class="app-card"><div class="icon">🚗</div><div class="name">Luxury cars</div></div>
+        <div class="app-card"><div class="icon">⌚</div><div class="name">Watches & jewellery</div></div>
+        <div class="app-card"><div class="icon">📜</div><div class="name">Compliance & contracts</div></div>
+        <div class="app-card"><div class="icon">🎨</div><div class="name">Art & collectibles</div></div>
+        <div class="app-card"><div class="icon">💊</div><div class="name">Pharma & food</div></div>
+        <div class="app-card"><div class="icon">🏠</div><div class="name">RWA & assets</div></div>
+      </div>
+      <p class="tagline">Regulators, buyers, and partners need proof. The ChainRoute protocol delivers it; ChainRoute-Forge is the user interface.</p>
+    </section>
+
+    <!-- 8. The problem -->
+    <section class="slide slide-dense" data-slide="8">
+      <h2>The problem</h2>
+      <p class="tagline" style="margin-bottom: 0.5rem;">Today: scattered records, central control, or expensive custom systems.</p>
+      <ul>
+        <li>Paper and PDFs get lost, altered, or disputed.</li>
+        <li>Tracing or auditing provenance is hugely costly and slow—months of work, legal fees, and manual chasing.</li>
+        <li>Centralized platforms own your data and can change the rules.</li>
+        <li>Building custom traceability is costly and often locked to one vendor.</li>
+      </ul>
+      <p class="tagline" style="margin-top: 0.9rem;">We need <strong style="color: var(--accent);">permanent, verifiable, and open</strong> provenance—without smart contracts or new tokens. The <strong style="color: var(--text);">ChainRoute protocol</strong> provides it; <strong style="color: var(--text);">ChainRoute-Forge</strong> is the web app to use it.</p>
+    </section>
+
+    <!-- 9. Chain structure (first technical diagram) -->
+    <section class="slide" data-slide="9">
+      <h2>ChainRoute Protocol</h2>
+      <p class="tagline">Supporting files and event blobs live on Arweave; Polygon anchors reference the blobs. All carry the Genesis ID except the genesis tx. (ChainRoute-Forge is the web app for implementing this protocol.)</p>
+      <img src="ImagesForPresentation/tree-structure.png" alt="Chain tree structure" class="tech-img" />
+    </section>
+
+    <!-- 10. Solution: ChainRoute-Forge -->
+    <section class="slide slide-dense" data-slide="10">
+      <h2>ChainRoute Protocol</h2>
+      <p class="tagline" style="margin-bottom: 0.5rem;"><strong style="color: var(--text);">ChainRoute</strong> is the protocol. <strong style="color: var(--text);">ChainRoute-Forge</strong> is a web app that lets users implement it—create chains, post blobs, anchor on Polygon, verify.</p>
+      <ul>
+        <li>In the protocol: for each event, photos, documents, etc. are <strong style="color: var(--text);">supporting files</strong> posted to <strong style="color: var(--text);">Arweave</strong>. The <strong style="color: var(--text);">event blob</strong> (also on Arweave) lists them plus brief summary info—notes, GPS, and the like.</li>
+        <li><strong style="color: var(--text);">Anchors on Polygon</strong> reference those Arweave blobs. Each anchor is signed by the <strong style="color: var(--text);">responsible custodian or party of record</strong> and carries <strong style="color: var(--text);">delegation</strong> for who signs the next anchor.</li>
+        <li>Every anchor, blob, and supporting file (except the genesis transaction itself) <strong style="color: var(--text);">includes the Genesis ID</strong>—one root for the whole chain.</li>
+        <li>No smart contracts. No custom tokens. Anyone can verify from a single tx hash or QR code. ChainRoute-Forge gives you the interface; ChainRoute is the protocol.</li>
+      </ul>
+      <p class="tagline" style="margin-top: 0.5rem;">For creators, manufacturers, regulators, and buyers.</p>
+    </section>
+
+    <!-- 11. The anchor: 127 bytes -->
+    <section class="slide" data-slide="11">
+      <h2>The anchor: 127 bytes on Polygon</h2>
+      <p class="tagline">Signed by the custodian or party of record; includes delegation for the next signer. References the event blob on Arweave.</p>
+      <img src="ImagesForPresentation/payload-127.jpg" alt="127-byte payload structure" class="tech-img" />
+      <p class="tagline" style="margin-top: 0.5rem;">Genesis hash · Previous tx · Arweave blob ID · Delegate (next signer)</p>
+    </section>
+
+    <!-- 12. Permanent storage on Arweave -->
+    <section class="slide" data-slide="12">
+      <h2>Permanent data on Arweave</h2>
+      <p class="tagline">Supporting files (photos, documents) are posted to Arweave. The event blob lists them and adds summary info (notes, GPS, etc.); it's also posted to Arweave. All include the Genesis ID.</p>
+      <img src="ImagesForPresentation/blob-structure.jpeg" alt="Blob structure" class="tech-img" />
+    </section>
+
+    <!-- 13. Verify -->
+    <section class="slide" data-slide="13">
+      <h2>Verify in seconds</h2>
+      <p class="tagline">In ChainRoute-Forge, paste a tx hash or scan a QR code to see the full chain and all linked data. The web app verifies against the ChainRoute protocol.</p>
+      <img src="ImagesForPresentation/verification.jpeg" alt="Verification flow" class="tech-img" />
+    </section>
+
+    <!-- 14. Close / CTA -->
+    <section class="slide" data-slide="14">
+      <div class="title-row">
+        <img src="ImagesForPresentation/ChaineRoute-ForgeAvatar.jpg" alt="" />
+        <h1>ChainRoute-Forge</h1>
+      </div>
+      <p class="tagline" style="margin-top: 0.5rem;">The web app for the ChainRoute protocol. Provenance for industry, resources, compliance, and trust.</p>
+      <p class="tagline" style="margin-top: 0.5rem;">Forge unbreakable chains in minutes. AI helps; Polygon + Arweave anchor forever.</p>
+      <a href="https://github.com/ChainRoute" target="_blank" rel="noopener" class="cta">Try the ChainRoute-Forge web app</a>
+      <p style="margin-top: 2rem; font-size: 0.85rem; color: var(--text-soft);">ETHDenver 2026 Buidlathon · ChainRoute protocol</p>
+    </section>
+  </div>
+
+  <nav class="nav" aria-label="Slide navigation">
+    <button type="button" id="prev" aria-label="Previous">←</button>
+    <span class="indicator" id="indicator">1 / 14</span>
+    <button type="button" id="next" aria-label="Next">→</button>
+  </nav>
+
+  <script>
+    (function () {
+      const slides = document.querySelectorAll(".slide");
+      const total = slides.length;
+      let current = 0;
+
+      function show(i) {
+        current = (i + total) % total;
+        slides.forEach((s, k) => s.classList.toggle("active", k === current));
+        document.getElementById("indicator").textContent = (current + 1) + " / " + total;
+      }
+
+      document.getElementById("prev").addEventListener("click", () => show(current - 1));
+      document.getElementById("next").addEventListener("click", () => show(current + 1));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "ArrowLeft") show(current - 1);
+        if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); show(current + 1); }
+      });
+      document.querySelector(".deck").addEventListener("click", (e) => {
+        if (e.target.closest("a, button")) return;
+        const rect = e.currentTarget.getBoundingClientRect();
+        if (e.clientX > rect.left + rect.width / 2) show(current + 1);
+        else show(current - 1);
+      });
+      show(0);
+    })();
+  </script>
+</body>
+</html>

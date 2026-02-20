@@ -27,7 +27,7 @@ export function Header({ activePage }: { activePage: Page }) {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-2">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-1.5 text-lg font-bold tracking-tight">
-          Chain<span className="text-chain-neon">Route</span>-Forge
+          Chain<span className="text-chain-neon">Route</span>
         </Link>
 
         {/* Desktop nav */}
