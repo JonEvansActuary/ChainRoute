@@ -3,7 +3,7 @@ import { Providers } from "@/components/providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ChainRoute-Forge",
+  title: "ChainRoute",
   description:
     "Anchor provenance chains on Polygon in 127 bytes. Permanent data on Arweave. No smart contracts. No tokens. Just data.",
 };
