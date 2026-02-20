@@ -1,1 +1,17 @@
+# Dependencies
+node_modules/
+
+# Next.js build output
+.next/
+out/
+
+# Environment / secrets
+.env
+.env.local
+.env*.local
+
+# Vercel
 .vercel
+
+# Misc
+*.tsbuildinfo

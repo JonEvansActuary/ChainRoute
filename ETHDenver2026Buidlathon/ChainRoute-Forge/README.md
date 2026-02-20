@@ -33,7 +33,7 @@ Open [http://localhost:3000](http://localhost:3000).
 Copy `.env.example` to `.env` and fill in as needed (all keys optional for basic run).
 
 - **RPC (recommended for demos):** `NEXT_PUBLIC_AMOY_RPC` and optionally `NEXT_PUBLIC_POLYGON_MAINNET_RPC` – provider URLs (e.g. Alchemy, Infura) for Polygon Amoy and mainnet. Improves reliability and reduces rate limits vs public RPCs.
-- **Polygonscan API (optional):** `NEXT_PUBLIC_POLYGONSCAN_AMOY_API_KEY` and/or `NEXT_PUBLIC_POLYGONSCAN_MAINNET_API_KEY` – for higher rate limits when loading “My Chains” from Polygonscan (get keys at [polygonscan.com/apis](https://polygonscan.com/apis)).
+- **Polygonscan API (optional):** `NEXT_PUBLIC_POLYGONSCAN_AMOY_API_KEY` and/or `NEXT_PUBLIC_POLYGONSCAN_MAINNET_API_KEY` – for higher rate limits when loading "My Chains" from Polygonscan (get keys at [polygonscan.com/apis](https://polygonscan.com/apis)).
 - **Arweave read (optional):** `NEXT_PUBLIC_ARWEAVE_GATEWAY` and/or `NEXT_PUBLIC_ARWEAVE_GRAPHQL` – gateway URL for fetching blobs and GraphQL URL for tag lookups. Use an alternate gateway if you need better reliability than the default arweave.net.
 - `GROK_API_KEY` – for AI caption and event suggestions
 - **Arweave post (optional):** `ARWEAVE_KEY_PATH` (path to JWK file) or `ARWEAVE_JWK` (inline JWK JSON string). Use `ARWEAVE_JWK` on Vercel since the server has no file system for key files. Either enables posting support files and event blobs to Arweave.
@@ -59,6 +59,15 @@ Without Arweave keys, support upload and blob post show a clear message; you can
 - **Dark/light theme**: Toggled via class-based Tailwind dark mode with localStorage persistence.
 - **Network selector**: Switch between Polygon Amoy (testnet) and Polygon mainnet from the header.
 
-## Deploy
+## Deploy on Vercel
 
-Vercel-ready. Run `npm run build` to verify production build. Set env vars in the Vercel dashboard (same as local: RPC, Arweave read, AI, Arweave keys). Use Polygon Amoy (Chain ID 80002) for testnet. Before the event, smoke-test the live URL (e.g. open Verify → **Load Example Chain**). Share the live URL in your Buidlathon submission.
+Vercel-ready. The app lives in a subdirectory of the repo, so when importing the project on Vercel:
+
+1. **Set Root Directory** to `ETHDenver2026Buidlathon/ChainRoute-Forge` in **Project Settings → General → Root Directory**.
+2. **Add environment variables** in the Vercel dashboard (Settings → Environment Variables). See `.env.example` for the full list. Key notes:
+   - `NEXT_PUBLIC_*` vars are embedded at build time — redeploy after changing them.
+   - Use `ARWEAVE_JWK` (minified single-line JWK JSON) instead of `ARWEAVE_KEY_PATH` — Vercel serverless functions have no file-system access.
+   - `NEXT_PUBLIC_POLYGONSCAN_*_API_KEY` values should be the **API key string only**, not a full URL.
+3. **Build & deploy** — Vercel auto-detects Next.js via `vercel.json` and runs `npm install` + `npm run build`.
+
+Run `npm run build` locally first to verify the production build. Use Polygon Amoy (Chain ID 80002) for testnet. Before the event, smoke-test the live URL (e.g. open Verify → **Load Example Chain**). Share the live URL in your Buidlathon submission.
