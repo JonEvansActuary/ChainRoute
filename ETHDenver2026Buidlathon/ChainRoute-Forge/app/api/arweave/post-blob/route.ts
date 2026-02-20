@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { buildAndValidateBlob } from "@/lib/chainroute/build-blob";
 import type { SupportItem } from "@/lib/chainroute/types";
+import { getArweaveKey } from "@/lib/arweave-key";
 
 /**
  * POST: body = { genesisHash, event: { eventType, timestamp?, summary }, supports: SupportItem[] }
- * Posts provenance blob to Arweave (server-side with ARWEAVE_KEY_PATH).
+ * Posts provenance blob to Arweave (server-side with ARWEAVE_KEY_PATH or ARWEAVE_JWK).
  * Returns { arweaveId }.
  */
 export async function POST(req: NextRequest) {
@@ -22,21 +23,22 @@ export async function POST(req: NextRequest) {
       );
     }
     const blob = buildAndValidateBlob(genesisHash, event, supports);
-    const keyPath = process.env.ARWEAVE_KEY_PATH;
-    if (!keyPath) {
+    let key: object;
+    try {
+      key = getArweaveKey();
+    } catch (e) {
       return NextResponse.json(
-        { error: "Server: Set ARWEAVE_KEY_PATH to post to Arweave" },
+        { error: (e as Error).message },
         { status: 503 }
       );
     }
     const Arweave = (await import("arweave")).default;
-    const key = await import("fs").then((fs) => JSON.parse(fs.readFileSync(keyPath, "utf8")));
     const arweave = Arweave.init({ host: "arweave.net", port: 443, protocol: "https" });
     const tx = await arweave.createTransaction({
       data: new TextEncoder().encode(JSON.stringify(blob)),
     });
     tx.addTag("Content-Type", "application/json");
-    await arweave.transactions.sign(tx, key);
+    await arweave.transactions.sign(tx, key as never);
     const uploader = await arweave.transactions.getUploader(tx);
     while (!uploader.isComplete) {
       await uploader.uploadChunk();

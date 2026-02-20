@@ -40,7 +40,7 @@ export default function ContinuePage() {
   const [anchorError, setAnchorError] = useState<string | null>(null);
   const [anchorDone, setAnchorDone] = useState<string | null>(null);
 
-  const { address } = useAccount();
+  const { address, chainId } = useAccount();
   const { rpcUrl, networkName, explorerUrl } = useNetwork();
   const { toast } = useToast();
   const anchorTx = useTransactionFlow();
@@ -116,9 +116,9 @@ export default function ContinuePage() {
         data: txData,
       });
 
-      const receipt = await anchorTx.waitForConfirmation(hash as Hash);
+      const { receipt, error: receiptError } = await anchorTx.waitForConfirmation(hash as Hash);
       if (!receipt) {
-        setAnchorError("Transaction failed or reverted");
+        setAnchorError(receiptError ?? "Transaction failed or reverted");
         return;
       }
 

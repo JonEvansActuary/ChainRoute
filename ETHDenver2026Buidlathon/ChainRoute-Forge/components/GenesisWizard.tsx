@@ -22,7 +22,7 @@ export function GenesisWizard({
 }: {
   onGenesisCreated: (genesisTxHash: string) => void;
 }) {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, connector, chainId } = useAccount();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [delegate, setDelegate] = useState("");
@@ -46,6 +46,11 @@ export function GenesisWizard({
     setError(null);
     genesisTx.setPending();
     try {
+      type ConnectorWithProvider = { getProvider?: () => Promise<{ request: (args: { method: string; params: unknown[] }) => Promise<unknown> }> };
+      const connectorWithProvider = connector as ConnectorWithProvider | null;
+      const provider = connectorWithProvider?.getProvider
+        ? await connectorWithProvider.getProvider()
+        : undefined;
       const params: AnchorParams = {
         genesisHash: ZERO_64,
         previousPolygonHash: ZERO_64,
@@ -53,15 +58,19 @@ export function GenesisWizard({
         delegate: delegateAddr,
       };
       const data = getAnchorTxData(params);
-      const hash = await sendRawTransaction({
-        from: address,
-        to: ANCHOR_TARGET,
-        data,
-      });
+      const hash = await sendRawTransaction(
+        {
+          from: address,
+          to: ANCHOR_TARGET,
+          data,
+        },
+        provider ?? undefined,
+        chainId ?? undefined
+      );
 
-      const receipt = await genesisTx.waitForConfirmation(hash as Hash);
+      const { receipt, error: receiptError } = await genesisTx.waitForConfirmation(hash as Hash, provider);
       if (!receipt) {
-        setError("Transaction failed or reverted");
+        setError(receiptError ?? "Transaction failed or reverted");
         return;
       }
 

@@ -59,7 +59,7 @@ export function CreateFlow() {
   const [anchorLoading, setAnchorLoading] = useState(false);
   const [finalTxHash, setFinalTxHash] = useState<string | null>(null);
 
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
   const { networkName, explorerUrl } = useNetwork();
   const { toast } = useToast();
   const anchorTx = useTransactionFlow();
@@ -164,15 +164,15 @@ export function CreateFlow() {
         delegate: delegateAddr,
       });
 
-      const hash = await sendRawTransaction({
-        from: address,
-        to: ANCHOR_TARGET,
-        data: txData,
-      });
+      const hash = await sendRawTransaction(
+        { from: address, to: ANCHOR_TARGET, data: txData },
+        undefined,
+        chainId ?? undefined
+      );
 
-      const receipt = await anchorTx.waitForConfirmation(hash as Hash);
+      const { receipt, error: receiptError } = await anchorTx.waitForConfirmation(hash as Hash);
       if (!receipt) {
-        setAnchorError("Transaction failed or reverted");
+        setAnchorError(receiptError ?? "Transaction failed or reverted");
         setAnchorLoading(false);
         return;
       }
@@ -341,10 +341,17 @@ export function CreateFlow() {
                           </span>
                         )}
                         {!s.id && s.error && (
-                          <span className="ml-2 text-red-400">(upload failed)</span>
+                          <>
+                            <span className="ml-2 text-red-400">(upload failed)</span>
+                            <p className="mt-0.5 text-red-400/90" title={s.error}>
+                              {s.error.length > 80 ? s.error.slice(0, 80) + "…" : s.error}
+                            </p>
+                          </>
                         )}
                         {!s.id && !s.error && (
-                          <span className="ml-2 text-amber-400">(not uploaded)</span>
+                          <span className="ml-2 text-amber-400" title="Go back to Supports and click ‘Upload to Arweave’ for each file. If the server has no Arweave key (ARWEAVE_KEY_PATH or ARWEAVE_JWK), uploads will fail.">
+                            (not uploaded)
+                          </span>
                         )}
                       </li>
                     ))}

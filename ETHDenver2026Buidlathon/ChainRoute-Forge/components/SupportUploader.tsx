@@ -49,9 +49,6 @@ export function SupportUploader({
         const data = await res.json();
         if (!res.ok) {
           const msg = data.error || "Upload failed";
-          if (res.status === 503) {
-            throw new Error("Arweave upload disabled (no server key). You can still create genesis and continue without support files.");
-          }
           throw new Error(msg);
         }
         const done = [...next];

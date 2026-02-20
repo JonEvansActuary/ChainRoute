@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getArweaveKey } from "@/lib/arweave-key";
 
 const GENESIS_PATTERN = /^[0-9a-fA-F]{64}$/;
 
@@ -15,14 +16,15 @@ export async function POST(req: NextRequest) {
     if (!file) {
       return NextResponse.json({ error: "Missing file" }, { status: 400 });
     }
-    const keyPath = process.env.ARWEAVE_KEY_PATH;
-    if (!keyPath) {
+    let key: object;
+    try {
+      key = getArweaveKey();
+    } catch (e) {
       return NextResponse.json(
-        { error: "Server: Set ARWEAVE_KEY_PATH" },
+        { error: (e as Error).message },
         { status: 503 }
       );
     }
-    const key = await import("fs").then((fs) => JSON.parse(fs.readFileSync(keyPath, "utf8")));
     const Arweave = (await import("arweave")).default;
     const arweave = Arweave.init({ host: "arweave.net", port: 443, protocol: "https" });
     const buf = Buffer.from(await file.arrayBuffer());
@@ -40,7 +42,7 @@ export async function POST(req: NextRequest) {
     if (genesis && GENESIS_PATTERN.test(genesis)) {
       tx.addTag("ChainRoute-Genesis", genesis.toLowerCase());
     }
-    await arweave.transactions.sign(tx, key);
+    await arweave.transactions.sign(tx, key as never);
     const uploader = await arweave.transactions.getUploader(tx);
     while (!uploader.isComplete) {
       await uploader.uploadChunk();
