@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChainRoute — Live Verification Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --surface2: #eef1f6;
+      --accent: #256b6b;
+      --accent-light: #2d8a8a;
+      --accent-soft: rgba(37, 107, 107, 0.10);
+      --text: #1a2332;
+      --text-soft: #5a6578;
+      --border: #d4dce8;
+      --green: #16a34a;
+      --green-soft: rgba(22, 163, 74, 0.08);
+      --amber: #d97706;
+      --amber-soft: rgba(217, 119, 6, 0.08);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1a2332 0%, #256b6b 100%);
+      color: #fff;
+      padding: 4rem 2rem 3.5rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+    }
+    .hero .subtitle {
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 500;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto 1.25rem;
+    }
+    .hero .intro {
+      font-size: 0.95rem;
+      opacity: 0.75;
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .genesis-box {
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      border-radius: 12px;
+      padding: 1.75rem 2rem;
+      margin: -1.75rem auto 2.5rem;
+      max-width: 880px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      position: relative;
+      z-index: 2;
+    }
+    .genesis-box h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.15rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .genesis-box .hash {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      background: var(--surface2);
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      word-break: break-all;
+      color: var(--text);
+      margin: 0.5rem 0;
+      display: block;
+    }
+    .genesis-box a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .genesis-box a:hover { text-decoration: underline; }
+
+    section.content-section {
+      margin-bottom: 2.5rem;
+    }
+    section.content-section h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+    section.content-section h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin: 1.5rem 0 0.75rem;
+    }
+    section.content-section p {
+      color: var(--text-soft);
+      margin-bottom: 0.75rem;
+      line-height: 1.6;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0 1.5rem;
+      font-size: 0.9rem;
+      background: var(--surface);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    thead th {
+      background: var(--surface2);
+      font-weight: 600;
+      color: var(--text);
+      padding: 0.65rem 0.75rem;
+      text-align: left;
+      border-bottom: 2px solid var(--border);
+      white-space: nowrap;
+    }
+    tbody td {
+      padding: 0.55rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-soft);
+      vertical-align: top;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--accent-soft); }
+
+    .event-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .event-card h3 {
+      margin: 0 0 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .event-card h3 .badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+    .event-card .field {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .event-card .field .label {
+      font-weight: 600;
+      color: var(--text);
+      min-width: 110px;
+      flex-shrink: 0;
+    }
+    .event-card .field .value {
+      color: var(--text-soft);
+      word-break: break-all;
+    }
+    .event-card .field a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .event-card .field a:hover { text-decoration: underline; }
+
+    code, .mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      background: var(--surface2);
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+    }
+
+    .support-table {
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    .support-table th { font-size: 0.8rem; }
+    .support-table td { font-size: 0.82rem; }
+    .support-table a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .support-table a:hover { text-decoration: underline; }
+
+    .walkthrough ol {
+      padding-left: 1.25rem;
+      color: var(--text-soft);
+      margin: 0.5rem 0 1rem;
+    }
+    .walkthrough li {
+      margin-bottom: 0.5rem;
+      line-height: 1.55;
+    }
+
+    .payload-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    .payload-cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      text-align: center;
+    }
+    .payload-cell .bytes { font-size: 0.75rem; color: var(--text-soft); margin-bottom: 0.25rem; }
+    .payload-cell .name { font-weight: 700; color: var(--accent); font-size: 0.9rem; }
+    .payload-cell .size { font-size: 0.75rem; color: var(--text-soft); margin-top: 0.15rem; }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .summary-card .number {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .summary-card .desc { font-size: 0.85rem; color: var(--text-soft); margin-top: 0.25rem; }
+
+    .gateway-table { max-width: 600px; }
+
+    .note-box {
+      background: var(--amber-soft);
+      border-left: 3px solid var(--amber);
+      padding: 0.85rem 1rem;
+      border-radius: 0 8px 8px 0;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+    }
+
+    .dev-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .dev-box pre {
+      background: #1a2332;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      margin: 0.75rem 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--text-soft);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+      margin-top: 1rem;
+    }
+    footer strong { color: var(--text); }
+
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 0.5rem 0 1rem;
+    }
+    .check-list li {
+      padding: 0.35rem 0 0.35rem 1.5rem;
+      position: relative;
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+    .check-list li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 3rem 1.25rem 2.5rem; }
+      .genesis-box { padding: 1.25rem; margin: -1.25rem 1rem 2rem; }
+      .payload-grid { grid-template-columns: repeat(2, 1fr); }
+      .event-card .field { flex-direction: column; gap: 0.15rem; }
+      .event-card .field .label { min-width: auto; }
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <h1>ChainRoute Protocol</h1>
+    <p class="subtitle">Live Verification Reference</p>
+    <p class="intro">
+      <strong>Hypothetical Painting:</strong> A six-stage provenance example on Polygon Mainnet + Arweave.
+      Independently verify a complete ChainRoute provenance chain using nothing but a web browser and public block explorers.
+      No code, no tooling, no repo clone required.
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="genesis-box">
+      <h2>Genesis Hash (Entry Point)</h2>
+      <p style="font-size:0.9rem;color:var(--text-soft);margin-bottom:0.5rem;">Everything starts here. This is the Polygon transaction hash that anchors the entire chain:</p>
+      <code class="hash">b1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94</code>
+      <a href="https://polygonscan.com/tx/0xb1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94" target="_blank" rel="noopener">View on PolygonScan &rarr;</a>
+    </div>
+
+    <section class="content-section">
+      <h2>The Provenance Story</h2>
+      <p>All data is <strong>fictional</strong> — a hypothetical Picasso painting tracked from authentication in Paris, through auction in New York, to long-term vault storage in London. Each stage is signed by a different party on Polygon and anchored with permanent evidence on Arweave.</p>
+      <table>
+        <thead>
+          <tr><th>Step</th><th>Event</th><th>Signer</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Genesis</td><td>Chain creation</td><td>Sebastien Moreau</td><td>Director, Fondation Hypothetique</td></tr>
+          <tr><td>1</td><td>Authentication</td><td>Dr. Elena Vasquez</td><td>Chief Authenticator, ArtSecure Paris</td></tr>
+          <tr><td>2</td><td>Secure Transport</td><td>Marcus Webb</td><td>Head of Security, Palladium Art Logistics</td></tr>
+          <tr><td>3</td><td>Auction Drop-Off</td><td>Victoria Chen</td><td>Registrar, Christie's New York</td></tr>
+          <tr><td>4</td><td>Live Bidding</td><td>James Okonkwo</td><td>Buyer's legal counsel</td></tr>
+          <tr><td>5</td><td>Secure Handover</td><td>Marcus Webb</td><td>Head of Security, Palladium Art Logistics</td></tr>
+          <tr><td>6</td><td>Long-Term Storage</td><td>Dame Eleanor Ashford</td><td>Director, Sterling Vaults London</td></tr>
+        </tbody>
+      </table>
+      <p style="font-size:0.88rem;">Each signer was delegated authority by the previous signer (recorded on-chain). Event 6 self-delegates, ending the chain.</p>
+    </section>
+
+    <section class="content-section">
+      <h2>How ChainRoute Works (The 127-Byte Payload)</h2>
+      <p>Every Polygon transaction in the chain carries exactly <strong>127 bytes</strong> of data in its input field. No smart contract — just raw bytes in a self-send transaction.</p>
+      <div class="payload-grid">
+        <div class="payload-cell">
+          <div class="bytes">Bytes 0–31</div>
+          <div class="name">Genesis Hash</div>
+          <div class="size">32 bytes</div>
+        </div>
+        <div class="payload-cell">
+          <div class="bytes">Bytes 32–63</div>
+          <div class="name">Previous Hash</div>
+          <div class="size">32 bytes</div>
+        </div>
+        <div class="payload-cell">
+          <div class="bytes">Bytes 64–106</div>
+          <div class="name">Arweave ID</div>
+          <div class="size">43 bytes</div>
+        </div>
+        <div class="payload-cell">
+          <div class="bytes">Bytes 107–126</div>
+          <div class="name">Delegate</div>
+          <div class="size">20 bytes</div>
+        </div>
+      </div>
+      <p style="font-size:0.88rem;">To verify: open any transaction on PolygonScan, click "Input Data", view as hex. The first 64 hex chars are the genesis hash, the next 64 are the previous hash, the next 86 hex chars decode to a 43-character Arweave ID (UTF-8), and the final 40 hex chars are the delegate address.</p>
+    </section>
+
+    <section class="content-section">
+      <h2>Verifying the Polygon Chain (7 Transactions)</h2>
+      <p>Open each link on PolygonScan. Under "Input Data" confirm that:</p>
+      <ul class="check-list">
+        <li>The <strong>genesis hash</strong> matches the chain root (all zeros for genesis tx, then <code>b1861b01...aa94</code> for all subsequent)</li>
+        <li>The <strong>previous hash</strong> matches the tx hash of the step before it</li>
+        <li>The <strong>Arweave ID</strong> matches the blob ID listed below</li>
+        <li>The <strong>delegate</strong> address matches the signer of the next step</li>
+      </ul>
+
+      <div class="event-card">
+        <h3><span class="badge">Genesis</span> Chain Creation</h3>
+        <div class="field"><span class="label">Tx:</span><span class="value"><a href="https://polygonscan.com/tx/0xb1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94" target="_blank">0xb1861b01...aa94</a></span></div>
+        <div class="field"><span class="label">Signer:</span><span class="value"><code>0x637c...d112</code> (Sebastien Moreau)</span></div>
+        <div class="field"><span class="label">Genesis Hash:</span><span class="value"><code>0000...0000</code> (32 zero bytes — this is the genesis itself)</span></div>
+        <div class="field"><span class="label">Previous Hash:</span><span class="value"><code>0000...0000</code> (no predecessor)</span></div>
+        <div class="field"><span class="label">Arweave ID:</span><span class="value">43 zero bytes — no blob for genesis</span></div>
+        <div class="field"><span class="label">Delegate:</span><span class="value"><code>0x8db6...2512</code> (Dr. Elena Vasquez — Event 1 signer)</span></div>
+      </div>
+
+      <div class="event-card">
+        <h3><span class="badge">Event 1</span> Authentication (Paris)</h3>
+        <div class="field"><span class="label">Tx:</span><span class="value"><a href="https://polygonscan.com/tx/0x6b01ed4c4f30d122366678db4ebe2bd774ff6062e3d9b94b09e5e1968bdb0300" target="_blank">0x6b01ed4c...0300</a></span></div>
+        <div class="field"><span class="label">Signer:</span><span class="value"><code>0x8db6...2512</code> (Dr. Elena Vasquez)</span></div>
+        <div class="field"><span class="label">Genesis Hash:</span><span class="value"><code>b1861b01...aa94</code></span></div>
+        <div class="field"><span class="label">Previous Hash:</span><span class="value"><code>b1861b01...aa94</code> (genesis)</span></div>
+        <div class="field"><span class="label">Arweave Blob:</span><span class="value"><a href="https://arweave.net/vLsZPb2EO-a6M31yKZ0-muqygP0oSmUDKho6YotGOoA" target="_blank">vLsZPb2EO-a6M31yKZ0-muqygP0oSmUDKho6YotGOoA</a></span></div>
+        <div class="field"><span class="label">Delegate:</span><span class="value"><code>0xab6c...7371</code> (Marcus Webb — Event 2 signer)</span></div>
+      </div>
+
+      <div class="event-card">
+        <h3><span class="badge">Event 2</span> Secure Transport (Paris → New York)</h3>
+        <div class="field"><span class="label">Tx:</span><span class="value"><a href="https://polygonscan.com/tx/0x098d65abc09a70b4908b71395f2975502dc94788a7286d20c51cf3f04464a76f" target="_blank">0x098d65ab...a76f</a></span></div>
+        <div class="field"><span class="label">Signer:</span><span class="value"><code>0xab6c...7371</code> (Marcus Webb)</span></div>
+        <div class="field"><span class="label">Genesis Hash:</span><span class="value"><code>b1861b01...aa94</code></span></div>
+        <div class="field"><span class="label">Previous Hash:</span><span class="value"><code>6b01ed4c...0300</code> (Event 1)</span></div>
+        <div class="field"><span class="label">Arweave Blob:</span><span class="value"><a href="https://arweave.net/TdBumkRk80QzQM6NZh7ORglTPSF9xx7lJpvoMqBgFTQ" target="_blank">TdBumkRk80QzQM6NZh7ORglTPSF9xx7lJpvoMqBgFTQ</a></span></div>
+        <div class="field"><span class="label">Delegate:</span><span class="value"><code>0xbf41...aa91</code> (Victoria Chen — Event 3 signer)</span></div>
+      </div>
+
+      <div class="event-card">
+        <h3><span class="badge">Event 3</span> Auction Drop-Off (New York)</h3>
+        <div class="field"><span class="label">Tx:</span><span class="value"><a href="https://polygonscan.com/tx/0x9400fbdd3da29906637755a55e7ccf4bed73e8c6b7cf3bdf2a5a501cbfcc8f26" target="_blank">0x9400fbdd...8f26</a></span></div>
+        <div class="field"><span class="label">Signer:</span><span class="value"><code>0xbf41...aa91</code> (Victoria Chen)</span></div>
+        <div class="field"><span class="label">Genesis Hash:</span><span class="value"><code>b1861b01...aa94</code></span></div>
+        <div class="field"><span class="label">Previous Hash:</span><span class="value"><code>098d65ab...a76f</code> (Event 2)</span></div>
+        <div class="field"><span class="label">Arweave Blob:</span><span class="value"><a href="https://arweave.net/AaJwmoZV83nRCQuB2KTIzQcy_iBGLjYJEhXMoFgP__4" target="_blank">AaJwmoZV83nRCQuB2KTIzQcy_iBGLjYJEhXMoFgP__4</a></span></div>
+        <div class="field"><span class="label">Delegate:</span><span class="value"><code>0x2343...2a8a</code> (James Okonkwo — Event 4 signer)</span></div>
+      </div>
+
+      <div class="event-card">
+        <h3><span class="badge">Event 4</span> Live Bidding (New York)</h3>
+        <div class="field"><span class="label">Tx:</span><span class="value"><a href="https://polygonscan.com/tx/0xc1e2da7531dd9876141d6cf772771cfe9cddbe08ce0e6226078cbb8a4992c9bf" target="_blank">0xc1e2da75...c9bf</a></span></div>
+        <div class="field"><span class="label">Signer:</span><span class="value"><code>0x2343...2a8a</code> (James Okonkwo)</span></div>
+        <div class="field"><span class="label">Genesis Hash:</span><span class="value"><code>b1861b01...aa94</code></span></div>
+        <div class="field"><span class="label">Previous Hash:</span><span class="value"><code>9400fbdd...8f26</code> (Event 3)</span></div>
+        <div class="field"><span class="label">Arweave Blob:</span><span class="value"><a href="https://arweave.net/XrqThWfVEgLSUM4W4xh7TnGXyVIRHLi34W0qf243b78" target="_blank">XrqThWfVEgLSUM4W4xh7TnGXyVIRHLi34W0qf243b78</a></span></div>
+        <div class="field"><span class="label">Delegate:</span><span class="value"><code>0xa54d...e606</code> (Marcus Webb — Event 5 signer)</span></div>
+      </div>
+
+      <div class="event-card">
+        <h3><span class="badge">Event 5</span> Secure Handover (New York → London)</h3>
+        <div class="field"><span class="label">Tx:</span><span class="value"><a href="https://polygonscan.com/tx/0x5ed9e0c8dd332c56bbd31f63d9b62e36b0ecedcf6c504628ef0fc1474eced46c" target="_blank">0x5ed9e0c8...d46c</a></span></div>
+        <div class="field"><span class="label">Signer:</span><span class="value"><code>0xa54d...e606</code> (Marcus Webb)</span></div>
+        <div class="field"><span class="label">Genesis Hash:</span><span class="value"><code>b1861b01...aa94</code></span></div>
+        <div class="field"><span class="label">Previous Hash:</span><span class="value"><code>c1e2da75...c9bf</code> (Event 4)</span></div>
+        <div class="field"><span class="label">Arweave Blob:</span><span class="value"><a href="https://arweave.net/jIgJcuU7rdL1YIy3g3-zK6sLCDMSF02C6aYbh4LjR2g" target="_blank">jIgJcuU7rdL1YIy3g3-zK6sLCDMSF02C6aYbh4LjR2g</a></span></div>
+        <div class="field"><span class="label">Delegate:</span><span class="value"><code>0x83ab...02cf</code> (Dame Eleanor Ashford — Event 6 signer)</span></div>
+      </div>
+
+      <div class="event-card">
+        <h3><span class="badge">Event 6</span> Long-Term Storage (London)</h3>
+        <div class="field"><span class="label">Tx:</span><span class="value"><a href="https://polygonscan.com/tx/0xc7b5adf7ee5afbaa6fd4a80eea7e00b7fc6d08d2a9e6fb0dd6aef9124f44345b" target="_blank">0xc7b5adf7...345b</a></span></div>
+        <div class="field"><span class="label">Signer:</span><span class="value"><code>0x83ab...02cf</code> (Dame Eleanor Ashford)</span></div>
+        <div class="field"><span class="label">Genesis Hash:</span><span class="value"><code>b1861b01...aa94</code></span></div>
+        <div class="field"><span class="label">Previous Hash:</span><span class="value"><code>5ed9e0c8...d46c</code> (Event 5)</span></div>
+        <div class="field"><span class="label">Arweave Blob:</span><span class="value"><a href="https://arweave.net/kKdHYqKkXI86TvOr1DcNkrjtygQTWzDPx1UeS2e3sxY" target="_blank">kKdHYqKkXI86TvOr1DcNkrjtygQTWzDPx1UeS2e3sxY</a></span></div>
+        <div class="field"><span class="label">Delegate:</span><span class="value"><code>0x83ab...02cf</code> (self-delegate — chain ends)</span></div>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Verifying the Arweave Data (31 Transactions)</h2>
+      <p>Each Arweave provenance blob is a JSON document containing the genesis hash, event type, timestamp, summary, and references to supporting evidence files. Each support file is tagged with <code>ChainRoute-Genesis</code> linking it back to the chain.</p>
+
+      <h3>Event 1 — Authentication (5 support files)</h3>
+      <p><strong>Provenance blob:</strong> <a href="https://arweave.net/vLsZPb2EO-a6M31yKZ0-muqygP0oSmUDKho6YotGOoA" target="_blank">vLsZPb2EO-a6M31yKZ0-muqygP0oSmUDKho6YotGOoA</a> (<a href="https://viewblock.io/arweave/tx/vLsZPb2EO-a6M31yKZ0-muqygP0oSmUDKho6YotGOoA" target="_blank">ViewBlock</a>)</p>
+      <table class="support-table">
+        <thead><tr><th>File</th><th>Arweave</th><th>Tags</th></tr></thead>
+        <tbody>
+          <tr><td>UV Analysis (image)</td><td><a href="https://arweave.net/eJpxHmwgDyd76ojM8FJnJEsiR3gs1fmuBZFvKkGRby0" target="_blank">eJpxHmwg...Rby0</a></td><td><a href="https://viewblock.io/arweave/tx/eJpxHmwgDyd76ojM8FJnJEsiR3gs1fmuBZFvKkGRby0" target="_blank">view</a></td></tr>
+          <tr><td>Spectral Analysis Report (PDF)</td><td><a href="https://arweave.net/dNot0BdabhaUkG6qRaEEV8WSqiRiAOtclxghhu7TmmE" target="_blank">dNot0Bda...TmmE</a></td><td><a href="https://viewblock.io/arweave/tx/dNot0BdabhaUkG6qRaEEV8WSqiRiAOtclxghhu7TmmE" target="_blank">view</a></td></tr>
+          <tr><td>Notary Seal Paris (image)</td><td><a href="https://arweave.net/SfcHDoMwR2mlGa2kkmC6Uk0tJE9prDZv93q_hTn1nj4" target="_blank">SfcHDoMw...1nj4</a></td><td><a href="https://viewblock.io/arweave/tx/SfcHDoMwR2mlGa2kkmC6Uk0tJE9prDZv93q_hTn1nj4" target="_blank">view</a></td></tr>
+          <tr><td>ArtSecure Certificate (PDF)</td><td><a href="https://arweave.net/jvdYgoep_N_wqQrXboXCqMf4TaFYANRiM_W8okxlmag" target="_blank">jvdYgoep...lmag</a></td><td><a href="https://viewblock.io/arweave/tx/jvdYgoep_N_wqQrXboXCqMf4TaFYANRiM_W8okxlmag" target="_blank">view</a></td></tr>
+          <tr><td>Fictional Picasso (image)</td><td><a href="https://arweave.net/qJBpK0OHjsAt3-VnzfXct-d1ki0AvzngBA6mRSl-uH8" target="_blank">qJBpK0OH...uH8</a></td><td><a href="https://viewblock.io/arweave/tx/qJBpK0OHjsAt3-VnzfXct-d1ki0AvzngBA6mRSl-uH8" target="_blank">view</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Event 2 — Secure Transport (4 support files)</h3>
+      <p><strong>Provenance blob:</strong> <a href="https://arweave.net/TdBumkRk80QzQM6NZh7ORglTPSF9xx7lJpvoMqBgFTQ" target="_blank">TdBumkRk80QzQM6NZh7ORglTPSF9xx7lJpvoMqBgFTQ</a> (<a href="https://viewblock.io/arweave/tx/TdBumkRk80QzQM6NZh7ORglTPSF9xx7lJpvoMqBgFTQ" target="_blank">ViewBlock</a>)</p>
+      <table class="support-table">
+        <thead><tr><th>File</th><th>Arweave</th><th>Tags</th></tr></thead>
+        <tbody>
+          <tr><td>Crate Photo Paris (image)</td><td><a href="https://arweave.net/hAtGeJontFO1ClQAZWgKJCquWFmAERfr9EZLqQy2oKI" target="_blank">hAtGeJon...2oKI</a></td><td><a href="https://viewblock.io/arweave/tx/hAtGeJontFO1ClQAZWgKJCquWFmAERfr9EZLqQy2oKI" target="_blank">view</a></td></tr>
+          <tr><td>Flight Manifest AF034 (PDF)</td><td><a href="https://arweave.net/KVMBSp02TCacYBUBnG8tyfAN3E34M4KtxfUvMBZdTos" target="_blank">KVMBSp02...dTos</a></td><td><a href="https://viewblock.io/arweave/tx/KVMBSp02TCacYBUBnG8tyfAN3E34M4KtxfUvMBZdTos" target="_blank">view</a></td></tr>
+          <tr><td>Insurance Policy $8M (PDF)</td><td><a href="https://arweave.net/77NqcIHelN57txcBtNNS6UtAsypj8PhpegkEaDmMDsY" target="_blank">77NqcIHe...MDsY</a></td><td><a href="https://viewblock.io/arweave/tx/77NqcIHelN57txcBtNNS6UtAsypj8PhpegkEaDmMDsY" target="_blank">view</a></td></tr>
+          <tr><td>Customs Clearance JFK (image)</td><td><a href="https://arweave.net/M3RCXmVBW08oNSIKKVxkS21aBGScmCes8npEZcgwxKQ" target="_blank">M3RCXmVB...wxKQ</a></td><td><a href="https://viewblock.io/arweave/tx/M3RCXmVBW08oNSIKKVxkS21aBGScmCes8npEZcgwxKQ" target="_blank">view</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Event 3 — Auction Drop-Off (4 support files)</h3>
+      <p><strong>Provenance blob:</strong> <a href="https://arweave.net/AaJwmoZV83nRCQuB2KTIzQcy_iBGLjYJEhXMoFgP__4" target="_blank">AaJwmoZV83nRCQuB2KTIzQcy_iBGLjYJEhXMoFgP__4</a> (<a href="https://viewblock.io/arweave/tx/AaJwmoZV83nRCQuB2KTIzQcy_iBGLjYJEhXMoFgP__4" target="_blank">ViewBlock</a>)</p>
+      <table class="support-table">
+        <thead><tr><th>File</th><th>Arweave</th><th>Tags</th></tr></thead>
+        <tbody>
+          <tr><td>Drop-Off Photo Manhattan (image)</td><td><a href="https://arweave.net/yJC-4UJRb09kP4wsYliFtLfKBsBbswAZg761MekC0gM" target="_blank">yJC-4UJR...C0gM</a></td><td><a href="https://viewblock.io/arweave/tx/yJC-4UJRb09kP4wsYliFtLfKBsBbswAZg761MekC0gM" target="_blank">view</a></td></tr>
+          <tr><td>Condition Report NY (PDF)</td><td><a href="https://arweave.net/hHgh_Y7kYFTWBo5ZNujxR3wKTPhtSAv_kjGoF5L34hE" target="_blank">hHgh_Y7k...34hE</a></td><td><a href="https://viewblock.io/arweave/tx/hHgh_Y7kYFTWBo5ZNujxR3wKTPhtSAv_kjGoF5L34hE" target="_blank">view</a></td></tr>
+          <tr><td>Receipt Auction House (PDF)</td><td><a href="https://arweave.net/zmpmOJ-YbXO9swG3qeNtzoApl9Yy4SAtRYpAA8hGjGw" target="_blank">zmpmOJ-Y...jGw</a></td><td><a href="https://viewblock.io/arweave/tx/zmpmOJ-YbXO9swG3qeNtzoApl9Yy4SAtRYpAA8hGjGw" target="_blank">view</a></td></tr>
+          <tr><td>Security Log Entry (text)</td><td><a href="https://arweave.net/-Djd5He3RfT387eGDCQ_hVJc0vnvB1_5CgNqxI0yMYs" target="_blank">-Djd5He3...yMYs</a></td><td><a href="https://viewblock.io/arweave/tx/-Djd5He3RfT387eGDCQ_hVJc0vnvB1_5CgNqxI0yMYs" target="_blank">view</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Event 4 — Live Bidding (4 support files)</h3>
+      <p><strong>Provenance blob:</strong> <a href="https://arweave.net/XrqThWfVEgLSUM4W4xh7TnGXyVIRHLi34W0qf243b78" target="_blank">XrqThWfVEgLSUM4W4xh7TnGXyVIRHLi34W0qf243b78</a> (<a href="https://viewblock.io/arweave/tx/XrqThWfVEgLSUM4W4xh7TnGXyVIRHLi34W0qf243b78" target="_blank">ViewBlock</a>)</p>
+      <table class="support-table">
+        <thead><tr><th>File</th><th>Arweave</th><th>Tags</th></tr></thead>
+        <tbody>
+          <tr><td>Bidding Event Photo (image)</td><td><a href="https://arweave.net/m5W8LHz1qjITtZqS9fmqjiF-s8b-z_yOS8JdyX138n0" target="_blank">m5W8LHz1...38n0</a></td><td><a href="https://viewblock.io/arweave/tx/m5W8LHz1qjITtZqS9fmqjiF-s8b-z_yOS8JdyX138n0" target="_blank">view</a></td></tr>
+          <tr><td>Sale Transcript (PDF)</td><td><a href="https://arweave.net/wlEkfua5lUd_al_rGepmZ5XQ_zfK-vg64-qQirdmhlk" target="_blank">wlEkfua5...mhlk</a></td><td><a href="https://viewblock.io/arweave/tx/wlEkfua5lUd_al_rGepmZ5XQ_zfK-vg64-qQirdmhlk" target="_blank">view</a></td></tr>
+          <tr><td>Transaction Receipt $12M (PDF)</td><td><a href="https://arweave.net/pOh8w8Gs93oa-tcVriedKpwP0CIiyUt4PqcBMHe86xE" target="_blank">pOh8w8Gs...86xE</a></td><td><a href="https://viewblock.io/arweave/tx/pOh8w8Gs93oa-tcVriedKpwP0CIiyUt4PqcBMHe86xE" target="_blank">view</a></td></tr>
+          <tr><td>Buyer Agreement (PDF)</td><td><a href="https://arweave.net/xuE4p81OfPxWy4gpUqTGm39UDOKWW97Xyz8lWstgK-E" target="_blank">xuE4p81O...gK-E</a></td><td><a href="https://viewblock.io/arweave/tx/xuE4p81OfPxWy4gpUqTGm39UDOKWW97Xyz8lWstgK-E" target="_blank">view</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Event 5 — Secure Handover (4 support files)</h3>
+      <p><strong>Provenance blob:</strong> <a href="https://arweave.net/jIgJcuU7rdL1YIy3g3-zK6sLCDMSF02C6aYbh4LjR2g" target="_blank">jIgJcuU7rdL1YIy3g3-zK6sLCDMSF02C6aYbh4LjR2g</a> (<a href="https://viewblock.io/arweave/tx/jIgJcuU7rdL1YIy3g3-zK6sLCDMSF02C6aYbh4LjR2g" target="_blank">ViewBlock</a>)</p>
+      <table class="support-table">
+        <thead><tr><th>File</th><th>Arweave</th><th>Tags</th></tr></thead>
+        <tbody>
+          <tr><td>Handover Photo London (image)</td><td><a href="https://arweave.net/YofMjDXrXpXkRbPb4gBa7m0yrdsFsH8TTMNwZochLT0" target="_blank">YofMjDXr...cLT0</a></td><td><a href="https://viewblock.io/arweave/tx/YofMjDXrXpXkRbPb4gBa7m0yrdsFsH8TTMNwZochLT0" target="_blank">view</a></td></tr>
+          <tr><td>Transfer Documents (PDF)</td><td><a href="https://arweave.net/bELnYIlPLN-Lfadm1cLYLnluzLrB8a-dfx_3shV_OWM" target="_blank">bELnYIlP..._OWM</a></td><td><a href="https://viewblock.io/arweave/tx/bELnYIlPLN-Lfadm1cLYLnluzLrB8a-dfx_3shV_OWM" target="_blank">view</a></td></tr>
+          <tr><td>Jet Manifest (PDF)</td><td><a href="https://arweave.net/drPQz9fAUh4gLwI3LNxmx7jKY081eALL_wskZSqsEJY" target="_blank">drPQz9fA...sEJY</a></td><td><a href="https://viewblock.io/arweave/tx/drPQz9fAUh4gLwI3LNxmx7jKY081eALL_wskZSqsEJY" target="_blank">view</a></td></tr>
+          <tr><td>Vault Entry Log (text)</td><td><a href="https://arweave.net/jgkgBEowObFm6EtHiwbnNf-otmgdZiVWg1JkDg3XMGo" target="_blank">jgkgBEow...XMGo</a></td><td><a href="https://viewblock.io/arweave/tx/jgkgBEowObFm6EtHiwbnNf-otmgdZiVWg1JkDg3XMGo" target="_blank">view</a></td></tr>
+        </tbody>
+      </table>
+
+      <h3>Event 6 — Long-Term Storage (4 support files)</h3>
+      <p><strong>Provenance blob:</strong> <a href="https://arweave.net/kKdHYqKkXI86TvOr1DcNkrjtygQTWzDPx1UeS2e3sxY" target="_blank">kKdHYqKkXI86TvOr1DcNkrjtygQTWzDPx1UeS2e3sxY</a> (<a href="https://viewblock.io/arweave/tx/kKdHYqKkXI86TvOr1DcNkrjtygQTWzDPx1UeS2e3sxY" target="_blank">ViewBlock</a>)</p>
+      <table class="support-table">
+        <thead><tr><th>File</th><th>Arweave</th><th>Tags</th></tr></thead>
+        <tbody>
+          <tr><td>Storage Photo Vault (image)</td><td><a href="https://arweave.net/35047b8_2xSGXAsT3TDRUgeZnPX47pjoqd3U-jFxDSo" target="_blank">35047b8_...xDSo</a></td><td><a href="https://viewblock.io/arweave/tx/35047b8_2xSGXAsT3TDRUgeZnPX47pjoqd3U-jFxDSo" target="_blank">view</a></td></tr>
+          <tr><td>Climate Control Report (PDF)</td><td><a href="https://arweave.net/7tZEV69lnnuorS7ipyk_tygX5MZ6UkZMZgQqw3LorPo" target="_blank">7tZEV69l...orPo</a></td><td><a href="https://viewblock.io/arweave/tx/7tZEV69lnnuorS7ipyk_tygX5MZ6UkZMZgQqw3LorPo" target="_blank">view</a></td></tr>
+          <tr><td>Access Log (text)</td><td><a href="https://arweave.net/0m-4Ir63J4p-81SpIfJ87yQQOU8z97xelz0C--IFrU4" target="_blank">0m-4Ir63...FrU4</a></td><td><a href="https://viewblock.io/arweave/tx/0m-4Ir63J4p-81SpIfJ87yQQOU8z97xelz0C--IFrU4" target="_blank">view</a></td></tr>
+          <tr><td>Insurance Update Post-Sale (PDF)</td><td><a href="https://arweave.net/7XDEIZDiCeroqg-7ThB0Cq51pI3mOYdaTpX2i9GProY" target="_blank">7XDEIZDi...ProY</a></td><td><a href="https://viewblock.io/arweave/tx/7XDEIZDiCeroqg-7ThB0Cq51pI3mOYdaTpX2i9GProY" target="_blank">view</a></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section walkthrough">
+      <h2>Manual Walkthrough: Verifying the Chain</h2>
+
+      <h3>Forward traversal (follow the delegation)</h3>
+      <ol>
+        <li>Open the <a href="https://polygonscan.com/tx/0xb1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94" target="_blank">genesis transaction</a> on PolygonScan. Note the <strong>From</strong> address (<code>0x637c...d112</code>) and the delegate in the payload (<code>0x8db6...2512</code>).</li>
+        <li>The delegate is the signer of Event 1. Open <a href="https://polygonscan.com/tx/0x6b01ed4c4f30d122366678db4ebe2bd774ff6062e3d9b94b09e5e1968bdb0300" target="_blank">Event 1</a> — confirm <strong>From</strong> matches the delegate from the previous step.</li>
+        <li>Decode the Input Data. The first 64 hex chars should match the genesis hash. The next 64 should match the genesis tx hash.</li>
+        <li>Take the Arweave ID from the payload (bytes 64–106, decoded as UTF-8). Open it at <code>https://arweave.net/&lt;ID&gt;</code>. You should see a JSON document with <code>"genesis"</code> matching the chain root and a <code>"supports"</code> array listing the evidence files.</li>
+        <li>Click through each support ID in the JSON to view the actual images and documents on Arweave.</li>
+        <li>Continue to Events 2–6 — at each step, verify the From address matches the previous step's delegate, and the previous hash matches the prior tx hash.</li>
+      </ol>
+
+      <h3>Backward traversal (follow the prev-hash links)</h3>
+      <ol>
+        <li>Start at <a href="https://polygonscan.com/tx/0xc7b5adf7ee5afbaa6fd4a80eea7e00b7fc6d08d2a9e6fb0dd6aef9124f44345b" target="_blank">Event 6</a>. Decode the Input Data.</li>
+        <li>The previous hash field (bytes 32–63) gives you Event 5's tx hash. Prepend <code>0x</code> and open it on PolygonScan.</li>
+        <li>Repeat until you reach the genesis (previous hash is all zeros).</li>
+      </ol>
+
+      <h3>Cross-chain verification</h3>
+      <p>For any Polygon anchor, take the Arweave ID from its payload and open it:</p>
+      <ul class="check-list">
+        <li><code>https://arweave.net/&lt;ARWEAVE_ID&gt;</code> returns the provenance JSON</li>
+        <li>The JSON's <code>"genesis"</code> field should match the chain's genesis hash</li>
+        <li>The JSON's <code>"supports"</code> array lists Arweave IDs for every evidence file — open each to view the original</li>
+        <li>On ViewBlock, check each support file's tags: <code>ChainRoute-Genesis</code> should equal the genesis hash</li>
+      </ul>
+    </section>
+
+    <section class="content-section">
+      <h2>Alternate Arweave Gateways</h2>
+      <p>If <code>arweave.net</code> is slow or returns an error, try these alternates:</p>
+      <table class="gateway-table">
+        <thead><tr><th>Gateway</th><th>URL pattern</th></tr></thead>
+        <tbody>
+          <tr><td>arweave.net</td><td><code>https://arweave.net/&lt;TX_ID&gt;</code></td></tr>
+          <tr><td>arweave.dev</td><td><code>https://arweave.dev/&lt;TX_ID&gt;</code></td></tr>
+          <tr><td>ViewBlock</td><td><code>https://viewblock.io/arweave/tx/&lt;TX_ID&gt;</code></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="content-section">
+      <h2>For Developers</h2>
+      <div class="dev-box">
+        <p>Clone the <a href="https://github.com/JonEvansActuary/ChainRoute" target="_blank">ChainRoute repo</a> and run from the repo root:</p>
+        <pre># Verify all 7 Polygon payloads + 6 Arweave blobs
+node docs/code/verify-chain.js \
+  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/chain-manifest.json \
+  --rpc https://polygon-bor-rpc.publicnode.com
+
+# Verify all 25 support files have the correct ChainRoute-Genesis tag
+node docs/code/verify-support-tags.js \
+  ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/chain-manifest.json</pre>
+      </div>
+    </section>
+
+    <section class="content-section">
+      <h2>Transaction Summary</h2>
+      <div class="summary-grid">
+        <div class="summary-card">
+          <div class="number">7</div>
+          <div class="desc">Polygon anchor transactions<br />(1 genesis + 6 events)</div>
+        </div>
+        <div class="summary-card">
+          <div class="number">6</div>
+          <div class="desc">Arweave provenance blobs</div>
+        </div>
+        <div class="summary-card">
+          <div class="number">25</div>
+          <div class="desc">Arweave support files</div>
+        </div>
+        <div class="summary-card">
+          <div class="number">38</div>
+          <div class="desc">Total on-chain transactions</div>
+        </div>
+      </div>
+      <div class="note-box">
+        All transactions are on <strong>mainnet</strong> (Polygon chain ID 137, Arweave mainnet). Nothing here is on a testnet.
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <strong>ChainRoute</strong> — ETHDenver 2026 Buidlathon
+  </footer>
+
+</body>
+</html>

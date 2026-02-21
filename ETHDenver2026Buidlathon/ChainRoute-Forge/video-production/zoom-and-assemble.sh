@@ -15,55 +15,63 @@ zoom_image() {
   ffmpeg -y -i "$src" \
     -vf "crop=${cw}:${ch}:${cx}:${cy},scale=1920:1080:flags=lanczos" \
     "$dst" 2>/dev/null
-  echo "  Zoomed: $(basename "$dst") (crop ${cw}x${ch}+${cx}+${cy}, zoom $(echo "scale=2; 1920/$cw" | bc)x)"
+  echo "  Zoomed: $(basename "$dst") (crop ${cw}x${ch}+${cx}+${cy}, zoom=$(echo "scale=2; 1920/$cw" | bc)x)"
 }
 
-echo "=== Zooming screenshots — revised framing ==="
+echo "=== Zooming screenshots — adjusted framing ==="
 
-# Slide 01 - Title: logo+title y≈150-450. 1.5x zoom, centered
-zoom_image "$SHOTS/slide-01.png" "$ZOOMED/slide-01.png" 1280 720 320 30
+# Slide 01 - Title: content y=170-430, centered. 1.5x zoom — looks fine
+zoom_image "$SHOTS/slide-01.png" "$ZOOMED/slide-01.png" 1280 720 320 40
 
-# Slide 02 - Problem bullets: title y≈180, last bullet y≈440. 1.5x zoom
+# Slide 02 - Problem: bullet list y=170-445. 1.5x zoom, centered on content
 zoom_image "$SHOTS/slide-02.png" "$ZOOMED/slide-02.png" 1280 720 320 100
 
-# Slide 07 - Applications grid: title y≈155, footer y≈490. 1.43x zoom (was 1.67x)
-zoom_image "$SHOTS/slide-07.png" "$ZOOMED/slide-07.png" 1344 756 288 70
+# Slide 07 - Applications grid: content y=140-480, footer to y=490.
+# 1.43x zoom, shifted down to include footer text
+zoom_image "$SHOTS/slide-07.png" "$ZOOMED/slide-07.png" 1344 756 288 100
 
-# Slide 09 - Protocol tree: title y≈65, diagram bottom y≈500. 1.25x zoom (was 1.43x)
-zoom_image "$SHOTS/slide-09.png" "$ZOOMED/slide-09.png" 1536 864 192 20
+# Slide 09 - Protocol tree: big diagram y=55-500+.
+# 1.33x zoom to give diagram breathing room
+zoom_image "$SHOTS/slide-09.png" "$ZOOMED/slide-09.png" 1440 810 240 30
 
-# Slide 11 - 127-byte anchor: title y≈70, footer y≈580. 1.33x zoom (was 1.5x)
-zoom_image "$SHOTS/slide-11.png" "$ZOOMED/slide-11.png" 1440 810 240 30
+# Slide 11 - 127-byte anchor: diagram+footer y=55-550.
+# 1.33x zoom, shifted down to capture "127 bytes" and footer text
+zoom_image "$SHOTS/slide-11.png" "$ZOOMED/slide-11.png" 1440 810 240 40
 
-# Slide 12 - Arweave data: title y≈80, diagram bottom y≈490. 1.43x zoom
-zoom_image "$SHOTS/slide-12.png" "$ZOOMED/slide-12.png" 1344 756 288 40
+# Slide 12 - Arweave data: diagram y=75-490.
+# 1.33x zoom, shifted down to capture full diagram boxes
+zoom_image "$SHOTS/slide-12.png" "$ZOOMED/slide-12.png" 1440 810 240 50
 
-# Slide 13 - Verify flowchart: title y≈60, "Chain verified" y≈560. 1.25x zoom (was 1.43x)
-zoom_image "$SHOTS/slide-13.png" "$ZOOMED/slide-13.png" 1536 864 192 20
+# Slide 13 - Verify flowchart: extends to y=580+ ("Chain verified" box).
+# 1.33x zoom, shifted down significantly to capture full flowchart
+zoom_image "$SHOTS/slide-13.png" "$ZOOMED/slide-13.png" 1440 810 240 50
 
-# Slide 14 - Live example: title y≈110, links y≈490. 1.43x zoom (was 1.67x)
-zoom_image "$SHOTS/slide-14.png" "$ZOOMED/slide-14.png" 1344 756 288 55
+# Slide 14 - Live example: painting+text y=105-480.
+# 1.5x zoom, shifted down to include bottom links
+zoom_image "$SHOTS/slide-14.png" "$ZOOMED/slide-14.png" 1280 720 320 80
 
-# Hyp slide 01 - Painting title: title y≈110, subtitle y≈500. 1.43x zoom (was 1.67x)
-zoom_image "$SHOTS/hyp-slide-01.png" "$ZOOMED/hyp-slide-01.png" 1344 756 288 50
+# Hyp slide 01 - Painting title: content y=100-495 (incl subtitle).
+# 1.43x zoom, shifted down to include painting and subtitle
+zoom_image "$SHOTS/hyp-slide-01.png" "$ZOOMED/hyp-slide-01.png" 1344 756 288 70
 
-# Hyp slide 03 - Wide: text left x≈40, diagram labels extend to x≈1750+. 1.07x zoom
-zoom_image "$SHOTS/hyp-slide-03.png" "$ZOOMED/hyp-slide-03.png" 1792 1008 20 30
+# Hyp slide 03 - WIDE layout: text left (x=30+), diagram right (to x=960+)
+# Content spans almost full width! Use 1.11x gentle zoom to keep everything
+zoom_image "$SHOTS/hyp-slide-03.png" "$ZOOMED/hyp-slide-03.png" 1728 972 96 30
 
-# Slide 15 - CTA: logo y≈180, footer y≈450. 1.5x zoom
-zoom_image "$SHOTS/slide-15.png" "$ZOOMED/slide-15.png" 1280 720 320 100
+# Slide 15 - CTA: centered content y=175-440. 1.5x zoom
+zoom_image "$SHOTS/slide-15.png" "$ZOOMED/slide-15.png" 1280 720 320 110
 
-# Web app home - content from top. 1.43x zoom
-zoom_image "$SHOTS/webapp-home.png" "$ZOOMED/webapp-home.png" 1344 756 288 0
+# Web app home - content starts at top. 1.33x zoom
+zoom_image "$SHOTS/webapp-home.png" "$ZOOMED/webapp-home.png" 1440 810 240 0
 
-# Web app create - form in upper area. 1.5x zoom
-zoom_image "$SHOTS/webapp-create.png" "$ZOOMED/webapp-create.png" 1280 720 200 0
+# Web app create - form in upper portion. 1.43x zoom, left-shifted
+zoom_image "$SHOTS/webapp-create.png" "$ZOOMED/webapp-create.png" 1344 756 200 0
 
-# Web app verify - form in upper area. 1.5x zoom
-zoom_image "$SHOTS/webapp-verify.png" "$ZOOMED/webapp-verify.png" 1280 720 200 0
+# Web app verify - form in upper portion. 1.43x zoom, left-shifted
+zoom_image "$SHOTS/webapp-verify.png" "$ZOOMED/webapp-verify.png" 1344 756 200 0
 
 echo ""
-echo "=== Building video segments ==="
+echo "=== Building video segments with fixed framing ==="
 
 get_dur() {
   ffprobe -v quiet -show_entries format=duration -of csv=p=0 "$1"
