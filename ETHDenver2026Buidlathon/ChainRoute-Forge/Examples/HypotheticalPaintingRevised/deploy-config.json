@@ -1,0 +1,84 @@
+{
+  "arweaveKeyPath": "../../../../keys/arweave-keyfile-DNRLpCNPz-Gx6Pt80x-4vdx4oXMHQmlIXW9L04FhRkc.json",
+  "signersFile": "PolygonEventSigners.json",
+  "rpcUrl": "https://polygon-bor-rpc.publicnode.com",
+  "genesis": {
+    "ledgerPath": "44'/60'/0'/0/0",
+    "delegateAddress": "0x8db69f820004eb12a01c7ede5e269e5561202512"
+  },
+  "events": [
+    {
+      "name": "event1",
+      "eventFile": "1-authentication.json",
+      "ledgerPath": "44'/60'/0'/0/1",
+      "delegateAddress": "0xab6cb77a629b56f5d9efd131404ebf692d4a7371",
+      "supports": [
+        { "path": "supports/event1/UV_Analysis_Picasso_Hypothetical.png", "label": "UV_Analysis_Picasso_Hypothetical" },
+        { "path": "supports/event1/Spectral_Analysis_Report_v1.pdf", "label": "Spectral_Analysis_Report_v1" },
+        { "path": "supports/event1/Notary_Seal_Paris.png", "label": "Notary_Seal_Paris" },
+        { "path": "supports/event1/ArtSecure_Cert_12345.pdf", "label": "ArtSecure_Cert_12345" },
+        { "path": "supports/event1/Fictional_Picasso.png", "label": "Fictional_Picasso" }
+      ]
+    },
+    {
+      "name": "event2",
+      "eventFile": "2-secure-transport.json",
+      "ledgerPath": "44'/60'/0'/0/2",
+      "delegateAddress": "0xbf411ced6f35c8125ba6b146615276b43ebaaa91",
+      "supports": [
+        { "path": "supports/event2/Crate_Photo_Paris.png", "label": "Crate_Photo_Paris" },
+        { "path": "supports/event2/Flight_Manifest_AF034.pdf", "label": "Flight_Manifest_AF034" },
+        { "path": "supports/event2/Insurance_Policy_8M.pdf", "label": "Insurance_Policy_8M" },
+        { "path": "supports/event2/Customs_Clearance_JFK.png", "label": "Customs_Clearance_JFK" }
+      ]
+    },
+    {
+      "name": "event3",
+      "eventFile": "3-auction-dropoff.json",
+      "ledgerPath": "44'/60'/0'/0/3",
+      "delegateAddress": "0x23439a839f0b6710e0dee4c4a9788b06d0e72a8a",
+      "supports": [
+        { "path": "supports/event3/DropOff_Photo_Manhattan.png", "label": "DropOff_Photo_Manhattan" },
+        { "path": "supports/event3/Condition_Report_NY.pdf", "label": "Condition_Report_NY" },
+        { "path": "supports/event3/Receipt_AuctionHouse.pdf", "label": "Receipt_AuctionHouse" },
+        { "path": "supports/event3/Security_Log_Entry.txt", "label": "Security_Log_Entry" }
+      ]
+    },
+    {
+      "name": "event4",
+      "eventFile": "4-live-bidding.json",
+      "ledgerPath": "44'/60'/0'/0/4",
+      "delegateAddress": "0xa54df49497fff3e331ed4c5fe6e6d64be01fe606",
+      "supports": [
+        { "path": "supports/event4/Bidding_Event_Photo.png", "label": "Bidding_Event_Photo" },
+        { "path": "supports/event4/Sale_Transcript.pdf", "label": "Sale_Transcript" },
+        { "path": "supports/event4/Transaction_Receipt_12M.pdf", "label": "Transaction_Receipt_12M" },
+        { "path": "supports/event4/Buyer_Agreement_Redacted.pdf", "label": "Buyer_Agreement_Redacted" }
+      ]
+    },
+    {
+      "name": "event5",
+      "eventFile": "5-secure-handover.json",
+      "ledgerPath": "44'/60'/0'/0/5",
+      "delegateAddress": "0x83abb8781f4535ca1820bd2fa9fb95059c0c02cf",
+      "supports": [
+        { "path": "supports/event5/Handover_Photo_London.png", "label": "Handover_Photo_London" },
+        { "path": "supports/event5/Transfer_Documents.pdf", "label": "Transfer_Documents" },
+        { "path": "supports/event5/Jet_Manifest.pdf", "label": "Jet_Manifest" },
+        { "path": "supports/event5/Vault_Entry_Log.txt", "label": "Vault_Entry_Log" }
+      ]
+    },
+    {
+      "name": "event6",
+      "eventFile": "6-long-term-storage.json",
+      "ledgerPath": "44'/60'/0'/0/6",
+      "delegateAddress": "0x83abb8781f4535ca1820bd2fa9fb95059c0c02cf",
+      "supports": [
+        { "path": "supports/event6/Storage_Photo_Vault.png", "label": "Storage_Photo_Vault" },
+        { "path": "supports/event6/Climate_Control_Report.pdf", "label": "Climate_Control_Report" },
+        { "path": "supports/event6/Access_Log_Initial.txt", "label": "Access_Log_Initial" },
+        { "path": "supports/event6/Insurance_Update_PostSale.pdf", "label": "Insurance_Update_PostSale" }
+      ]
+    }
+  ]
+}

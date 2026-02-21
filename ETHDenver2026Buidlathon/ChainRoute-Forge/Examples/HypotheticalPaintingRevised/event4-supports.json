@@ -1,6 +1,18 @@
 [
-  { "id": "imwEgQwWPBmv3cz84ujhBCb7cMg2SCUuKpMNbKh-GDo", "label": "Bidding_Event_Photo" },
-  { "id": "OMKj8ssHcICXJDjtpBJQyQw5LY0vIXjunxGeF8Iw33Q", "label": "Sale_Transcript" },
-  { "id": "Sr0CfPGYNEtHErDlXu7J7WMqllz1GNsvfyZwcY0sfM0", "label": "Transaction_Receipt_12M" },
-  { "id": "M5nVxudP0Hge3swStRM8iR5dMwNtGg09We3rSVt60pQ", "label": "Buyer_Agreement_Redacted" }
+  {
+    "id": "m5W8LHz1qjITtZqS9fmqjiF-s8b-z_yOS8JdyX138n0",
+    "label": "Bidding_Event_Photo"
+  },
+  {
+    "id": "wlEkfua5lUd_al_rGepmZ5XQ_zfK-vg64-qQirdmhlk",
+    "label": "Sale_Transcript"
+  },
+  {
+    "id": "pOh8w8Gs93oa-tcVriedKpwP0CIiyUt4PqcBMHe86xE",
+    "label": "Transaction_Receipt_12M"
+  },
+  {
+    "id": "xuE4p81OfPxWy4gpUqTGm39UDOKWW97Xyz8lWstgK-E",
+    "label": "Buyer_Agreement_Redacted"
+  }
 ]

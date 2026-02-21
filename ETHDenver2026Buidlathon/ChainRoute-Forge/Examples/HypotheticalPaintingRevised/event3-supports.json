@@ -1,6 +1,18 @@
 [
-  { "id": "RnfX3EiVWBVWh93rYbudcQbNlfSplZ3OMfcTqy00O9g", "label": "DropOff_Photo_Manhattan" },
-  { "id": "PnKBt5dMQbhbOjt2_cMHRPclDpCVtOHChIsuKglyBhc", "label": "Condition_Report_NY" },
-  { "id": "2zp5ot-sT-uyY-LH9c8SOP8ztavvzUWfDv9YRBkom2s", "label": "Receipt_AuctionHouse" },
-  { "id": "fPAR0dAE15YLMGQ47FIhQnCZu9RTzqX68YdLFqXV4BQ", "label": "Security_Log_Entry" }
+  {
+    "id": "yJC-4UJRb09kP4wsYliFtLfKBsBbswAZg761MekC0gM",
+    "label": "DropOff_Photo_Manhattan"
+  },
+  {
+    "id": "hHgh_Y7kYFTWBo5ZNujxR3wKTPhtSAv_kjGoF5L34hE",
+    "label": "Condition_Report_NY"
+  },
+  {
+    "id": "zmpmOJ-YbXO9swG3qeNtzoApl9Yy4SAtRYpAA8hGjGw",
+    "label": "Receipt_AuctionHouse"
+  },
+  {
+    "id": "-Djd5He3RfT387eGDCQ_hVJc0vnvB1_5CgNqxI0yMYs",
+    "label": "Security_Log_Entry"
+  }
 ]

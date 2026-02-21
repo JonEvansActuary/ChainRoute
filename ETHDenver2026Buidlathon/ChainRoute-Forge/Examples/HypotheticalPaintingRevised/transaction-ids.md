@@ -1,101 +1,103 @@
 # HypotheticalPaintingRevised – Transaction IDs (Polygon & Arweave)
 
-Record of successful transactions for this example chain. Use these when running later events (e.g. Event 2’s `previousPolygonHash` = Event 1 Polygon hash below).
+Record of successful transactions for this example chain.
 
-**Genesis hash (64 hex, no `0x`)** — use for Arweave tags and all payloads:
+**Genesis hash (64 hex, no `0x`):**
 ```
-647bca002532e1d2710e8c61e30eb83129294a213beb9d0107a8f3740b2580dc
+b1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94
 ```
 
 ---
 
 ## Polygon (anchors)
 
-| Step     | Tx hash (0x) | 64 hex (for next step’s prev hash) |
+| Step     | Tx hash (0x) | 64 hex (for next step's prev hash) |
 |----------|--------------|-------------------------------------|
-| Genesis  | `0x647bca002532e1d2710e8c61e30eb83129294a213beb9d0107a8f3740b2580dc` | `647bca002532e1d2710e8c61e30eb83129294a213beb9d0107a8f3740b2580dc` |
-| Event 1  | `0x81d4f6cbae65445974157382f8040d43785e47a3ed092332af6a83c41eadc652` | `81d4f6cbae65445974157382f8040d43785e47a3ed092332af6a83c41eadc652` |
-| Event 2  | `0xf5d1acd1ada1f113830ea236280b602d86580b5cb18f8c69098e732cf6dab97c` | `f5d1acd1ada1f113830ea236280b602d86580b5cb18f8c69098e732cf6dab97c` |
-| Event 3  | `0xe8f94f3b626cf0071eebdf2685d7990af6aefe423550cad1b99bdc525ca8ad41` | `e8f94f3b626cf0071eebdf2685d7990af6aefe423550cad1b99bdc525ca8ad41` |
-| Event 4  | `0x9acf7a7c0e26c5eda439b8f4c78a08429764644452e8f2e1e7ead733cdeee6a0` | `9acf7a7c0e26c5eda439b8f4c78a08429764644452e8f2e1e7ead733cdeee6a0` |
-| Event 5  | `0xdd6c1cad1b8bb603f45f1209d67b39ecfc560e2e5482296cb142bc87efc60240` | `dd6c1cad1b8bb603f45f1209d67b39ecfc560e2e5482296cb142bc87efc60240` |
-| Event 6  | `0xbb65b7600091790c123d42f1d2b613ea4b2b091102c3866384014e152f8f391a` | `bb65b7600091790c123d42f1d2b613ea4b2b091102c3866384014e152f8f391a` |
-
-- For any step, use the previous row’s 64-hex hash as `previousPolygonHash`.
+| Genesis  | `0xb1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94` | `b1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94` |
+| Event 1  | `0x6b01ed4c4f30d122366678db4ebe2bd774ff6062e3d9b94b09e5e1968bdb0300` | `6b01ed4c4f30d122366678db4ebe2bd774ff6062e3d9b94b09e5e1968bdb0300` |
+| Event 2  | `0x098d65abc09a70b4908b71395f2975502dc94788a7286d20c51cf3f04464a76f` | `098d65abc09a70b4908b71395f2975502dc94788a7286d20c51cf3f04464a76f` |
+| Event 3  | `0x9400fbdd3da29906637755a55e7ccf4bed73e8c6b7cf3bdf2a5a501cbfcc8f26` | `9400fbdd3da29906637755a55e7ccf4bed73e8c6b7cf3bdf2a5a501cbfcc8f26` |
+| Event 4  | `0xc1e2da7531dd9876141d6cf772771cfe9cddbe08ce0e6226078cbb8a4992c9bf` | `c1e2da7531dd9876141d6cf772771cfe9cddbe08ce0e6226078cbb8a4992c9bf` |
+| Event 5  | `0x5ed9e0c8dd332c56bbd31f63d9b62e36b0ecedcf6c504628ef0fc1474eced46c` | `5ed9e0c8dd332c56bbd31f63d9b62e36b0ecedcf6c504628ef0fc1474eced46c` |
+| Event 6  | `0xc7b5adf7ee5afbaa6fd4a80eea7e00b7fc6d08d2a9e6fb0dd6aef9124f44345b` | `c7b5adf7ee5afbaa6fd4a80eea7e00b7fc6d08d2a9e6fb0dd6aef9124f44345b` |
 
 ---
 
 ## Arweave
 
-### How to verify on Arweave
-
-Gateways can be slow or vary by region. Try these (replace `<TX_ID>` with any Arweave tx ID below):
-
-| What | URL pattern | Example for Event 1 blob |
-|------|-------------|---------------------------|
-| **ViewBlock** (tx details + link to data) | `https://viewblock.io/arweave/tx/<TX_ID>` | [viewblock.io/arweave/tx/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU](https://viewblock.io/arweave/tx/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU) |
-| **arweave.net** (content) | `https://arweave.net/<TX_ID>` | [arweave.net/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU](https://arweave.net/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU) |
-| **arweave.net raw** | `https://arweave.net/raw/<TX_ID>` | [arweave.net/raw/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU](https://arweave.net/raw/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU) |
-| **arweave.dev** (alternate gateway) | `https://arweave.dev/<TX_ID>` | [arweave.dev/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU](https://arweave.dev/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU) |
-
-If one gateway times out or fails, try another. ViewBlock is usually reliable for confirming a tx exists; use the others to view the actual JSON or file content.
-
 ### Event 1
 
-- **Provenance blob (main event):** `Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU`  
-  - ViewBlock: https://viewblock.io/arweave/tx/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU  
-  - Content: https://arweave.net/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU or https://arweave.dev/Eo-lBPPJmmuT__-oteZj61HDLPwCFqdGZZN5L2rPYGU
+- **Provenance blob:** `vLsZPb2EO-a6M31yKZ0-muqygP0oSmUDKho6YotGOoA`
+- **Supporting files:** see [event1-supports.json](./event1-supports.json)
 
-- **Supporting files:** see [event1-supports.json](./event1-supports.json). Use the same URL patterns with each tx ID to open the image/PDF.
+| Label | Arweave tx ID |
+|-------|---------------|
+| UV_Analysis_Picasso_Hypothetical | `eJpxHmwgDyd76ojM8FJnJEsiR3gs1fmuBZFvKkGRby0` |
+| Spectral_Analysis_Report_v1 | `dNot0BdabhaUkG6qRaEEV8WSqiRiAOtclxghhu7TmmE` |
+| Notary_Seal_Paris | `SfcHDoMwR2mlGa2kkmC6Uk0tJE9prDZv93q_hTn1nj4` |
+| ArtSecure_Cert_12345 | `jvdYgoep_N_wqQrXboXCqMf4TaFYANRiM_W8okxlmag` |
+| Fictional_Picasso | `qJBpK0OHjsAt3-VnzfXct-d1ki0AvzngBA6mRSl-uH8` |
 
-| Label                          | Arweave tx ID | View (ViewBlock) |
-|--------------------------------|---------------|------------------|
-| UV_Analysis_Picasso_Hypothetical | `yNWKjYl0-KjS-f0MGgvroozxn9E2CcpB5QMhmh9cAP8` | [view](https://viewblock.io/arweave/tx/yNWKjYl0-KjS-f0MGgvroozxn9E2CcpB5QMhmh9cAP8) |
-| Spectral_Analysis_Report_v1     | `Nnf7KajxrNcx4zfI4-p66HBiiIJuosARpQjmZ2CpiLI` | [view](https://viewblock.io/arweave/tx/Nnf7KajxrNcx4zfI4-p66HBiiIJuosARpQjmZ2CpiLI) |
-| Notary_Seal_Paris               | `5MOCV6Gys5kao9diUMlEh1NdTvk_K29ylk8k1o_EsIs` | [view](https://viewblock.io/arweave/tx/5MOCV6Gys5kao9diUMlEh1NdTvk_K29ylk8k1o_EsIs) |
-| ArtSecure_Cert_12345           | `Q2x_x6g4H7YoDAf3PkJyxspGbzN0VwevdDsNwPCw1Mw` | [view](https://viewblock.io/arweave/tx/Q2x_x6g4H7YoDAf3PkJyxspGbzN0VwevdDsNwPCw1Mw) |
-| Fictional_Picasso              | `REPLACE_ARWEAVE_ID_FICTIONAL_PICASSO` (upload when running flow) | — |
+### Event 2
 
-### Event 2 (Secure Transport)
+- **Provenance blob:** `TdBumkRk80QzQM6NZh7ORglTPSF9xx7lJpvoMqBgFTQ`
+- **Supporting files:** see [event2-supports.json](./event2-supports.json)
 
-- **Provenance blob:** `XhNLpcCR5WvlxCa5IgKQYBJy2FHX3YSm6MOZnvECD78` — [event2-supports.json](./event2-supports.json): Crate_Photo_Paris, Flight_Manifest_AF034, Insurance_Policy_8M, Customs_Clearance_JFK
+| Label | Arweave tx ID |
+|-------|---------------|
+| Crate_Photo_Paris | `hAtGeJontFO1ClQAZWgKJCquWFmAERfr9EZLqQy2oKI` |
+| Flight_Manifest_AF034 | `KVMBSp02TCacYBUBnG8tyfAN3E34M4KtxfUvMBZdTos` |
+| Insurance_Policy_8M | `77NqcIHelN57txcBtNNS6UtAsypj8PhpegkEaDmMDsY` |
+| Customs_Clearance_JFK | `M3RCXmVBW08oNSIKKVxkS21aBGScmCes8npEZcgwxKQ` |
 
-### Event 3 (Auction Drop-Off)
+### Event 3
 
-- **Provenance blob:** `rpCsFRLH-Ocbi0lflgfZaVPc0sE_mtxiQXPrYLDsrhU` — [event3-supports.json](./event3-supports.json): DropOff_Photo_Manhattan, Condition_Report_NY, Receipt_AuctionHouse, Security_Log_Entry
+- **Provenance blob:** `AaJwmoZV83nRCQuB2KTIzQcy_iBGLjYJEhXMoFgP__4`
+- **Supporting files:** see [event3-supports.json](./event3-supports.json)
 
-### Event 4 (Live Bidding)
+| Label | Arweave tx ID |
+|-------|---------------|
+| DropOff_Photo_Manhattan | `yJC-4UJRb09kP4wsYliFtLfKBsBbswAZg761MekC0gM` |
+| Condition_Report_NY | `hHgh_Y7kYFTWBo5ZNujxR3wKTPhtSAv_kjGoF5L34hE` |
+| Receipt_AuctionHouse | `zmpmOJ-YbXO9swG3qeNtzoApl9Yy4SAtRYpAA8hGjGw` |
+| Security_Log_Entry | `-Djd5He3RfT387eGDCQ_hVJc0vnvB1_5CgNqxI0yMYs` |
 
-- **Provenance blob:** `DO9EMjJC8G_9g0CfDfyqko0ODQ4IAiO0QgtpabZ0580` — [event4-supports.json](./event4-supports.json): Bidding_Event_Photo, Sale_Transcript, Transaction_Receipt_12M, Buyer_Agreement_Redacted
+### Event 4
 
-### Event 5 (Secure Handover)
+- **Provenance blob:** `XrqThWfVEgLSUM4W4xh7TnGXyVIRHLi34W0qf243b78`
+- **Supporting files:** see [event4-supports.json](./event4-supports.json)
 
-- **Provenance blob:** `JhIZvFI-og1p1Ux9rYEDavfE_5tqiSkSVKxQ0spb_o8` — [event5-supports.json](./event5-supports.json): Handover_Photo_London, Transfer_Documents, Jet_Manifest, Vault_Entry_Log
+| Label | Arweave tx ID |
+|-------|---------------|
+| Bidding_Event_Photo | `m5W8LHz1qjITtZqS9fmqjiF-s8b-z_yOS8JdyX138n0` |
+| Sale_Transcript | `wlEkfua5lUd_al_rGepmZ5XQ_zfK-vg64-qQirdmhlk` |
+| Transaction_Receipt_12M | `pOh8w8Gs93oa-tcVriedKpwP0CIiyUt4PqcBMHe86xE` |
+| Buyer_Agreement_Redacted | `xuE4p81OfPxWy4gpUqTGm39UDOKWW97Xyz8lWstgK-E` |
 
-### Event 6 (Long-Term Storage)
+### Event 5
 
-- **Provenance blob:** `dj-IWkTn2z9zsSs0id_nS1_Um3NiM2yFiqB5Tjsnqoc` — [event6-supports.json](./event6-supports.json): Storage_Photo_Vault, Climate_Control_Report, Access_Log_Initial, Insurance_Update_PostSale
+- **Provenance blob:** `jIgJcuU7rdL1YIy3g3-zK6sLCDMSF02C6aYbh4LjR2g`
+- **Supporting files:** see [event5-supports.json](./event5-supports.json)
+
+| Label | Arweave tx ID |
+|-------|---------------|
+| Handover_Photo_London | `YofMjDXrXpXkRbPb4gBa7m0yrdsFsH8TTMNwZochLT0` |
+| Transfer_Documents | `bELnYIlPLN-Lfadm1cLYLnluzLrB8a-dfx_3shV_OWM` |
+| Jet_Manifest | `drPQz9fAUh4gLwI3LNxmx7jKY081eALL_wskZSqsEJY` |
+| Vault_Entry_Log | `jgkgBEowObFm6EtHiwbnNf-otmgdZiVWg1JkDg3XMGo` |
+
+### Event 6
+
+- **Provenance blob:** `kKdHYqKkXI86TvOr1DcNkrjtygQTWzDPx1UeS2e3sxY`
+- **Supporting files:** see [event6-supports.json](./event6-supports.json)
+
+| Label | Arweave tx ID |
+|-------|---------------|
+| Storage_Photo_Vault | `35047b8_2xSGXAsT3TDRUgeZnPX47pjoqd3U-jFxDSo` |
+| Climate_Control_Report | `7tZEV69lnnuorS7ipyk_tygX5MZ6UkZMZgQqw3LorPo` |
+| Access_Log_Initial | `0m-4Ir63J4p-81SpIfJ87yQQOU8z97xelz0C--IFrU4` |
+| Insurance_Update_PostSale | `7XDEIZDiCeroqg-7ThB0Cq51pI3mOYdaTpX2i9GProY` |
 
 ---
 
-*Full chain (Genesis + Events 1–6) posted. Use the 64-hex hashes above for verification or replay.*
-
----
-
-## Verifying references (Polygon + Arweave)
-
-Run the chain verifier to confirm that every Polygon anchor has the correct genesis hash, previous tx hash, Arweave blob ID, and delegate, and that every Arweave blob has the correct genesis and support IDs:
-
-```bash
-node docs/code/verify-chain.js ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/chain-manifest.json
-```
-
-Optional: `--rpc <polygon-rpc>` and `--arweave-gateway <url>` (defaults: PublicNode Polygon, arweave.net).
-
-To verify that every support file has the `ChainRoute-Genesis` tag set correctly:
-
-```bash
-node docs/code/verify-support-tags.js ETHDenver2026Buidlathon/ChainRoute-Forge/Examples/HypotheticalPaintingRevised/chain-manifest.json
-```
-
-Optional: `--gateway <url>` (default: arweave.net). This queries Arweave GraphQL for each support tx and checks the tag.
+*Full chain (Genesis + Events 1–6) posted.*

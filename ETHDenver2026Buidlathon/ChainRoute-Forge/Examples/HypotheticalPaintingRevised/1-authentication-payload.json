@@ -1,6 +1,6 @@
 {
-  "genesisHash": "0000000000000000000000000000000000000000000000000000000000000000",
-  "previousPolygonHash": "0000000000000000000000000000000000000000000000000000000000000000",
-  "arweaveId": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+  "genesisHash": "b1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94",
+  "previousPolygonHash": "b1861b01fbe3d14a9fc817c314103ef28b2a4a64753e73fe75bd90778a74aa94",
+  "arweaveId": "vLsZPb2EO-a6M31yKZ0-muqygP0oSmUDKho6YotGOoA",
   "delegate": "0xab6cb77a629b56f5d9efd131404ebf692d4a7371"
 }

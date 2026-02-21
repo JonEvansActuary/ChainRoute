@@ -1,6 +1,18 @@
 [
-  { "id": "AmdBqSw5RyJyG48Mxyt6RIuTSYi1ApBbMYhkMgDD9sc", "label": "Crate_Photo_Paris" },
-  { "id": "Zel5h5LQXsREqoWGCX0XjOcEvUOmc3Ne9sTGGNQN0xY", "label": "Flight_Manifest_AF034" },
-  { "id": "58t0iyapKdFfk79oK6-lFKkvgF9ljjktImIEbaOa2t8", "label": "Insurance_Policy_8M" },
-  { "id": "HGvU1Oe5mYMhyG2Zbnm5x3kgtcTu9VdM6x5z22ArY9M", "label": "Customs_Clearance_JFK" }
+  {
+    "id": "hAtGeJontFO1ClQAZWgKJCquWFmAERfr9EZLqQy2oKI",
+    "label": "Crate_Photo_Paris"
+  },
+  {
+    "id": "KVMBSp02TCacYBUBnG8tyfAN3E34M4KtxfUvMBZdTos",
+    "label": "Flight_Manifest_AF034"
+  },
+  {
+    "id": "77NqcIHelN57txcBtNNS6UtAsypj8PhpegkEaDmMDsY",
+    "label": "Insurance_Policy_8M"
+  },
+  {
+    "id": "M3RCXmVBW08oNSIKKVxkS21aBGScmCes8npEZcgwxKQ",
+    "label": "Customs_Clearance_JFK"
+  }
 ]

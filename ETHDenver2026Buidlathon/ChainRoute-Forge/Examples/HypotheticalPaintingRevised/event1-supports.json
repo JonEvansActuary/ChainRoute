@@ -1,7 +1,22 @@
 [
-  { "id": "yNWKjYl0-KjS-f0MGgvroozxn9E2CcpB5QMhmh9cAP8", "label": "UV_Analysis_Picasso_Hypothetical" },
-  { "id": "Nnf7KajxrNcx4zfI4-p66HBiiIJuosARpQjmZ2CpiLI", "label": "Spectral_Analysis_Report_v1" },
-  { "id": "5MOCV6Gys5kao9diUMlEh1NdTvk_K29ylk8k1o_EsIs", "label": "Notary_Seal_Paris" },
-  { "id": "Q2x_x6g4H7YoDAf3PkJyxspGbzN0VwevdDsNwPCw1Mw", "label": "ArtSecure_Cert_12345" },
-  { "id": "REPLACE_ARWEAVE_ID_FICTIONAL_PICASSO", "label": "Fictional_Picasso" }
+  {
+    "id": "eJpxHmwgDyd76ojM8FJnJEsiR3gs1fmuBZFvKkGRby0",
+    "label": "UV_Analysis_Picasso_Hypothetical"
+  },
+  {
+    "id": "dNot0BdabhaUkG6qRaEEV8WSqiRiAOtclxghhu7TmmE",
+    "label": "Spectral_Analysis_Report_v1"
+  },
+  {
+    "id": "SfcHDoMwR2mlGa2kkmC6Uk0tJE9prDZv93q_hTn1nj4",
+    "label": "Notary_Seal_Paris"
+  },
+  {
+    "id": "jvdYgoep_N_wqQrXboXCqMf4TaFYANRiM_W8okxlmag",
+    "label": "ArtSecure_Cert_12345"
+  },
+  {
+    "id": "qJBpK0OHjsAt3-VnzfXct-d1ki0AvzngBA6mRSl-uH8",
+    "label": "Fictional_Picasso"
+  }
 ]

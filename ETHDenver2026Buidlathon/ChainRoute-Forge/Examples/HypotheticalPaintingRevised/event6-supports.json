@@ -1,6 +1,18 @@
 [
-  { "id": "qc05zY8vyGOExAlL0oX-29tENdl8xPNdpfAk1rzpilU", "label": "Storage_Photo_Vault" },
-  { "id": "t-2NLMN9w5ukY5TAYdUVT1Y55NAyduUS30CsEuRZuDs", "label": "Climate_Control_Report" },
-  { "id": "DOTA6wA_Y0C13aZnfTe-IMj98xEvTxK8QFXNioZfJrI", "label": "Access_Log_Initial" },
-  { "id": "f0T6Je8KPA5tf4yCzhh7i1VM6kpvCkji4m07LpJvg6A", "label": "Insurance_Update_PostSale" }
+  {
+    "id": "35047b8_2xSGXAsT3TDRUgeZnPX47pjoqd3U-jFxDSo",
+    "label": "Storage_Photo_Vault"
+  },
+  {
+    "id": "7tZEV69lnnuorS7ipyk_tygX5MZ6UkZMZgQqw3LorPo",
+    "label": "Climate_Control_Report"
+  },
+  {
+    "id": "0m-4Ir63J4p-81SpIfJ87yQQOU8z97xelz0C--IFrU4",
+    "label": "Access_Log_Initial"
+  },
+  {
+    "id": "7XDEIZDiCeroqg-7ThB0Cq51pI3mOYdaTpX2i9GProY",
+    "label": "Insurance_Update_PostSale"
+  }
 ]

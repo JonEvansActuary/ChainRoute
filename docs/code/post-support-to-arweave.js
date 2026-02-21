@@ -26,7 +26,7 @@ const GENESIS_PATTERN = /^[0-9a-fA-F]{64}$/;
 async function postSupportToArweave(filePath, keyPath, opts = {}) {
   const data = fs.readFileSync(path.resolve(filePath));
   const ext = path.extname(filePath).toLowerCase();
-  const contentTypes = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.pdf': 'application/pdf', '.json': 'application/json' };
+  const contentTypes = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.pdf': 'application/pdf', '.json': 'application/json', '.txt': 'text/plain' };
   const tags = [['Content-Type', contentTypes[ext] || 'application/octet-stream']];
   if (opts.genesis && GENESIS_PATTERN.test(opts.genesis)) {
     tags.push(['ChainRoute-Genesis', opts.genesis.toLowerCase()]);
